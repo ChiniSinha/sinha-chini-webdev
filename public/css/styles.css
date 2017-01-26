@@ -1,0 +1,24 @@
+input {
+    margin-bottom: 5px;
+}
+
+body {
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+.navbar-default {
+    background-color: darkslategray;
+}
+
+.navbar-default .navbar-brand {
+    color: white;
+}
+
+.navbar-default .navbar-text {
+    color: white;
+}
+
+ul.list-group li a, ul.list-group li a:visited {
+    color: black;
+}
