@@ -13,12 +13,12 @@
     <div class="row container-fluid">
         <div class="col-sm-4 hidden-xs">
             <div class="navbar-text pull-left">
-                <a href="../user/profile.html">
+                <a href="../user/profile.html" class="navbar-link">
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </a>
             </div>
             <div class="navbar-text pull-right">
-                <a href="website-new.html">
+                <a href="website-new.html" class="navbar-link">
                     <span class="glyphicon glyphicon-plus"></span>
                 </a>
             </div>
@@ -27,8 +27,13 @@
             </div>
         </div>
         <div class="col-sm-8">
+            <div class="navbar-text pull-left visible-xs-inline">
+                <a class="navbar-link" href="website-list.html">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+            </div>
             <div class="navbar-text pull-right">
-                <a href="website-list.html">
+                <a href="website-list.html" class="navbar-link">
                     <span class="glyphicon glyphicon-ok"></span>
                 </a>
             </div>
@@ -79,16 +84,36 @@
 
     <div class="col-sm-8">
         <label for="name">Website Name</label>
-        <input class="form-control" id="name" placeholder="Website Name">
+        <input class="form-control" id="name" placeholder="Website Name" value="Blogger">
 
         <label for="description">Website Description</label>
-        <textarea class="form-control" id="description" placeholder="Description"></textarea>
+        <textarea class="form-control" id="description" placeholder="Description" rows="5">Blogger us a blog-publishing service that allows multi-user blogs with time-stamped entries. It was developed by Pyra Labs, which was bought by Google in 2003. Generally, the blogs are hosted by Google at a subdomain of blogspot.com. Blogs can also be hosted in the registered custom domain of blogger (like www.example.com).[4] A user can have up to 100 blogs per account.
+        </textarea>
 
         <a class="btn btn-danger btn-block"
             href="website-list.html">Delete</a>
     </div>
 
 </div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="row container-fluid">
+        <div class="col-sm-4">
+            <div class="navbar-text pull-left">
+                <a class="navbar-link" href="#">
+                    <span class="glyphicon glyphicon-share-alt"> </span>
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="navbar-text pull-right">
+                <a href="../user/profile.html" class="navbar-link">
+                    <span class="glyphicon glyphicon-user"> </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
 
 </body>
 </html>
