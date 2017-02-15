@@ -15,7 +15,7 @@
         function init() {
             vm.websites = WebsiteService.findWebsitesByUser(userId);
             if (vm.websites.length == 0) {
-                vm.error = "No wensite found. Create new websites.";
+                vm.error = "No websites found. Create new websites.";
             }
         }
         init();
@@ -62,13 +62,13 @@
         init();
 
         function updateWebsite(website) {
-            vm.website = WebsiteService.updateWebsite(vm.websiteId, website);
+            vm.currentWebsite = WebsiteService.updateWebsite(vm.websiteId, website);
             $location.url('/user/'+vm.userId+'/website');
         }
 
         function deleteWebsite() {
             WebsiteService.deleteWebsite(vm.websiteId);
-            $location.url("/user/"+vm.userId+"/website");
+            $location.url('/user/'+vm.userId+'/website');
         }
     }
 
