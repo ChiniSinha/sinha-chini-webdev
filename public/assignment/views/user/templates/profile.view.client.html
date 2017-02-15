@@ -1,0 +1,80 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="row container-fluid">
+        <div class="col-sm-4">
+            <div class="navbar-header pull-left">
+                <div class="navbar-brand">
+                    Profile
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="navbar-text pull-right">
+                <div class="navbar-link">
+                    <span ng-click="model.updateUsr(model.user)" class="glyphicon glyphicon-ok"> </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+    <div class="container-fluid">
+        <h1>Profile</h1>
+
+        <div class="alert alert-danger" ng-show="model.error">
+            {{model.error}}
+        </div>
+
+        <div class="alert alert-success" ng-show="model.message">
+            {{model.message}}
+        </div>
+
+        <form>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input ng-model="model.user.username" type="text"
+                       class="form-control" id="username" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input ng-model="model.user.email" type="email"
+                       class="form-control" id="email" placeholder="alice@wonderland.com">
+            </div>
+            <div class="form-group">
+                <label for="first-name">First Name</label>
+                <input ng-model="model.user.firstName" type="text"
+                       class="form-control" id="first-name" placeholder="Alice">
+            </div>
+            <div class="form-group">
+                <label for="last-name">Last Name</label>
+                <input ng-model="model.user.lastName" type="text"
+                       class="form-control" id="last-name" placeholder="Wonderland">
+            </div>
+        </form>
+
+        <a class="btn btn-primary btn-block"
+           href="#/user/{{model.user._id}}/website">Websites</a>
+        <a class="btn btn-success  btn-block"
+           href="#/login">Logout</a>
+        <button type="button" class="btn btn-danger btn-block"
+                ng-click="model.deleteUsr(model.user._id)">Unregister</button>
+    </div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="row container-fluid">
+        <div class="col-sm-4">
+            <div class="navbar-text pull-left">
+                <a class="navbar-link" href="#">
+                    <span class="glyphicon glyphicon-share-alt"> </span>
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="navbar-text pull-right">
+                <a href="#/user/{{model.user._id}}" class="navbar-link">
+                    <span class="glyphicon glyphicon-user"> </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
