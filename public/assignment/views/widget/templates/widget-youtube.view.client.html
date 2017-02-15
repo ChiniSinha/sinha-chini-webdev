@@ -1,55 +1,22 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-text pull-left">
-            <a class="navbar-link" href="widget-list.view.client.html">
-                <span class="glyphicon glyphicon-chevron-left"></span>
-            </a>
-        </div>
-        <div class="navbar-text pull-right">
-            <a href="widget-list.view.client.html">
-                <span class="glyphicon glyphicon-ok"></span>
-            </a>
-        </div>
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Widget Edit</a>
-        </div>
-    </div>
-</nav>
-
 <div class="container-fluid">
 
     <label for="name">Name</label>
-    <input class="form-control" id="name" placeholder="Widget Name">
+    <input ng-model="model.widget.name" class="form-control"
+           id="name" placeholder="Widget Name">
 
     <label for="text">Text</label>
-    <input class="form-control" id="text" placeholder="Widget Text" value="Some Heading">
+    <input ng-model="model.widget.text" class="form-control"
+           id="text" placeholder="Widget Text">
 
     <label for="size">URL</label>
-    <input class="form-control" id="size" placeholder="URL" value="https://www.youtube.com/embed/gpGC60ygbxs">
+    <input ng-model="model.widget.url" class="form-control"
+           id="size" placeholder="URL">
 
     <label for="width">Width</label>
-    <input class="form-control" id="width" placeholder="3" type="number">
+    <input ng-model="model.widget.width" class="form-control"
+           id="width" placeholder="100%">
 
     <a class="btn btn-danger btn-block"
-       href="widget-list.view.client.html">Delete</a>
+       ng-click="model.deleteWidget()">Delete</a>
 
 </div>
-
-<nav class="navbar navbar-default navbar-fixed-bottom">
-    <div class="row container-fluid">
-        <div class="col-sm-4">
-            <div class="navbar-text pull-left">
-                <a class="navbar-link" href="#">
-                    <span class="glyphicon glyphicon-share-alt"> </span>
-                </a>
-            </div>
-        </div>
-        <div class="col-sm-8">
-            <div class="navbar-text pull-right">
-                <a href="../views/user/profile.view.client.html" class="navbar-link">
-                    <span class="glyphicon glyphicon-user"> </span>
-                </a>
-            </div>
-        </div>
-    </div>
-</nav>

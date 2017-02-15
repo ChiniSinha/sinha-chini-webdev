@@ -8,8 +8,8 @@
         function PageListController(PageService, $routeParams) {
             var vm = this;
 
-            vm.userId = $routeParams['uid'];
-            vm.websiteId = $routeParams['wid'];
+            vm.userId = $routeParams.uid;
+            vm.websiteId = $routeParams.wid;
             
             function init() {
                 vm.pages = PageService.findPageByWebsiteId(vm.websiteId);
@@ -26,8 +26,8 @@
             // Event Handlers
             vm.createNewPage = createNewPage;
 
-            vm.userId = $routeParams['uid'];
-            vm.websiteId = $routeParams['wid'];
+            vm.userId = $routeParams.uid;
+            vm.websiteId = $routeParams.wid;
 
             function init() {
                 vm.pages = PageService.findPageByWebsiteId(vm.websiteId);
@@ -47,9 +47,9 @@
             vm.updatePage = updatePage;
             vm.deletePage = deletePage;
 
-            vm.userId = $routeParams['uid'];
-            vm.websiteId = $routeParams['wid'];
-            vm.pageId = $routeParams['pid'];
+            vm.userId = $routeParams.uid;
+            vm.websiteId = $routeParams.wid;
+            vm.pageId = $routeParams.pid;
 
             function init() {
                 vm.pages = PageService.findPageByWebsiteId(vm.websiteId);

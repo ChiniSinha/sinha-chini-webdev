@@ -5,12 +5,8 @@
                id="name" placeholder="Widget Name">
 
         <label for="text">Text</label>
-        <input ng-model="model.widget.text" class="form-control"
-               id="text" placeholder="Widget Text">
-
-        <label for="size">Size</label>
-        <input ng-model="model.widget.size" class="form-control"
-               id="size" type="number" placeholder="3" min="1" max="6">
+        <textarea ng-model="model.widget.text" class="form-control"
+                  id="text" placeholder="Text" rows="5"></textarea>
 
         <a class="btn btn-danger btn-block"
            ng-click="model.deleteWidget()">Delete</a>

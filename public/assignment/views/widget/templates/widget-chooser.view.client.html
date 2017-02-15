@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-text pull-left">
-            <a href="widget-list.view.client.html">
+            <a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget">
                 <span class="glyphicon glyphicon-chevron-left"></span>
             </a>
         </div>
@@ -14,53 +14,23 @@
 <div class="container-fluid">
     <ul class="list-group">
         <li class="list-group-item borderless">
-            <a href="widget-heading.view.client.html">
-                Header
+            <a ng-click="model.createHeading(widget)">
+                <label ng-model="widget.widgetType" ng-init="widget.widgetType='HEADING'">Heading</label>
             </a>
         </li>
         <li class="list-group-item borderless">
-            <a href="#">
-                Label
+            <a ng-click="model.createHeading(widget)">
+                <label ng-model="widget.widgetType" ng-init="widget.widgetType='HTML'">HTML</label>
             </a>
         </li>
         <li class="list-group-item borderless">
-            <a href="#">
-                HTML
+            <a ng-click="model.createImage(widget)">
+                <label ng-model="widget.widgetType" ng-init="widget.widgetType='IMAGE'">Image</label>
             </a>
         </li>
         <li class="list-group-item borderless">
-            <a href="#">
-                Text Input
-            </a>
-        </li>
-        <li class="list-group-item borderless">
-            <a href="#">
-                Link
-            </a>
-        </li>
-        <li class="list-group-item borderless">
-            <a href="#">
-                Button
-            </a>
-        </li>
-        <li class="list-group-item borderless">
-            <a href="widget-image.view.client.html">
-                Image
-            </a>
-        </li>
-        <li class="list-group-item borderless">
-            <a href="widget-youtube.view.client.html">
-                YouTube
-            </a>
-        </li>
-        <li class="list-group-item borderless">
-            <a href="#">
-                Data Table
-            </a>
-        </li>
-        <li class="list-group-item borderless">
-            <a href="#">
-                Repeater
+            <a ng-click="model.createYoutube(widget)">
+                <label ng-model="widget.widgetType" ng-init="widget.widgetType='YOUTUBE'">Youtube</label>
             </a>
         </li>
     </ul>
@@ -77,7 +47,7 @@
         </div>
         <div class="col-sm-8">
             <div class="navbar-text pull-right">
-                <a href="../views/user/profile.view.client.html" class="navbar-link">
+                <a href="#/user/{{model.userId}}" class="navbar-link">
                     <span class="glyphicon glyphicon-user"> </span>
                 </a>
             </div>

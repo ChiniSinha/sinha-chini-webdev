@@ -9,7 +9,7 @@
     function WebsiteListController(WebsiteService, $routeParams) {
         var vm = this;
 
-        var userId = $routeParams['uid'];
+        var userId = $routeParams.uid;
         vm.userId = userId;
 
         function init() {
@@ -27,7 +27,7 @@
         // Event Handlers
         vm.createNewWebsite = createNewWebsite;
 
-        var userId = $routeParams['uid'];
+        var userId = $routeParams.uid;
         vm.userId = userId;
 
         function init() {
@@ -49,8 +49,8 @@
         vm.updateWebsite = updateWebsite;
         vm.deleteWebsite = deleteWebsite;
 
-        vm.userId = $routeParams['uid'];
-        vm.websiteId = $routeParams['wid'];
+        vm.userId = $routeParams.uid;
+        vm.websiteId = $routeParams.wid;
         
         function init() {
             vm.websites = WebsiteService.findWebsitesByUser(vm.userId);

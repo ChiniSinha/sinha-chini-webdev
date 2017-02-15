@@ -1,18 +1,23 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-text pull-left">
-            <a href="widget-list.view.client.html">
+            <a class="navbar-link" href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget">
                 <span class="glyphicon glyphicon-chevron-left"></span>
             </a>
         </div>
+        <div class="navbar-text pull-right">
+            <a ng-click="model.updateWidget(model.widget)">
+                <span class="glyphicon glyphicon-ok"></span>
+            </a>
+        </div>
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">Choose Widget</a>
+            <a class="navbar-brand" href="#">Edit Widget</a>
         </div>
     </div>
 </nav>
 
 <div ng-switch="model.widget.widgetType">
-    <div ng-switch-when="HEADER">
+    <div ng-switch-when="HEADING">
         <ng-include src="'views/widget/templates/widget-heading.view.client.html'"></ng-include>
     </div>
     <div ng-switch-when="IMAGE">
@@ -37,7 +42,7 @@
         </div>
         <div class="col-sm-8">
             <div class="navbar-text pull-right">
-                <a href="../views/user/profile.view.client.html" class="navbar-link">
+                <a href="#/user/{{model.userId}}" class="navbar-link">
                     <span class="glyphicon glyphicon-user"> </span>
                 </a>
             </div>
