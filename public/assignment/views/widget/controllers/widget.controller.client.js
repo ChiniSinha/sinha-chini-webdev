@@ -17,11 +17,18 @@
         vm.websiteId = $routeParams.wid;
         vm.pageId = $routeParams.pid;
 
+        $(".widget-list").sortable({
+            axis: "y"
+        });
+
         function init() {
-            vm.widgets = WidgetService.findWidgetsByPageId(vm.pageId);
-            if (vm.widgets.length == 0) {
-                vm.error = "No widgets found!";
-            }
+            var promise = WidgetService.findWidgetsByPageId(vm.pageId);
+            promise.success(function (widgets) {
+                vm.widgets = widgets;
+                if (vm.widgets.length == 0) {
+                    vm.error = "No widgets found!";
+                }
+            })
         }
         init();
 
@@ -64,26 +71,38 @@
 
         function createHeading(wig) {
             wig.widgetType = 'HEADING';
-            vm.widget = WidgetService.createWidget(vm.pageId, wig);
-            $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page/'+vm.pageId+'/widget/'+vm.widget._id);
+            var promise =  WidgetService.createWidget(vm.pageId, wig);
+            promise.success(function (widget) {
+                vm.widget = widget;
+                $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page/'+vm.pageId+'/widget/'+vm.widget._id);
+            })
         }
 
         function createHtml(wig) {
             wig.widgetType = 'HTML';
-            vm.widget = WidgetService.createWidget(vm.pageId, wig);
-            $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page/'+vm.pageId+'/widget/'+vm.widget._id);
+            var promise =  WidgetService.createWidget(vm.pageId, wig);
+            promise.success(function (widget) {
+                vm.widget = widget;
+                $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page/'+vm.pageId+'/widget/'+vm.widget._id);
+            })
         }
 
         function createImage(wig) {
             wig.widgetType = 'IMAGE';
-            vm.widget = WidgetService.createWidget(vm.pageId, wig);
-            $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page/'+vm.pageId+'/widget/'+vm.widget._id);
+            var promise =  WidgetService.createWidget(vm.pageId, wig);
+            promise.success(function (widget) {
+                vm.widget = widget;
+                $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page/'+vm.pageId+'/widget/'+vm.widget._id);
+            })
         }
 
         function createYoutube(wig) {
             wig.widgetType = 'YOUTUBE';
-            vm.widget = WidgetService.createWidget(vm.pageId, wig);
-            $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page/'+vm.pageId+'/widget/'+vm.widget._id);
+            var promise =  WidgetService.createWidget(vm.pageId, wig);
+            promise.success(function (widget) {
+                vm.widget = widget;
+                $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page/'+vm.pageId+'/widget/'+vm.widget._id);
+            })
         }
     }
 
@@ -100,18 +119,29 @@
         vm.widgetId = $routeParams.wgid;
 
         function init() {
-            vm.widget = WidgetService.findWidgetById(vm.widgetId);
+            var promise = WidgetService.findWidgetById(vm.widgetId);
+            promise.success(function (widget) {
+                vm.widget = widget;
+            })
         }
         init();
         
         function updateWidget(widget) {
-            vm.widget = WidgetService.updateWidget(vm.widgetId, widget);
-            $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page/'+vm.pageId+'/widget');
+            var promise = WidgetService.updateWidget(vm.widgetId, widget);
+            console.log(promise);
+            promise.success(function (widget) {
+                vm.widget = widget;
+                $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page/'+vm.pageId+'/widget');
+            })
         }
 
         function deleteWidget() {
-            WidgetService.deleteWidget(vm.widgetId);
-            $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page/'+vm.pageId+'/widget');
+            var promise = WidgetService.deleteWidget(vm.widgetId);
+            promise.success(function (msg) {
+                $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page/'+vm.pageId+'/widget');
+                console.log(msg);
+            })
+
         }
     }
 

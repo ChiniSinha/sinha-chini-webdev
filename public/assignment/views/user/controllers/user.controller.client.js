@@ -16,14 +16,17 @@
             init();
 
             function login(user) {
-                var user = UserService.findUserByCredentials(user.username, user.password);
-                if (user) {
-                    $location.url("/user/" + user._id);
-                } else {
-                    vm.error = "User not found";
-                }
+                UserService
+                    .findUserByCredentials(user.username, user.password)
+                    .success(function(user) {
+                    if (user) {
+                        $location.url("/user/" + user._id);
+                    }
+                    })
+                    .error(function (err) {
+                        vm.error = "User not present";
+                    });
             }
-
         }
         
         function RegisterController(UserService, $location) {
@@ -42,8 +45,11 @@
                 } else if (user.password != user.confirmPassword) {
                     vm.error = "Password do not match!"
                 } else {
-                    var userId = UserService.createUser(user);
-                    $location.url('/user/'+userId);
+                    var promise = UserService.createUser(user);
+                    console.log(promise);
+                    promise.success(function (user) {
+                        $location.url('/user/'+user._id);
+                    })
                 }
             }
 
@@ -58,28 +64,41 @@
             vm.deleteUsr = deleteUsr;
             
             var userId = $routeParams.uid;
+
             function init() {
-                vm.user = UserService.findUserById(userId);
+                var promise = UserService.findUserById(userId);
+                promise.success(function (user) {
+                    vm.user = user;
+                    if (vm.user == null) {
+                        $location.url("/login");
+                    }
+                })
             }
             init();
 
             function updateUsr(newUser) {
-                var user = UserService.updateUser(userId, newUser);
-                if(user != null) {
-                    vm.message = "User Successfully Updated!"
-                } else {
-                    vm.error = "Unable to update user";
-                }
+                vm.error = null;
+                UserService.updateUser(userId, newUser)
+                    .success(function (user) {
+                        if(user != null) {
+                            vm.message = "User Successfully Updated!"
+                        }
+                    })
+                    .error(function (err) {
+                        vm.error = "Unable to update user";
+                    })
+
             }
             
             function deleteUsr(userId) {
-                UserService.deleteUser(userId);
-                $location.url("/login");
+                var promise = UserService.deleteUser(userId);
+                promise.success(function (msg) {
+                    console.log(msg);
+                    $location.url("/login");
+                })
+
             }
             
         }
-
-        
-        
         
 })();

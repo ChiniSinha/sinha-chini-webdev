@@ -12,10 +12,13 @@
             vm.websiteId = $routeParams.wid;
             
             function init() {
-                vm.pages = PageService.findPageByWebsiteId(vm.websiteId);
-                if (vm.pages.length == 0) {
-                    vm.error = "No pages found. Create new Pages.";
-                }
+                var promise = PageService.findPageByWebsiteId(vm.websiteId);
+                promise.success(function (pages) {
+                    vm.pages = pages;
+                    if (vm.pages.length == 0) {
+                        vm.error = "No pages found. Create new Pages.";
+                    }
+                })
             }
             init();
         }
@@ -30,13 +33,18 @@
             vm.websiteId = $routeParams.wid;
 
             function init() {
-                vm.pages = PageService.findPageByWebsiteId(vm.websiteId);
+                var promise = PageService.findPageByWebsiteId(vm.websiteId);
+                promise.success(function (pages) {
+                    vm.pages = pages;    
+                })
             }
             init();
 
             function createNewPage(page) {
-                PageService.createPage(vm.websiteId, page);
-                $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page');
+                var promise = PageService.createPage(vm.websiteId, page);
+                promise.success(function (page) {
+                    $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page');
+                })
             }
         }
 
@@ -52,22 +60,34 @@
             vm.pageId = $routeParams.pid;
 
             function init() {
-                vm.pages = PageService.findPageByWebsiteId(vm.websiteId);
-                vm.currentPage = PageService.findPageById(vm.pageId);
-                if( vm.currentPage == null ) {
-                    vm.error = "No Page found!";
-                }
+                var prom1 = PageService.findPageByWebsiteId(vm.websiteId);
+                prom1.success(function (pages) {
+                    vm.pages = pages;
+                })
+                var prom2 = PageService.findPageById(vm.pageId);
+                prom2.success(function (page) {
+                    vm.currentPage = page;
+                    if( vm.currentPage == null ) {
+                        vm.error = "No Page found!";
+                    }
+                })
             }
             init();
 
             function updatePage(page) {
-                vm.currentPage = PageService.updatePage(vm.pageId, page);
-                $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page');
+                var promise = PageService.updatePage(vm.pageId, page);
+                promise.success(function (page) {
+                    vm.currentPage = page;
+                    $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page');
+                })
             }
 
             function deletePage() {
-                PageService.deletePage(vm.pageId);
-                $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page');
+                var promise = PageService.deletePage(vm.pageId);
+                promise.success(function (msg) {
+                    $location.url('/user/'+vm.userId+'/website/'+vm.websiteId+'/page');
+                    console.log(msg);
+                })
             }
         }
 
