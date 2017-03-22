@@ -1,12 +1,7 @@
 <div class="container-fluid">
 
-        <label for="name">Name</label>
-        <input ng-model="model.widget.name" class="form-control"
-               id="name" placeholder="Widget Name">
-
-        <label for="text">Text</label>
-        <textarea ng-model="model.widget.text" class="form-control"
-                  id="text" placeholder="Text" rows="5"></textarea>
+        <text-angular ng-model="model.widget.text">
+        </text-angular>
 
         <a class="btn btn-danger btn-block"
            ng-click="model.deleteWidget()">Delete</a>

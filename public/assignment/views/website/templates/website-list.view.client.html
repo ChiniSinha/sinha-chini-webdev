@@ -24,10 +24,10 @@
 
     <ul class="list-group">
         <li ng-repeat="website in model.websites" class="list-group-item">
-            <a href="#/user/{{website.developerId}}/website/{{website._id}}/page">
+            <a href="#/user/{{model.userId}}/website/{{website._id}}/page">
                 {{website.name}}
             </a>
-            <a href="#/user/{{website.developerId}}/website/{{website._id}}" class="pull-right">
+            <a href="#/user/{{model.userId}}/website/{{website._id}}" class="pull-right">
                 <span class="glyphicon glyphicon-cog"></span>
             </a>
         </li>

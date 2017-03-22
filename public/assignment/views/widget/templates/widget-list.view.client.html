@@ -17,12 +17,12 @@
 </nav>
 
 <div class="container-fluid">
-    <div class="widget-list">
+    <div wbdv-sortable>
         <div class="alert alert-danger" ng-show="model.error">
             {{model.error}}
         </div>
 
-        <div ng-repeat="widget in model.widgets" ng-switch="widget.widgetType">
+        <div ng-repeat="widget in model.widgets" ng-switch="widget.type">
 
             <div class="cs-toolbar">
                 <a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget/{{widget._id}}">
@@ -41,7 +41,7 @@
                 </ng-include>
             </div>
 
-            <div ng-switch-when="YOUTUBE">
+            <div ng-switch-when="YOUTUBE" class="youtube-widget">
                 <ng-include src="'views/widget/templates/widgets/youtube.view.client.html'">
                 </ng-include>
             </div>

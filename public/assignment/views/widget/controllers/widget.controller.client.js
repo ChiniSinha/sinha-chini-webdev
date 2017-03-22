@@ -17,10 +17,6 @@
         vm.websiteId = $routeParams.wid;
         vm.pageId = $routeParams.pid;
 
-        $(".widget-list").sortable({
-            axis: "y"
-        });
-
         function init() {
             var promise = WidgetService.findWidgetsByPageId(vm.pageId);
             promise.success(function (widgets) {
@@ -70,7 +66,7 @@
         init();
 
         function createHeading(wig) {
-            wig.widgetType = 'HEADING';
+            wig.type = 'HEADING';
             var promise =  WidgetService.createWidget(vm.pageId, wig);
             promise.success(function (widget) {
                 vm.widget = widget;
@@ -79,7 +75,7 @@
         }
 
         function createHtml(wig) {
-            wig.widgetType = 'HTML';
+            wig.type = 'HTML';
             var promise =  WidgetService.createWidget(vm.pageId, wig);
             promise.success(function (widget) {
                 vm.widget = widget;
@@ -88,7 +84,7 @@
         }
 
         function createImage(wig) {
-            wig.widgetType = 'IMAGE';
+            wig.type = 'IMAGE';
             var promise =  WidgetService.createWidget(vm.pageId, wig);
             promise.success(function (widget) {
                 vm.widget = widget;
@@ -97,7 +93,7 @@
         }
 
         function createYoutube(wig) {
-            wig.widgetType = 'YOUTUBE';
+            wig.type = 'YOUTUBE';
             var promise =  WidgetService.createWidget(vm.pageId, wig);
             promise.success(function (widget) {
                 vm.widget = widget;
