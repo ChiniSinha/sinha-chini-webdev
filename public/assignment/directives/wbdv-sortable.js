@@ -30,9 +30,10 @@
 
         function widgetsSort(start, end) {
             var pageId = $routeParams.pid;
+            console.log(pageId);
             WidgetService
                 .reorderWidget(pageId, start, end)
-                .success(function (response) {
+                .success(function () {
                 })
                 .error(function () {
                 });

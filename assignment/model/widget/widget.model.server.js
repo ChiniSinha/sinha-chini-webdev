@@ -2,6 +2,7 @@ module.exports = function () {
 
     var model = null;
     var mongoose = require("mongoose");
+    var q = require('q');
 
     var WidgetSchema = require('./widget.schema.server')();
     var WidgetModel = mongoose.model('WidgetModel', WidgetSchema);
@@ -37,12 +38,12 @@ module.exports = function () {
                 return err;
             })
     }
-    
+
     function findAllWidgetsForPage(pageId) {
         return model.PageModel
             .findPageById(pageId)
             .then(function (page) {
-                return WidgetModel.find({'_id' : {$in : page.widgets}})
+                return WidgetModel.find({'_id' : {$in : page.widgets}});
             });
     }
     
@@ -62,13 +63,14 @@ module.exports = function () {
         return model.PageModel
             .findPageById(pageId)
             .then(function (page) {
-                var widgets = page.widgets;
-                widgets.splice(end, 0, widgets.splice(start, 1)[0]);
-                page.widgets = widgets;
-                return page.save();
+                page.widgets.splice(end, 0, page.widgets.splice(start, 1)[0]);
+                page.markModified('page.widgets');
+                page.save(function (err) {
+                    return err;
+                });
             }, function (err) {
                 return err;
-            })
+            });
     }
 
     function setModel(_model) {
