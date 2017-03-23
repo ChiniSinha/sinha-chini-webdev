@@ -4,6 +4,21 @@ module.exports = function (app, pageModel) {
     app.get('/api/page/:pageId', findPageByPageId);
     app.put('/api/page/:pageId', updatePage);
     app.delete('/api/page/:pageId', deletePage);
+    app.put('/page/:pageId/widget', reorderWidget);
+
+    function reorderWidget(req, res) {
+        var pageId = req.params.pageId;
+        var start = req.query.start;
+        var end = req.query.end;
+
+        pageModel
+            .reorderWidget(pageId, start, end)
+            .then(function (response) {
+                res.sendStatus(200);
+            }, function (err) {
+                res.sendStatus(404);
+            });
+    }
 
 
     function createPage(req, res) {

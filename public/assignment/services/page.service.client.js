@@ -10,7 +10,8 @@
             "findPageByWebsiteId": findPageByWebsiteId,
             "findPageById": findPageById,
             "updatePage": updatePage,
-            "deletePage": deletePage
+            "deletePage": deletePage,
+            "reorderWidget": reorderWidget
         };
         return api;
 
@@ -32,6 +33,10 @@
 
         function deletePage(pageId) {
             return $http.delete("/api/page/" + pageId);
+        }
+
+        function reorderWidget(pageId, start, end) {
+            return $http.put("/page/"+pageId+"/widget?start="+start+"&end="+end);
         }
     }
 })();

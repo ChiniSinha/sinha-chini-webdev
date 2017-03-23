@@ -23,14 +23,14 @@
             controller: sortWidgetsController
         }
     }
-    function sortWidgetsController(WidgetService, $routeParams) {
+    function sortWidgetsController(PageService, $routeParams) {
         var vm = this;
         vm.widgetsSort = widgetsSort;
 
         function widgetsSort(start, end) {
-            var pageId = $routeParams.pid;
+            var pageId = $routeParams.pageId;
             console.log(pageId);
-            WidgetService
+            PageService
                 .reorderWidget(pageId, start, end)
                 .success(function () {
                 })

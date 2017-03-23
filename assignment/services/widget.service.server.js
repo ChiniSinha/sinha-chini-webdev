@@ -9,7 +9,6 @@ module.exports = function (app, widgetModel) {
     app.put('/api/widget/:widgetId', updateWidget);
     app.delete('/api/widget/:widgetId', deleteWidget);
     app.post('/api/upload', upload.single('myFile'), uploadImage);
-    app.put('/page/:pageId/widget', reorderWidget);
 
     function createWidget(req, res) {
         var pageId = req.params.pageId;
