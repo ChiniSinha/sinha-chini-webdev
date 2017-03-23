@@ -28,7 +28,7 @@
         vm.widgetsSort = widgetsSort;
 
         function widgetsSort(start, end) {
-            var pageId = $routeParams.pageId;
+            var pageId = $routeParams.pid;
             console.log(pageId);
             PageService
                 .reorderWidget(pageId, start, end)

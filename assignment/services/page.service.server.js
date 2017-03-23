@@ -7,6 +7,7 @@ module.exports = function (app, pageModel) {
     app.put('/page/:pageId/widget', reorderWidget);
 
     function reorderWidget(req, res) {
+
         var pageId = req.params.pageId;
         var start = req.query.start;
         var end = req.query.end;
