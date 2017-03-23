@@ -8,7 +8,6 @@
         function linkfunc(scope, element, attributes, sortingController) {
             element.sortable({
                 start: function(event, ui){
-                    // Set the start index and make it available for ui item
                     ui.item.startPos = ui.item.index();
                 },
                 update: function(event, ui){

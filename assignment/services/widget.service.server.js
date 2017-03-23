@@ -30,7 +30,7 @@ module.exports = function (app, widgetModel) {
             .then(function (widgets) {
                 res.send(widgets);
             }, function (err) {
-                res.send(404);
+                res.sendStatus(404);
             });
     }
 
