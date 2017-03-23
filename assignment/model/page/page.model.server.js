@@ -20,29 +20,6 @@ module.exports = function () {
     
     return api;
 
-    function findAllWidgetsForPage(pageId) {
-        return PageModel.findById(pageId)
-            .populate("widgets")
-            .exec();
-    }
-
-    function reorderWidget(pageId, start, end) {
-        var d = q.defer();
-        return PageModel.findById(pageId)
-            .then(function (page) {
-                var final = page.widgets.splice(start-1, 1)[0];
-                page.widgets.splice(end-1, 0, final);
-                page.markModified('widgets');
-                page.save(function (err, page) {
-                    d.resolve(page);
-                });
-
-            }, function (err) {
-                return err;
-            });
-        return d.promise;
-    }
-
     function createPage(websiteId, page) {
         return PageModel.create(page)
             .then(function (page) {
@@ -90,4 +67,28 @@ module.exports = function () {
     function setModel(_model) {
         model = _model;
     }
+
+    function reorderWidget(pageId, start, end) {
+        var d = q.defer();
+        return PageModel.findById(pageId)
+            .then(function (page) {
+                var final = page.widgets.splice(start-1, 1)[0];
+                page.widgets.splice(end-1, 0, final);
+                page.markModified('widgets');
+                page.save(function (err, page) {
+                    d.resolve(page);
+                });
+
+            }, function (err) {
+                return err;
+            });
+        return d.promise;
+    }
+
+    function findAllWidgetsForPage(pageId) {
+        return PageModel.findById(pageId)
+            .populate("widgets")
+            .exec();
+    }
+
 }
