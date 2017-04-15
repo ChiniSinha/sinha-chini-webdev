@@ -1,0 +1,29 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+.navbar-brand {
+    padding: 0px;
+}
+
+.navbar-brand img {
+    max-height: 49px;
+    margin-left: 15px;
+}
+
+.navbar-default {
+    background-color: lightgoldenrodyellow;
+    background: rgba(255, 180, 7, 0.4);
+}
+
+.navbar button {
+    margin-top: 8px;
+    margin-right: 8px;
+}
+
+.btn-login {
+    color: #fff;
+    background-color: saddlebrown;
+    border-color: saddlebrown;
+}
