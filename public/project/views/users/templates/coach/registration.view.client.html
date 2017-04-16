@@ -24,49 +24,63 @@
     <div class="cs-form">
         <h1>Coach Registration</h1>
 
+        <div ng-show="model.error" class="alert alert-danger" role="alert">
+            {{model.error}}
+        </div>
+
+        <label for="school">School of Coach</label>
+        <input ng-model="model.schoolName" type="text" disabled class="form-control" id="school">
+
         <label for="username">Username</label>
-        <input ng-model=""
+        <input ng-model="user.username"
                id="username"
                type="text"
                class="form-control"
                placeholder="Username"/>
 
         <label for="firstName">First Name</label>
-        <input ng-model=""
+        <input ng-model="user.firstName"
                id="firstName"
                type="text"
                class="form-control"
                placeholder="First Name"/>
 
         <label for="lastName">Last Name</label>
-        <input ng-model=""
+        <input ng-model="user.lastName"
                id="lastName"
                type="text"
                class="form-control"
                placeholder="Last Name"/>
 
         <label for="email">Email</label>
-        <input ng-model=""
+        <input ng-model="user.email"
                id="email"
                type="email"
                class="form-control"
                placeholder="Email"/>
 
+        <label for="phone">Phone Number</label>
+        <input ng-model="user.phone"
+                type="tel"
+                id="phone"
+                class="form-control"
+                placeholder="Phone Number"/>
+
         <label for="password">Password</label>
-        <input ng-model=""
+        <input ng-model="user.password"
                id="password"
                type="password"
                class="form-control"
                placeholder="Password"/>
 
         <label for="confirm">Comfirm Password</label>
-        <input ng-model=""
+        <input ng-model="user.confirmPassword"
                id="confirm"
                type="password"
                class="form-control"
                placeholder="Confirm Password"/>
 
-        <a class="btn btn-primary btn-block">Register</a>
+        <a ng-click="model.register(user)" class="btn btn-primary btn-block">Register</a>
         <a class="btn btn-danger  btn-block"
            href="#/home">Cancel</a>
     </div>

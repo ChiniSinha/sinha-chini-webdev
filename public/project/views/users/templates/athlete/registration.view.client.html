@@ -24,70 +24,67 @@
     <div class="cs-form">
         <h1>Athlete Registration</h1>
 
+        <div ng-show="model.error" class="alert alert-danger" role="alert">
+            {{model.error}}
+        </div>
+
         <label for="username">Username</label>
-        <input ng-model=""
+        <input ng-model="user.username"
             type="text"
             id="username"
             class="form-control"
             placeholder="Username"/>
 
         <label for="firstName">First Name</label>
-        <input
+        <input ng-model="user.firstName"
             type="text"
             id="firstName"
             class="form-control"
             placeholder="First Name"/>
 
         <label for="lastName">Last Name</label>
-        <input
+        <input ng-model="user.lastName"
             type="text"
             id="lastName"
             class="form-control"
             placeholder="Last Name"/>
 
         <label for="email">Email</label>
-        <input
+        <input ng-model="user.email"
             type="email"
             id="email"
             class="form-control"
             placeholder="Email"/>
 
         <label for="phone">Phone Number</label>
-        <input
+        <input ng-model="user.phone"
             type="tel"
             id="phone"
             class="form-control"
             placeholder="Phone Number"/>
 
-        <label for="zip">Zip Code</label>
-        <input
-            type="text"
-            id="zip"
-            class="form-control"
-            placeholder="Zip"/>
-
         <label for="grad">Year of High School Graduation</label>
-        <input
+        <input ng-model="user.gradYear"
             type="number"
             id="grad"
             class="form-control"
             placeholder="Year of High School Graduation"/>
 
         <label for="password">Password</label>
-        <input
+        <input ng-model="user.password"
             type="password"
             id="password"
             class="form-control"
             placeholder="Password"/>
 
         <label for="confirm">Confirm Password</label>
-        <input
+        <input ng-model="user.confirmPassword"
             type="password"
             id="confirm"
             class="form-control"
             placeholder="Confirm Password"/>
 
-        <a class="btn btn-primary btn-block">Register</a>
+        <a ng-click="model.register(user)" class="btn btn-primary btn-block">Register</a>
         <a class="btn btn-danger  btn-block" href="#/home">Cancel</a>
     </div>
 </div>

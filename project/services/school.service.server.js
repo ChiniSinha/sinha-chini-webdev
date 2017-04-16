@@ -29,7 +29,7 @@ module.exports = function (app, models) {
         schoolModel
             .findSchoolById(schoolId)
             .then(function (school) {
-                res.send(posts);
+                res.send(school);
             }, function (err) {
                 res.sendStatus(404);
             })

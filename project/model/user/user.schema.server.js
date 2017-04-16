@@ -8,7 +8,7 @@ module.exports = function () {
         firstName: String,
         lastName: String,
         about: String,
-        gender: {type: String, enum: ['MALE', 'FEMALE', 'UNDEFINED'], default: 'UNDEFINED'},
+        gradYear: Number,
         phone: String,
         photo: String,
         email: String,

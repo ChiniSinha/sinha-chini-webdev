@@ -12,9 +12,16 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
-                <li> <a ng-show="model.loggedIn(model.userId)" ></a></li>
+                <li> <a href="#/coach/{{model.userId}}/team"><span class="glyphicon glyphicon-plus"></span>  Add Team</a> </li>
+                <li> <a href=""><span class="glyphicon glyphicon-search"></span>  Search Student</a> </li>
                 <li> <a ng-click="model.logout()"><span class="glyphicon glyphicon-user"></span>  Logout</a></li>
             </ul>
         </div>
     </div>
 </nav>
+
+<div class="container-fluid">
+    <div class="row">
+
+    </div>
+</div>

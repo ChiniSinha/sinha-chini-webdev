@@ -168,11 +168,7 @@ module.exports = function (app, models) {
         userModel
             .findUserByUsername(uname)
             .then(function (user) {
-                if(user) {
-                    res.send(user);
-                } else {
-                    res.sendStatus(404);
-                }
+                res.send(user)
             }, function (err) {
                 res.sendStatus(404);
             });
@@ -184,11 +180,7 @@ module.exports = function (app, models) {
         userModel
             .findUserByCreadentials(username, password)
             .then(function (user) {
-                if(user) {
-                    res.send(user);
-                } else {
-                    res.sendStatus(404);
-                }
+                res.send(user);
             }, function (err) {
                 res.sendStatus(404);
             });
@@ -253,7 +245,7 @@ module.exports = function (app, models) {
 
     function logout(req, res) {
         req.logout();
-        res.send(200);
+        res.sendStatus(200);
     }
 
     function register(req, res) {
@@ -264,6 +256,7 @@ module.exports = function (app, models) {
             .then(function (user) {
                 if(user) {
                     req.login(user, function (err) {
+                        console.log("server user_id: " + user._id);
                         res.send(user);
                     });
                 }

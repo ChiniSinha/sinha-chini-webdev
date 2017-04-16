@@ -4,6 +4,7 @@
         .controller("LoginController", LoginController)
         .controller("CoachRegisterController", CoachRegisterController)
         .controller("AthleteRegisterController", AthleteRegisterController)
+        .controller("SearchSchoolForCoachController",SearchSchoolForCoachController)
 
     function LoginController($location, UserService) {
         var vm = this;
@@ -12,8 +13,7 @@
         function login(user) {
             UserService
                 .login(user)
-                .then(function (user) {
-                    var user = response.data;
+                .success(function (user) {
                     if(user.role == "ADMIN"){
                         $location.url("/admin/"+user._id);
                     } else if(user.role == "COACH"){
@@ -27,106 +27,117 @@
         }
     }
 
-    function CoachRegisterController($location, UserService) {
+    function CoachRegisterController($location, UserService, SchoolService, $routeParams) {
         var vm = this;
+
+        var schoolId = $routeParams.schoolId;
         vm.register = register;
 
-        function register(user) {
-            vm.registrationerror = false;
-            vm.passwordmismatch = false;
-
-            if(user == null){
-                vm.registrationerror = "Please enter your username, email and password";
-                return;
-            }
-            if(user.username == null || user.email == null || user.password == null){
-                vm.registrationerror = "Please enter your username, email and password";
-                return;
-            }
-            if (user.password != user.passwordverification){
-                vm.registrationerror ="";
-                vm.passwordmismatch = "Passwords do not match";
-                return;
-            }
-            if(user.organization){
-                user.role = "PUBLISHER";
-            }
-            UserService
-                .findUserByUsername(user.username)
-                .success(function(user){
-                    // Method succeeded, and user exists
-                    vm.registrationerror = "Username taken, please try another username";
-                    vm.passwordmismatch = "";
+        function init() {
+            SchoolService
+                .findSchoolById(schoolId)
+                .success(function (school) {
+                    vm.schoolName = school.name;
                 })
-                .error(function (err) {
-                    // There was an error, so the user does not exist
-                    // UserService
-                    //     .createUser(user)
-                    //     .success(function (newuser) {
-                    //         $location.url("/user/"+newuser._id);
-                    //     });
+        }
+        init();
 
-                    UserService
-                        .register(user)
-                        .then(function(response) {
-                            var user = response.data;
-                            $rootScope.currentUser = user;
-                            $location.url("/user/"+user._id);
-                            // $location.url("/project/profile");
-                        });
-                });
+        function register(user) {
+
+            user.role = 'COACH';
+            user.school = schoolId;
+            if( user == undefined || user.username == null || user.password == null || user.firstName == null ||
+                user.lastName == null || user.email == null || user.phone == null) {
+                vm.error = "Values are missing!";
+            } else if (user.password != user.confirmPassword) {
+                vm.error = "Password do not match!"
+            } else {
+                UserService
+                    .findUserByUsername(user.username)
+                    .success(function (response) {
+                        if(!response._id) {
+                            UserService
+                                .register(user)
+                                .success(function (newUser) {
+                                    console.log("newUser: " + newUser._id);
+                                    $location.url("/coach/"+newUser._id);
+                                });
+                        } else {
+                            vm.error = "Username is taken! Try with a different username.";
+                        }
+                    })
+                    .error(function () {
+
+                    });
+            }
         }
     }
 
-    function AthleteRegisterController($location, UserService, $rootScope) {
+    function AthleteRegisterController($location, UserService) {
         var vm = this;
+
         vm.register = register;
 
-        function register(user) {
-            vm.registrationerror = false;
-            vm.passwordmismatch = false;
-
-            if(user == null){
-                vm.registrationerror = "Please enter your username, email and password";
-                return;
-            }
-            if(user.username == null || user.email == null || user.password == null){
-                vm.registrationerror = "Please enter your username, email and password";
-                return;
-            }
-            if (user.password != user.passwordverification){
-                vm.registrationerror ="";
-                vm.passwordmismatch = "Passwords do not match";
-                return;
-            }
-            if(user.organization){
-                user.role = "PUBLISHER";
-            }
-            UserService
-                .findUserByUsername(user.username)
-                .success(function(user){
-                    // Method succeeded, and user exists
-                    vm.registrationerror = "Username taken, please try another username";
-                    vm.passwordmismatch = "";
-                })
-                .error(function (err) {
-                    // There was an error, so the user does not exist
-                    // UserService
-                    //     .createUser(user)
-                    //     .success(function (newuser) {
-                    //         $location.url("/user/"+newuser._id);
-                    //     });
-
-                    UserService
-                        .register(user)
-                        .then(function(response) {
-                            var user = response.data;
-                            $rootScope.currentUser = user;
-                            $location.url("/user/"+user._id);
-                            // $location.url("/project/profile");
-                        });
-                });
+        function init() {
         }
+        init();
+
+        function register(user) {
+
+            user.role = 'ATHLETE';
+            if( user == undefined || user.username == null || user.password == null ||
+                user.firstName == null || user.lastName == null || user.email == null || user.phone == null ||
+                user.gradYear == null) {
+                vm.error = "Values are missing!";
+            } else if (user.password != user.confirmPassword) {
+                vm.error = "Password do not match!"
+            } else {
+                UserService
+                    .findUserByUsername(user.username)
+                    .success(function (response) {
+                        if(!response._id) {
+                            UserService
+                                .register(user)
+                                .success(function (newUser) {
+                                    console.log("newUser: " + newUser._id);
+                                    $location.url("/coach/"+newUser._id);
+                                });
+                        } else {
+                            vm.error = "Username is taken! Try with a different username.";
+                        }
+                    })
+                    .error(function () {
+
+                    });
+            }
+        }
+    }
+
+    function SearchSchoolForCoachController(SchoolService){
+        var vm = this;
+
+        vm.searchSchoolByName = searchSchoolByName;
+
+        function init() {
+
+        }
+        init();
+
+        function searchSchoolByName(searchText) {
+            SchoolService
+                .searchSchoolByName(searchText)
+                .success(function (schools) {
+                    if(schools) {
+                        vm.schools=schools;
+                    } else {
+                        vm.error="No Schools!"
+                    }
+                })
+                .error(function () {
+                    vm.error = "Error!";
+                })
+        }
+
     }
 
 })();

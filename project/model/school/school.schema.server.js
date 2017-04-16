@@ -7,6 +7,7 @@ module.exports = function () {
         description: String,
         state: String,
         city: String,
+        website: String,
         teams: [{type: mongoose.Schema.Types.ObjectId, ref:'TeamModel'}],
         interestedStudents: [{type: mongoose.Schema.Types.ObjectId, ref:'UserModel'}],
         coaches: [{type: mongoose.Schema.Types.ObjectId, ref:'UserModel'}]
