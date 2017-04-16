@@ -30,10 +30,13 @@ module.exports = function () {
     }
 
     function searchSchoolByName(name) {
-        var regExp = new RegExp(name);
-        return SchoolModel.find({
-            'name' : { '$regex' : new RegExp(name), '$options' : 'i'}
-        });
+        if(name != 'undefined') {
+            return SchoolModel.find({
+                'name': {'$regex': new RegExp(name), '$options': 'i'}
+            });
+        } else {
+            return SchoolModel.find();
+        }
     }
 
     function updateSchool(schoolId, school) {
