@@ -43,9 +43,9 @@ module.exports = function (app, models) {
         });
 
     var facebookConfig = {
-        clientID: '1665469733759649',
-        clientSecret: '80a29cbc5ba9b72fbd95c62c9a8fb560',
-        callbackURL: '/auth/facebook/callback',
+        clientID: process.env.FACEBOOK_CLIENT_ID, //'1665469733759649',
+        clientSecret: process.env.FACEBOOK_CLIENT_SECRET, //'80a29cbc5ba9b72fbd95c62c9a8fb560',
+        callbackURL: process.env.FACEBOOK_CALLBACK_URL, //'/auth/facebook/callback',
         profileFields: ['id','displayName', 'email', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'verified']
     };
 
@@ -82,9 +82,9 @@ module.exports = function (app, models) {
     }
 
     var googleConfig = {
-        clientID: '122872104414-pscrhm48n54lc80kunmtnvj8r0etltil.apps.googleusercontent.com',
-        clientSecret: 'dQzM_EEUuN_48FSR5f0z31f2',
-        callbackURL: 'http://localhost:3000/auth/google/callback'
+        clientID: process.env.GOOGLE_CLIENT_ID, //'122872104414-pscrhm48n54lc80kunmtnvj8r0etltil.apps.googleusercontent.com',
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET, //'dQzM_EEUuN_48FSR5f0z31f2',
+        callbackURL: process.env.GOOGLE_CALLBACK_URL //'http://localhost:3000/auth/google/callback'
     };
 
     passport.use(new GoogleStrategy(googleConfig, googleStrategy));
