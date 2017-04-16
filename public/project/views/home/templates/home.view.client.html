@@ -1,43 +1,50 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="+ collapsed" data-toggle="collapse" data-target="#navbar-collapse-123">
-                <span class="sr-only">Toggle navigation</span>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">
-                <img src="http://localhost:3000/images/mvpr11.png" alt="Home"> </a>
+            <a class="navbar-brand" href="#/home">
+                <img src="http://localhost:3000/images/mvpr11.png" alt="Home">
+            </a>
         </div>
-
-        <div class="collapse navbar-collapse navbar-right" id="navbar-collapse-123">
-            <ul class="nav navbar-nav">
-                <li class="dropdown">
-                    <button class="btn btn-login dropdown-toggle " type="button" data-toggle="dropdown">Login
-                        <span class="caret"></span></button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#/coachLogin">Coach</a></li>
-                        <li><a href="#/athleteLogin">Athlete</a></li>
-                    </ul>
-                </li>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#/login"><span class="glyphicon glyphicon-log-in"></span>  Login</a></li>
+                <li><a href="#/athleteRegister"><span class="glyphicon glyphicon-user"></span>  Athlete Register</a></li>
+                <li><a href="#/coachRegister"><span class="glyphicon glyphicon-user"></span>  Coach Register</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
-<div class="container-fluid">
+<div class="jumbotron">
+    <div class="container">
+        <h1>Welcome to MVP Recruits</h1>
+        <p>Students looking to be recruited by College coaches, can find schools they are interested in and can find coach information. The coaches can follow you and if they like your posts they will contact you. Perfect platform for networking with college coached!</p>
+        <p><a class="btn btn-warning" href="https://github.com/ChiniSinha/sinha-chini-webdev" role="button">View details &raquo;</a></p>
+    </div>
+</div>
 
-    <ul class="list-group">
-        <li class="list-group-item">
-            <a href="#/coachRegister">
-                Coaches Start Here
-            </a>
-        </li>
-        <li class="list-group-item">
-            <a href="#/athleteRegister">
-                Athletes Start Here
-            </a>
-        </li>
-    </ul>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6 hidden-xs">
+            <img src="http://localhost:3000/images/coaches.jpg" class="img-thumbnail img-responsive">
+            <p><a class="btn btn-warning btn-block cs-padding" href="#/coachRegister" role="button">Coaches Click Here</a></p>
+        </div>
+        <div class="col-xs-6 hidden-xs">
+            <img src="http://localhost:3000/images/athlete.jpg" class="img-thumbnail img-responsive">
+            <p><a class="btn btn-warning btn-block cs-padding" href="#/athleteRegister" role="button">Athletes Click Here</a></p>
+        </div>
+        <div class="col-xs-12 visible-xs">
+            <img src="http://localhost:3000/images/coaches.jpg" class="img-thumbnail img-responsive">
+            <p><a class="btn btn-warning btn-block cs-padding" href="#/coachRegister" role="button">Coaches Click Here</a></p>
+        </div>
+        <div class="col-xs-12 visible-xs">
+            <img src="http://localhost:3000/images/athlete.jpg" class="img-thumbnail img-responsive">
+            <p><a class="btn btn-warning btn-block cs-padding" href="#/athleteRegister" role="button">Athletes Click Here</a></p>
+        </div>
+    </div>
 </div>

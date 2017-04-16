@@ -30,7 +30,7 @@ module.exports = function (app, models) {
     app.get('/auth/facebook/callback',passport.authenticate('facebook', {
         failureRedirect: '/project/#/login'
     }), function(req, res){
-        var url = '/project/#/user/' + req.user._id.toString();
+        var url = '/project/#/athlete/' + req.user._id.toString();
         res.redirect(url);
     });
     app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
@@ -38,26 +38,18 @@ module.exports = function (app, models) {
         passport.authenticate('google', {
             failureRedirect: '/project/#/login'
         }), function(req, res){
-            var url = '/project/#/user/' + req.user._id.toString();
+            var url = '/project/#/athlete/' + req.user._id.toString();
             res.redirect(url);
         });
 
     var facebookConfig = {
-        clientID: process.env.FACEBOOK_CLIENT_ID, //1665469733759649
-        clientSecret: process.env.FACEBOOK_CLIENT_SECRET, //80a29cbc5ba9b72fbd95c62c9a8fb560
-        callbackURL:process.env.FACEBOOK_CALLBACK_URL,// /auth/facebook/callback
+        clientID: '1665469733759649',
+        clientSecret: '80a29cbc5ba9b72fbd95c62c9a8fb560',
+        callbackURL: '/auth/facebook/callback',
         profileFields: ['id','displayName', 'email', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'verified']
     };
 
-    var googleConfig = {
-        clientID     : process.env.GOOGLE_CLIENT_ID, //122872104414-pscrhm48n54lc80kunmtnvj8r0etltil.apps.googleusercontent.com
-        clientSecret : process.env.GOOGLE_CLIENT_SECRET, //dQzM_EEUuN_48FSR5f0z31f2
-        callbackURL  : process.env.GOOGLE_CALLBACK_URL //'http://localhost:3000/auth/google/callback'
-    };
-
-    passport.use(new LocalStrategy(localStrategy));
     passport.use(new FacebookStrategy(facebookConfig, facebookStrategy));
-    passport.use(new GoogleStrategy(googleConfig, googleStrategy));
 
     function facebookStrategy(token, refreshToken, profile, done) {
         userModel
@@ -89,6 +81,16 @@ module.exports = function (app, models) {
                 });
     }
 
+    var googleConfig = {
+        clientID: '122872104414-pscrhm48n54lc80kunmtnvj8r0etltil.apps.googleusercontent.com',
+        clientSecret: 'dQzM_EEUuN_48FSR5f0z31f2',
+        callbackURL: 'http://localhost:3000/auth/google/callback'
+    };
+
+    passport.use(new GoogleStrategy(googleConfig, googleStrategy));
+
+
+
     function googleStrategy(token, refreshToken, profile, done) {
         userModel
             .findUserByGoogleId(profile.id)
@@ -119,6 +121,8 @@ module.exports = function (app, models) {
                 done(err, null);
             });
     }
+
+    passport.use(new LocalStrategy(localStrategy));
 
     function localStrategy(username, password, done) {
         userModel

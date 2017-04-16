@@ -16,14 +16,22 @@
             .when("/coachRegister", {
                 templateUrl: "views/users/templates/coach/registration.view.client.html"
             })
-            .when("/coachLogin", {
-                templateUrl: "views/users/templates/coach/login.view.client.html"
-            })
             .when("/athleteRegister", {
                 templateUrl: "views/users/templates/athlete/registration.view.client.html"
             })
-            .when("/athleteLogin", {
-                templateUrl: "views/users/templates/athlete/login.view.client.html"
+            .when("/login", {
+                templateUrl: "views/users/templates/login.view.client.html",
+                controller: "LoginController",
+                controllerAs: "model"
+            })
+            .when("/coach/:userId", {
+                templateUrl: "views/coach/templates/profile.view.client.html"
+            })
+            .when("/athlete/:userId", {
+                templateUrl: "views/athlete/templates/profile.view.client.html"
+            })
+            .when("/admin/:userId", {
+                templateUrl: "views/admin/templates/admin-list.view.client.html"
             })
     }
 })();

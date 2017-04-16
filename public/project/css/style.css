@@ -1,4 +1,6 @@
 body {
+    background: url(../../images/baseball.jpg) no-repeat center fixed;
+    background-size: 100% 100%;
     padding-top: 60px;
     padding-bottom: 60px;
 }
@@ -14,7 +16,7 @@ body {
 
 .navbar-default {
     background-color: lightgoldenrodyellow;
-    background: rgba(255, 180, 7, 0.4);
+    background: rgba(240, 173, 78, 0.9);
 }
 
 .navbar button {
@@ -26,4 +28,58 @@ body {
     color: #fff;
     background-color: saddlebrown;
     border-color: saddlebrown;
+}
+.btn-warning {
+    color: black;
+}
+
+.navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {
+    background-color: rgba(255, 180, 7, 0.4);
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: black;
+}
+
+.jumbotron {
+    background-color: rgba(255, 180, 158, 0.26);
+}
+
+.jumbotron h1 {
+    color: wheat;
+}
+
+body h2 {
+    color: wheat;
+}
+
+body h1 {
+    color: wheat;
+}
+
+p {
+    color: wheat;
+    text-align: justify;
+}
+
+.cs-padding {
+    margin-top: 15px;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: black;
+}
+
+input.form-control {
+    margin-bottom: 5px;
+}
+
+label {
+    color: wheat;
+}
+
+.cs-form {
+    border-radius: 4px;
+    background-color: rgba(255, 180, 158, 0.4);
+    padding: 10px;
 }

@@ -1,46 +1,73 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#/home">
+                <img src="http://localhost:3000/images/mvpr11.png" alt="Home">
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#/login"><span class="glyphicon glyphicon-log-in"></span>  Login</a></li>
+                <li><a href="#/athleteRegister"><span class="glyphicon glyphicon-user"></span>  Athlete Register</a></li>
+                <li><a href="#/coachRegister"><span class="glyphicon glyphicon-user"></span>  Coach Register</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
 <div class="container-fluid">
-    <h1>Register</h1>
+    <div class="cs-form">
+        <h1>Coach Registration</h1>
 
-    <input
-           type="text"
-           class="form-control"
-           placeholder="Username"/>
+        <label for="username">Username</label>
+        <input ng-model=""
+               id="username"
+               type="text"
+               class="form-control"
+               placeholder="Username"/>
 
-    <input
-           type="text"
-           class="form-control"
-           placeholder="First Name"/>
+        <label for="firstName">First Name</label>
+        <input ng-model=""
+               id="firstName"
+               type="text"
+               class="form-control"
+               placeholder="First Name"/>
 
-    <input
-           type="text"
-           class="form-control"
-           placeholder="Last Name"/>
+        <label for="lastName">Last Name</label>
+        <input ng-model=""
+               id="lastName"
+               type="text"
+               class="form-control"
+               placeholder="Last Name"/>
 
-    <input
-            type="email"
-            class="form-control"
-            placeholder="Email"/>
+        <label for="email">Email</label>
+        <input ng-model=""
+               id="email"
+               type="email"
+               class="form-control"
+               placeholder="Email"/>
 
-    <input
-           type="password"
-           class="form-control"
-           placeholder="Password"/>
+        <label for="password">Password</label>
+        <input ng-model=""
+               id="password"
+               type="password"
+               class="form-control"
+               placeholder="Password"/>
 
-    <input
-           type="password"
-           class="form-control"
-           placeholder="Confirm Password"/>
+        <label for="confirm">Comfirm Password</label>
+        <input ng-model=""
+               id="confirm"
+               type="password"
+               class="form-control"
+               placeholder="Confirm Password"/>
 
-    <div class="checkbox">
-        <label><input type="checkbox" value="">Baseball</label>
+        <a class="btn btn-primary btn-block">Register</a>
+        <a class="btn btn-danger  btn-block"
+           href="#/home">Cancel</a>
     </div>
-    <div class="checkbox">
-        <label><input type="checkbox" value="">Basketball</label>
-    </div>
-
-    <a
-       class="btn btn-primary btn-block">Register</a>
-    <a class="btn btn-danger  btn-block"
-       href="#/home">Cancel</a>
-
 </div>
