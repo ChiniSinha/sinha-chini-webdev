@@ -31,8 +31,18 @@
                 <label>{{model.school.state}}</label>
                 <a href="{{model.school.website}}" class="btn btn-block btn-warning">View School Website</a>
             </div>
+            <div ng-show="model.coaches" ng-hide="model.coaches.length==0">
+                <div class="container-fluid cs-form-1">
+                    <h1> List of Coaches</h1>
+                    <div class="cs-form-1" ng-repeat="coach in model.coaches">
+                        <h2>{{coach.firstName}} {{coach.lastName}}</h2>
+                        <img class="img-responsive img-thumbnail" src="{{coach.photo}}">
+                        <a href="#/athlete/{{model.userId}}/coach/{{coach._id}}" class="btn btn-warning btn-block">View Profile</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-xs-6 hidden-xs">
+        <div class="col-xs-6 hidden-xs" ng-hide="model.teams.length==0">
             <div class="container-fluid cs-form">
                 <h1>List of Teams</h1>
                 <div class="cs-form-1" ng-repeat="team in model.teams">
@@ -41,6 +51,7 @@
                 </div>
             </div>
         </div>
+
         <div class="col-xs-12 visible-xs">
             <div class="container-fluid cs-form">
                 <h1>{{model.school.name}}</h1>
@@ -62,7 +73,7 @@
             </div>
         </div>
 
-        <div class="col-xs-12" ng-show="model.coaches">
+        <div class="col-xs-12 visible-xs" ng-show="model.coaches" ng-hide="model.coaches.length==0">
             <div class="container-fluid cs-form-1">
             <h1> List of Coaches</h1>
             <div class="cs-form-1" ng-repeat="coach in model.coaches">
