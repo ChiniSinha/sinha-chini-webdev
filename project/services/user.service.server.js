@@ -3,6 +3,8 @@ module.exports = function (app, models) {
     var bcrypt = require("bcrypt-nodejs");
 
     var passport = require('passport');
+    var multer = require('multer');
+    var upload = multer({ dest: __dirname+'/../../public/uploads' });
     var LocalStrategy = require('passport-local').Strategy;
     var FacebookStrategy = require('passport-facebook').Strategy;
     var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -23,8 +25,12 @@ module.exports = function (app, models) {
     app.post('/api/project/register', register);
     app.post('/api/project/isAdmin', isAdmin);
     app.get('/api/project/allUser', findAllUsers);
-    app.put('api/project/user/:coachId/follow/:athleteId', followAthlete);
-    app.put('api/project/user/:coachId/unfollow/:athleteId', unFollowAthlete);
+    app.put('/api/project/user/:coachId/follow/:athleteId', followAthlete);
+    app.put('/api/project/user/:coachId/unfollow/:athleteId', unFollowAthlete);
+    app.post('/api/project/user/upload', upload.single('myFile'), uploadImage);
+    app.get('/api/project/user/team/:teamId', findAthletesByTeamId);
+    app.get('/api/project/user/school/:schoolId', findAthletesBySchoolId);
+    app.get('/api/project/coach/school/:schoolId', findAllCoachBySchoolId);
 
     app.get('/auth/facebook',passport.authenticate('facebook',{ scope : 'email'}));
     app.get('/auth/facebook/callback',passport.authenticate('facebook', {
@@ -43,10 +49,10 @@ module.exports = function (app, models) {
         });
 
     var facebookConfig = {
-        clientID: process.env.FACEBOOK_CLIENT_ID, //'1665469733759649',
-        clientSecret: process.env.FACEBOOK_CLIENT_SECRET, //'80a29cbc5ba9b72fbd95c62c9a8fb560',
-        callbackURL: process.env.FACEBOOK_CALLBACK_URL, //'/auth/facebook/callback',
-        profileFields: ['id','displayName', 'email', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'verified']
+        clientID: process.env.FACEBOOK_CLIENT_ID,
+        clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+        callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+        profileFields: ['id','displayName', 'email', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'photos', 'verified']
     };
 
     passport.use(new FacebookStrategy(facebookConfig, facebookStrategy));
@@ -67,7 +73,8 @@ module.exports = function (app, models) {
                                 token: token
                             },
                             email: profile.emails[0].value,
-                            username: profile.emails[0].value
+                            username: profile.emails[0].value,
+                            photo: profile.photos[0].value
                         };
                         userModel
                             .createUser(newFacebookUser)
@@ -82,9 +89,9 @@ module.exports = function (app, models) {
     }
 
     var googleConfig = {
-        clientID: process.env.GOOGLE_CLIENT_ID, //'122872104414-pscrhm48n54lc80kunmtnvj8r0etltil.apps.googleusercontent.com',
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET, //'dQzM_EEUuN_48FSR5f0z31f2',
-        callbackURL: process.env.GOOGLE_CALLBACK_URL //'http://localhost:3000/auth/google/callback'
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: process.env.GOOGLE_CALLBACK_URL
     };
 
     passport.use(new GoogleStrategy(googleConfig, googleStrategy));
@@ -275,26 +282,100 @@ module.exports = function (app, models) {
         }
     }
 
+    function unFollowAthlete(req, res) {
+        var userId = req.params['uid'];
+        var user = req.body;
+
+        model.UserModel.unFollowAthlete(userId, user)
+            .then(function (newUser) {
+                if(newUser){
+                    model.UserModel.removeFollowedByCoach(userId, user)
+                        .then(function (user) {
+
+                        });
+                }
+                res.send(newUser);
+            }, function (err) {
+                res.sendStatus(500).send('Could not unfollow user');
+            })
+    }
+
     function followAthlete(req, res) {
-        var coachId = req.params.coachId;
-        var athleteId = req.params.athleteId;
+        var coachId = req.params.userId;
+        var athlete = req.body;
+
+        model.UserModel.followAthlete(coachId, athlete)
+            .then(function (newUser) {
+                if(newUser){
+                    model.UserModel.addFollowedByCoach(userId, user)
+                        .then(function (user) {
+                        });
+                }
+                res.send(newUser);
+            }, function (err) {
+                res.sendStatus(500).send('Could not follow user');
+            });
+
+    }
+
+    function uploadImage(req, res){
+
+        var userId = req.body.userId;
+
+        if(req.file) {
+            var myFile = req.file;
+            var originalname = myFile.originalname; // File name on user's computer
+            var filename = myFile.filename; // new file name in upload folder
+            var path = myFile.path;         // full path of uploaded file
+            var destination = myFile.destination;  // folder where file is saved to
+            var size = myFile.size;
+            var mimetype = myFile.mimetype;
+        }
+
+        var url = "/uploads/" + filename;
         userModel
-            .followAthlete(coachId, athleteId)
-            .then(function (coach) {
-                res.send(coach);
-            },function (err) {
-                res.send(err);
+            .updateUser(userId, {'photo': url})
+            .then(function (user) {
+                if(user.role == 'COACH') {
+                    res.redirect("/project/#/coach/"+userId);
+                } else {
+                    res.redirect("/project/#/athlete/" + userId);
+                }
+            }, function (err) {
+                res.sendStatus(404);
             });
     }
-    function unFollowAthlete(req, res) {
-        var coachId = req.params.coachId;
-        var athleteId = req.params.athleteId;
+
+    function findAthletesByTeamId(req, res) {
+        var teamId = req.params.teamId;
         userModel
-            .unFollowAthlete(coachId, athleteId)
-            .then(function (response) {
-                res.json(response);
-            },function (err) {
-                res.send(err);
+            .findAthletesByTeamId(teamId)
+            .then(function (users) {
+                res.send(users);
+            }, function (err) {
+                res.sendStatus(404);
+            })
+    }
+
+    function findAthletesBySchoolId(req, res) {
+        var schoolId = req.params.schoolId;
+        userModel
+            .findAthletesBySchoolId(schoolId)
+            .then(function (users) {
+                res.send(users);
+            }, function (err) {
+                res.sendStatus(404);
+            });
+    }
+
+    function findAllCoachBySchoolId(req, res) {
+        var schoolId = req.params.schoolId;
+        userModel
+            .findAllCoachBySchoolId(schoolId)
+            .then(function (users) {
+                res.send(users);
+            }, function (err) {
+                res.sendStatus(404);
             });
     }
 

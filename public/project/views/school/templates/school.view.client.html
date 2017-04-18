@@ -1,10 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#/home">
+                <img src="http://sinha-chini-webdev.herokuapp.com/images/mvpr11.png" alt="Home">
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li> <a href="#/athlete/{{model.userId}}"><span class="glyphicon glyphicon-user"></span>  Profile</a> </li>
+                <li> <a href="#/athlete/{{model.userId}}/post/new"><span class="glyphicon glyphicon-plus"></span>  Add Post</a> </li>
+                <li> <a href="#/athlete/{{model.userId}}/school"><span class="glyphicon glyphicon-search"></span>  Search School</a> </li>
+                <li> <a ng-click="model.logout()" class="navbar-link"><span class="glyphicon glyphicon-log-out"></span>  Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-</body>
-</html>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6 hidden-xs">
+            <div class="container-fluid cs-form">
+                <h1>{{model.school.name}}</h1>
+                <label> {{model.school.description}}</label>
+                <label> {{model.school.city}} </label>
+                <label>{{model.school.state}}</label>
+                <a href="{{model.school.website}}" class="btn btn-block btn-warning">View School Website</a>
+            </div>
+        </div>
+        <div class="col-xs-6 hidden-xs">
+            <div class="container-fluid cs-form">
+                <h1>List of Teams</h1>
+                <div class="cs-form-1" ng-repeat="team in model.teams">
+                    <label>{{team.name}}</label>
+                    <p>{{team.description}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 visible-xs">
+            <div class="container-fluid cs-form">
+                <h1>{{model.school.name}}</h1>
+                <label >{{model.school.description}}</label >
+                <label>{{model.school.city}} </label>
+                <label>{{model.school.state}}</label>
+                <a href="{{model.school.website}}" class="btn btn-block btn-warning">View School Website</a>
+                <a ng-click="" class="btn btn-block btn-warning">Interested</a>
+            </div>
+        </div>
+
+        <div class="col-xs-12 visible-xs" ng-hide="model.teams.length==0">
+            <div class="container-fluid cs-form-1">
+                <h1>List of Teams</h1>
+                <div class="cs-form-1" ng-repeat="team in model.teams">
+                    <label>{{team.name}}</label>
+                    <p>{{team.description}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12" ng-show="model.coaches">
+            <div class="container-fluid cs-form-1">
+            <h1> List of Coaches</h1>
+            <div class="cs-form-1" ng-repeat="coach in model.coaches">
+                <h2>{{coach.firstName}} {{coach.lastName}}</h2>
+                <img class="img-responsive img-thumbnail" src="{{coach.photo}}">
+                <a href="#/athlete/{{model.userId}}/coach/{{coach._id}}" class="btn btn-warning btn-block">View Profile</a>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+

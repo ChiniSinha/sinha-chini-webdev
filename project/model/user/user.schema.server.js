@@ -22,7 +22,9 @@ module.exports = function () {
         interestedSchool: [{type: mongoose.Schema.Types.ObjectId, ref:'SchoolModel'}],
         school: {type: mongoose.Schema.Types.ObjectId, ref:'SchoolModel'},
         team: {type: mongoose.Schema.Types.ObjectId, ref:'TeamModel'},
+        teams: [{type: mongoose.Schema.Types.ObjectId, ref:'TeamModel'}],
         follows: [{type: mongoose.Schema.Types.ObjectId, ref:'UserModel'}],
+        followedBy: [{type: mongoose.Schema.Types.ObjectId, ref:'UserModel'}],
         role: {type: String, enum: ['ADMIN', 'ATHLETE', 'COACH'], default: 'ATHLETE'}
     }, {collection: 'project.user'});
 

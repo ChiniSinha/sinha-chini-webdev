@@ -12,8 +12,8 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
-                <li> <a href="#/coach/{{model.userId}}/team"><span class="glyphicon glyphicon-plus"></span>  Add Team</a> </li>
-                <li> <a href=""><span class="glyphicon glyphicon-search"></span>  Search Student</a> </li>
+                <li> <a ng-hide="model.user.team" href="#/coach/{{model.userId}}/team"><span class="glyphicon glyphicon-plus"></span>  Add Team</a> </li>
+                <li> <a href="#/coach/{{model.userId}}/team/{{model.user.team}}/school/{{model.user.school}}"><span class="glyphicon glyphicon-search"></span>  Search Students</a> </li>
                 <li> <a ng-click="model.logout()"><span class="glyphicon glyphicon-user"></span>  Logout</a></li>
             </ul>
         </div>
@@ -22,6 +22,139 @@
 
 <div class="container-fluid">
     <div class="row">
+        <div class="col-xs-6 hidden-xs">
+            <img class="img-thumbnail img-responsive" src="{{model.user.photo}}">
+            <form action="/api/project/user/upload" method="post" enctype="multipart/form-data">
 
+                <input class="form-control" id="upload" type="file" name="myFile">
+                <input  name="userId" value="{{model.userId}}" type="hidden"/>
+                <button type="submit" class="btn btn-warning btn-block">Upload Profile Picture</button>
+            </form>
+            <br>
+            <div ng-show="model.user.team">
+                <a href="#/coach/{{model.userId}}/team/{{model.user.team}}" class="btn btn-block btn-warning">Manage Team</a>
+            </div>
+            <br>
+        </div>
+        <div class="col-xs-6 hidden-xs">
+            <div class="container-fluid cs-form">
+                <h1>{{model.user.firstName}} {{model.user.lastName}}</h1>
+
+                <div class="alert alert-danger" ng-show="model.error">
+                    {{model.error}}
+                </div>
+
+                <div class="alert alert-success" ng-show="model.message">
+                    {{model.message}}
+                </div>
+
+                <form>
+                    <div class="form-group">
+                        <label for="username1">Username</label>
+                        <input ng-model="model.user.username" type="text"
+                               class="form-control" id="username1" placeholder="Username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="school1">School</label>
+                        <input ng-model="model.school.name" type="text" disabled
+                               class="form-control" id="school1" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="email1">Email Address</label>
+                        <input ng-model="model.user.email" type="email"
+                               class="form-control" id="email1" placeholder="alice@wonderland.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="first-name1">First Name</label>
+                        <input ng-model="model.user.firstName" type="text"
+                               class="form-control" id="first-name1" placeholder="Alice">
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name1">Last Name</label>
+                        <input ng-model="model.user.lastName" type="text"
+                               class="form-control" id="last-name1" placeholder="Wonderland">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact1">Contact Number</label>
+                        <input ng-model="model.user.phone" type="text"
+                               class="form-control" id="contact1" placeholder="8571234567">
+                    </div>
+                    <div class="form-group">
+                        <label for="about1">About</label>
+                        <textarea ng-model="model.user.about" class="form-control" id="about1" placeholder="Write about yourself" rows="5"></textarea>
+                    </div>
+                </form>
+                <button type="button" class="btn btn-warning btn-block"
+                        ng-click="model.updateUser(model.user)">Update Details</button>
+            </div>
+        </div>
+        <div class="col-xs-12 visible-xs">
+            <img class="img-thumbnail img-responsive" src="{{model.user.photo}}">
+            <form action="/api/project/user/upload" method="post" enctype="multipart/form-data">
+
+                <input class="form-control" id="upload1" type="file" name="myFile">
+                <input  name="userId" value="{{model.userId}}" type="hidden"/>
+                <button type="submit" class="btn btn-warning btn-block">Upload Profile Picture</button>
+            </form>
+            <br>
+            <div ng-show="model.user.team">
+                <a href="#/coach/{{model.userId}}/team/{{model.user.team}}" class="btn btn-block btn-warning">Manage Team</a>
+            </div>
+            <br>
+        </div>
+        <div class="col-xs-12 visible-xs">
+            <div class="container-fluid cs-form">
+                <h1>{{model.user.firstName}} {{model.user.lastName}}</h1>
+
+                <div class="alert alert-danger" ng-show="model.error">
+                    {{model.error}}
+                </div>
+
+                <div class="alert alert-success" ng-show="model.message">
+                    {{model.message}}
+                </div>
+
+                <form>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input ng-model="model.user.username" type="text"
+                               class="form-control" id="username" placeholder="Username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="school">School</label>
+                        <input ng-model="model.school.name" type="text" disabled
+                               class="form-control" id="school" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input ng-model="model.user.email" type="email"
+                               class="form-control" id="email" placeholder="alice@wonderland.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input ng-model="model.user.firstName" type="text"
+                               class="form-control" id="first-name" placeholder="Alice">
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Last Name</label>
+                        <input ng-model="model.user.lastName" type="text"
+                               class="form-control" id="last-name" placeholder="Wonderland">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact">Contact Number</label>
+                        <input ng-model="model.user.phone" type="text"
+                               class="form-control" id="contact" placeholder="8571234567">
+                    </div>
+                    <div class="form-group">
+                        <label for="about">About</label>
+                        <textarea ng-model="model.user.about" class="form-control" id="about" placeholder="Write about yourself" rows="5"></textarea>
+                    </div>
+                </form>
+                <button type="button" class="btn btn-warning btn-block"
+                        ng-click="model.updateUser(model.user)">Update Details</button>
+            </div>
+        </div>
     </div>
 </div>

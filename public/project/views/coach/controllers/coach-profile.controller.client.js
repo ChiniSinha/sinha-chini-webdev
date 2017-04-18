@@ -2,12 +2,13 @@
     angular
         .module("RecruiterWeb")
         .controller("CoachProfileController", CoachProfileController)
-        .controller("CoachEditProfileControlller", CoachEditProfileControlller)
+        .controller("CoachEditProfileController", CoachEditProfileController)
 
     function CoachProfileController(UserService, $routeParams , $location) {
         var vm = this;
 
         vm.userId = $routeParams.userId;
+        vm.coachId = $routeParams.coachId;
 
         vm.logout = logout;
 
@@ -15,7 +16,8 @@
             UserService
                 .findUserById(userId)
                 .success(function (user) {
-                    vm.user = user;
+                    vm.athlete = user;
+
                     if (vm.user == null) {
                         $location.url("/home");
                     }
@@ -32,11 +34,11 @@
 
     }
 
-    function CoachEditProfileControlller(UserService, $routeParams , $location) {
+    function CoachEditProfileController(UserService, SchoolService, $routeParams , $location) {
         var vm = this;
 
-        var userId = $routeParams.userId;
-        vm.userId = userId;
+        vm.userId = $routeParams.userId;
+
         vm.updateUser = updateUser;
         vm.logout = logout;
 
@@ -44,11 +46,16 @@
             UserService
                 .findUserById(userId)
                 .success(function (user) {
-                    vm.user = user;
-                    if (vm.user == null) {
-                        $location.url("/home");
-                    }
-                })
+                    SchoolService
+                        .findSchoolById(user.school)
+                        .success(function (school) {
+                            vm.user = user;
+                            vm.school = school;
+                            if (vm.user == null) {
+                                $location.url("/home");
+                            }
+                        });
+                });
         }
         init();
         

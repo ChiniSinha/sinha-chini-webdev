@@ -18,8 +18,13 @@ module.exports = function () {
         "findUserByGoogleId": findUserByGoogleId,
         "findUserByFacebookId" : findUserByFacebookId,
         "followAthlete": followAthlete,
+        'addFollowedByCoach': addFollowedByCoach,
         "unFollowAthlete": unFollowAthlete,
-        "findAllUsers" : findAllUsers
+        'removeFollowedByCoach': removeFollowedByCoach,
+        "findAllUsers" : findAllUsers,
+        "findAthletesByTeamId" : findAthletesByTeamId,
+        "findAthletesBySchoolId" : findAthletesBySchoolId,
+        "findAllCoachBySchoolId" : findAllCoachBySchoolId
     };
 
     return api;
@@ -80,6 +85,14 @@ module.exports = function () {
             })
     }
 
+    function addFollowedByCoach(coachId, athleteId) {
+        return UserModel.findOne({'_id':athleteId})
+            .then(function (athlete) {
+                athlete.followedBy.push(coachId);
+                return athlete.save();
+            })
+    }
+
     function unFollowAthlete(coachId, athleteId) {
         return UserModel.findById(coachId)
             .then(function (coach) {
@@ -91,8 +104,28 @@ module.exports = function () {
             })
     }
 
+    function removeFollowedByCoach(coachId, athlete) {
+        return UserModel.findOne({'_id':athlete._id})
+            .then(function (athlete) {
+                athlete.followedBy.pull(coachId);
+                return athlete.save();
+            })
+    }
+
     function findAllUsers() {
         return UserModel.find();
+    }
+
+    function findAthletesByTeamId(teamId) {
+        return UserModel.find({'teams' : teamId});
+    }
+
+    function findAthletesBySchoolId(schoolId) {
+        return UserModel.find({'interestedSchool' : schoolId});
+    }
+
+    function findAllCoachBySchoolId(schoolId) {
+        return UserModel.find({'school' : schoolId});
     }
 
 }

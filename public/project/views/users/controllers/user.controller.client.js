@@ -4,7 +4,6 @@
         .controller("LoginController", LoginController)
         .controller("CoachRegisterController", CoachRegisterController)
         .controller("AthleteRegisterController", AthleteRegisterController)
-        .controller("SearchSchoolForCoachController",SearchSchoolForCoachController)
 
     function LoginController($location, UserService) {
         var vm = this;
@@ -21,9 +20,10 @@
                     } else {
                         $location.url("/athlete/"+user._id);
                     }
-                },function (err) {
+                })
+                .error(function (err) {
                     vm.error = "Username/password does not match";
-                });
+                })
         }
     }
 
@@ -111,33 +111,6 @@
                     });
             }
         }
-    }
-
-    function SearchSchoolForCoachController(SchoolService){
-        var vm = this;
-
-        vm.searchSchoolByName = searchSchoolByName;
-
-        function init() {
-
-        }
-        init();
-
-        function searchSchoolByName(searchText) {
-            SchoolService
-                .searchSchoolByName(searchText)
-                .success(function (schools) {
-                    if(schools) {
-                        vm.schools=schools;
-                    } else {
-                        vm.error="No Schools!"
-                    }
-                })
-                .error(function () {
-                    vm.error = "Error!";
-                })
-        }
-
     }
 
 })();

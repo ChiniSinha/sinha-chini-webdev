@@ -19,7 +19,10 @@
             "isAdmin" : isAdmin,
             "findAllUsers" : findAllUsers,
             "followAthlete" : followAthlete,
-            "unFollowAthlete" : unFollowAthlete
+            "unFollowAthlete" : unFollowAthlete,
+            "findAthletesByTeamId" : findAthletesByTeamId,
+            "findAthletesBySchoolId" : findAthletesBySchoolId,
+            "findAllCoachBySchoolId" : findAllCoachBySchoolId
         };
         return api;
 
@@ -73,12 +76,23 @@
         }
         
         function followAthlete(coachId, athleteId) {
-            return $http.put("api/project/user/"+ coachId + "/follow/" + athleteId);
+            return $http.put("/api/project/user/"+ coachId + "/follow/" + athleteId);
         }
 
         function unFollowAthlete(coachId, athleteId) {
-            return $http.put("api/project/user/"+ coachId + "/unfollow/" + athleteId);
+            return $http.put("/api/project/user/"+ coachId + "/unfollow/" + athleteId);
         }
 
+        function findAthletesByTeamId(teamId) {
+            return $http.get("/api/project/user/team/" + teamId);
+        }
+
+        function findAthletesBySchoolId(schoolId) {
+            return $http.get("/api/project/user/school/" + schoolId);
+        }
+
+        function findAllCoachBySchoolId(schoolId) {
+            return $http.get('/api/project/coach/school/' + schoolId);
+        }
     }
 })();

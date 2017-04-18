@@ -1,7 +1,8 @@
 module.exports = function () {
 
-    var model = null;
     var mongoose = require("mongoose");
+    var model = null;
+
 
     var TeamSchema = require('./team.schema.server')();
     var TeamModel = mongoose.model('TeamModel', TeamSchema);
@@ -21,27 +22,29 @@ module.exports = function () {
     return api;
 
     function createTeam(userId, team) {
-        return TeamModel.create(team)
+        return TeamModel
+            .create(team)
             .then(function (team) {
-                return model.UserModel.findById(userId)
+                return model.UserModel
+                    .findUserById(userId)
                     .then(function (user) {
-                        team._coach = user._id;
-                        team.school = user.school;
-                        user.team = team._id;
-                        user.save();
-                        team.save();
-                        return model.SchoolModel.findById(user.school)
+                        return model.SchoolModel
+                            .findSchoolById(user.school)
                             .then(function (school) {
+                                team._coach = user._id;
+                                team.school = user.school;
+                                user.team = team._id;
                                 school.teams.push(team._id);
+                                user.save();
                                 school.save();
-                                return team;
-                            })
+                                return team.save();
+                            });
                     }, function (err) {
                         return err;
-                    })
+                    });
             }, function (err) {
                 return err;
-            })
+            });
     }
 
     function findTeamById(teamId) {
@@ -55,9 +58,7 @@ module.exports = function () {
     }
 
     function findTeamBySchoolId(schoolId) {
-        return TeamModel.find({
-            '_school' : schoolId
-        });
+        return TeamModel.find({'school' : schoolId});
     }
 
     function updateTeam(teamId, team) {

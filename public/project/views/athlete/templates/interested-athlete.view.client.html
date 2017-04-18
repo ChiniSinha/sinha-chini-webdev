@@ -19,28 +19,25 @@
 </nav>
 
 <div class="container-fluid">
+
     <div class="cs-form">
-        <h1>Team</h1>
-
-        <div ng-show="model.error" class="alert alert-danger" role="alert">
-            {{model.error}}
+        <h1> Interested Students</h1>
+        <div class="row">
+            <div class="col-xs-12">
+                <div ng-show="model.error" class="alert alert-danger" role="alert">
+                    {{model.error}}
+                </div>
+            </div>
+            <div class="col-xs-12" >
+                <ul class="list-group">
+                    <li ng-repeat="athlete in model.athletes" class="list-group-item">
+                        <img src="{{athlete.photo}}" class="img-responsive img-thumbnail">
+                        <a href="#/athlete/{{vm.userId}}/view/{{athlete_id}}" class="btn btn-warning btn-block">
+                            {{athlete.firstName}} {{athlete.lastName}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-
-        <label for="school">School Name</label>
-        <input ng-model="model.school.name" class="form-control" id="school" disabled>
-
-        <label for="name">Team Name</label>
-        <input ng-model="team.name"
-               id="name"
-               type="text"
-               class="form-control"
-               placeholder="Team Name"/>
-
-        <label for="description">Description</label>
-        <textarea ng-model="team.description" class="form-control" id="description" placeholder="Description" rows="5"></textarea>
-
-        <a ng-click="model.createTeam(team)" class="btn btn-primary btn-block">Add Team</a>
-        <a class="btn btn-danger  btn-block"
-           href="#/coach/{{model.userId}}">Cancel</a>
     </div>
 </div>

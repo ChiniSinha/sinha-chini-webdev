@@ -26,6 +26,10 @@
 
         <h1>Login</h1>
 
+        <div class="alert alert-danger" ng-show="model.error">
+            {{model.error}}
+        </div>
+
         <label for="username">Username</label>
         <input ng-model="user.username" class="form-control" type="text" id="username" placeholder="Username"/>
         <label for="password">Password</label>

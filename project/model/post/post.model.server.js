@@ -20,7 +20,7 @@ module.exports = function () {
     function createPost(userId, post) {
         return PostModel.create(post)
             .then(function (post) {
-                return model.UserModel.findById(userId)
+                return model.UserModel.findUserById(userId)
                     .then(function (user) {
                         user.posts.push(post._id);
                         post._user = user._id;

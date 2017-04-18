@@ -1,40 +1,43 @@
 <div class="container-fluid">
-    <div class="form-group">
-        <form action="/api/upload" method="post" enctype="multipart/form-data">
+    <div class="form-group cs-form">
+        <form action="/api/project/post/upload" method="post" enctype="multipart/form-data">
 
-            <label for="name">Name</label>
-            <input ng-model="model.widget.name" class="form-control"
-                   id="name" placeholder="Widget Name">
+            <label for="title">Title</label>
+            <input ng-model="model.post.title" class="form-control"
+                   id="title" placeholder="Post Title">
 
-            <label for="text">Text</label>
-            <input ng-model="model.widget.text" class="form-control"
-                   id="text" placeholder="Widget Text" value="Some Heading">
+            <label for="description">Description</label>
+            <textarea ng-model="model.post.description" class="form-control"
+                      id="description" placeholder="Widget Text"></textarea>
 
-            <label for="size">URL</label>
-            <input ng-model="model.widget.url" class="form-control"
-                   id="size" placeholder="URL">
+            <label for="url">URL</label>
+            <input ng-model="model.post.url" class="form-control"
+                   id="url" placeholder="URL">
 
             <label for="width">Width</label>
-            <input ng-model="model.widget.width" class="form-control"
+            <input ng-model="model.post.width" class="form-control"
                    id="width" placeholder="100%" >
 
             <label for="upload">Upload</label>
             <input class="form-control" id="upload" type="file" name="myFile">
-            <input  name="width" value="{{model.widget.width}}" type="hidden"/>
-            <input  name="widgetId" value="{{model.widget._id}}" type="hidden"/>
+            <input  name="width" value="{{model.post.width}}" type="hidden"/>
+            <input  name="postId" value="{{model.post._id}}" type="hidden"/>
             <input  name="userId" value="{{model.userId}}" type="hidden"/>
-            <input  name="pageId" value="{{model.pageId}}" type="hidden"/>
-            <input  name="websiteId" value="{{model.websiteId}}" type="hidden"/>
             <button type="submit" class="btn btn-primary btn-block">Upload Image</button>
        </form>
     </div>
     <div class="form-group">
         <a class="btn btn-info btn-block"
-           href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget/{{model.widget._id}}/flickrSearch">
+           href="#/athlete/{{model.userId}}/post/{{model.post._id}}/flickrSearch">
             Search Flickr
         </a>
+
+        <button class="btn btn-success btn-block"
+                ng-click="model.updatePost(model.post)">
+            Complete
+        </button>
         <button class="btn btn-danger btn-block"
-           ng-click="model.deleteWidget()">
+           ng-click="model.deletePost(model.post._id)">
             Delete
         </button>
     </div>
