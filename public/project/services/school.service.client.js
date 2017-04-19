@@ -14,7 +14,9 @@
             "addInterestedAthlete" : addInterestedAthlete,
             "removeInterestedAthlete" : removeInterestedAthlete,
             "addCoach" : addCoach,
-            "removeCoach" : removeCoach
+            "removeCoach" : removeCoach,
+            "findSchoolByAthleteId" : findSchoolByAthleteId,
+            "findAllSchoolByAthleteId" : findAllSchoolByAthleteId
         };
         return api;
 
@@ -38,7 +40,7 @@
             return $http.delete("/api/project/school/"+ schoolId);
         }
 
-        function addInterestedAthlete(userId, schoolId) {
+        function addInterestedAthlete(schoolId, userId) {
             return $http.put("/api/project/addAthlete/" + userId + "/school/" + schoolId);
         }
 
@@ -52,6 +54,14 @@
 
         function removeCoach(userId, schoolId) {
             return $http.put("/api/project/removeCoach/" + userId + "/school/" + schoolId);
+        }
+
+        function findSchoolByAthleteId(schoolId, userId) {
+            return $http.get("/api/project/school/" + schoolId + "/athlete/" + userId);
+        }
+
+        function findAllSchoolByAthleteId(userId) {
+            return $http.get("/api/project/school/athlete/" + userId);
         }
 
     }

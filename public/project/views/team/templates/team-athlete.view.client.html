@@ -6,7 +6,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#/home/{{model.userId}}">
+            <a class="navbar-brand" href="#/home">
                 <img src="http://sinha-chini-webdev.herokuapp.com/images/mvpr11.png" alt="Home">
             </a>
         </div>
@@ -24,50 +24,43 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-4 hidden-xs">
-            <div class="container-fluid cs-form">
-                <img class="img-thumbnail img-responsive" src="{{model.coach.photo}}">
-            </div>
-            <div ng-show="model.team" class="container-fluid cs-form-1">
-                <h1>Team</h1>
-                <label>{{model.team.name}}</label>
+            <div class="cs-form-1">
+                <h1>{{model.team.name}}</h1>
                 <p>{{model.team.description}}</p>
             </div>
         </div>
         <div class="col-xs-8 hidden-xs">
-            <div class="container-fluid cs-form">
-                <h1>{{model.coach.firstName}} {{model.coach.lastName}}</h1>
-                <h2>School</h2>
-                <label> {{model.school.name}}</label>
-                <h2>About</h2>
-                <label> {{model.coach.about}} </label>
-                <br>
-                <h2>Contact</h2>
-                <label>Email: {{model.coach.email}} | </label>
-                <label>Phone: {{model.coach.phone}}</label>
+            <div class="container-fluid cs-form-1">
+                <h1> Athletes in Team</h1>
+                <div ng-show="model.error">
+                    <label> {{model.error}}</label>
+                </div>
+                <div class="container-fluid cs-form-1" ng-repeat="athlete in model.teamAthletes">
+                    <h2>{{athlete.firstName}} {{athlete.lastName}}</h2>
+                    <label>Year of Graduation: {{athlete.gradYear}}</label>
+                    <img class="img-responsive img-thumbnail" src="{{athlete.photo}}" alt="No Image">
+                    <a href="#/athlete/{{model.user._id}}/team/{{model.team._id}}/athlete/{{athlete._id}}" class="btn btn-warning btn-block">View Profile</a>
+                </div>
             </div>
         </div>
-
         <div class="col-xs-12 visible-xs">
-            <div class="container-fluid cs-form-1">
-                <img class="img-thumbnail img-responsive" src="{{model.coach.photo}}">
-            </div>
-            <div ng-show="model.team" class="container-fluid cs-form-1">
-                <h1>Team</h1>
-                <label>{{model.team.name}}</label>
+            <div class="cs-form-1">
+                <h1>{{model.team.name}}</h1>
                 <p>{{model.team.description}}</p>
             </div>
         </div>
         <div class="col-xs-12 visible-xs">
             <div class="container-fluid cs-form-1">
-                <h1>{{model.coach.firstName}} {{model.coach.lastName}}</h1>
-                <h2>School</h2>
-                <label> {{model.school.name}}</label>
-                <h2>About</h2>
-                <label> {{model.coach.about}} </label>
-                <br>
-                <h2>Contact</h2>
-                <label>Email: {{model.coach.email}} | </label>
-                <label>Phone: {{model.coach.phone}}</label>
+                <h1> Athletes in Team</h1>
+                <div ng-show="model.error">
+                    <label> {{model.error}}</label>
+                </div>
+                <div class="container-fluid cs-form-1" ng-repeat="athlete in model.teamAthletes">
+                    <h2>{{athlete.firstName}} {{athlete.lastName}}</h2>
+                    <label>Year of Graduation: {{athlete.gradYear}}</label>
+                    <img class="img-responsive img-thumbnail" src="{{athlete.photo}}" alt="No Image">
+                    <a href="#/athlete/{{model.user._id}}/team/{{model.team._id}}/athlete/{{athlete._id}}" class="btn btn-warning btn-block">View Profile</a>
+                </div>
             </div>
         </div>
     </div>

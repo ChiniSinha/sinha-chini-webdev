@@ -73,6 +73,9 @@
         vm.userId = $routeParams.userId;
         vm.schoolId = $routeParams.schoolId;
 
+        vm.interested = false;
+        vm.addInterestedAthlete = addInterestedAthlete;
+        vm.removeInterestedAthlete = removeInterestedAthlete;
         vm.logout = logout;
 
         function init() {
@@ -85,17 +88,43 @@
                             TeamService
                                 .findTeamBySchoolId(school._id)
                                 .success(function (teams) {
-                                    vm.teams = teams;
-                                    vm.school = school;
-                                    vm.coaches = coaches;
-                                })
-                        })
+                                    SchoolService
+                                        .findSchoolByAthleteId(school._id, vm.userId)
+                                        .success(function (athSchool) {
+                                            vm.teams = teams;
+                                            vm.school = school;
+                                            vm.coaches = coaches;
+                                            if(athSchool.length > 0) {
+                                                vm.interested = true;
+                                            }
+                                        });
+                                });
+                        });
                 })
                 .error(function () {
                     vm.error = "Error!";
                 })
         }
         init();
+
+        function addInterestedAthlete() {
+            SchoolService
+                .addInterestedAthlete(vm.schoolId, vm.userId)
+                .success(function (school) {
+                        vm.school = school;
+                        vm.interested = true;
+                    }
+                );
+        }
+
+        function removeInterestedAthlete() {
+            SchoolService
+                .removeInterestedAthlete(vm.userId, vm.schoolId)
+                .success(function (school) {
+                    vm.school = school;
+                    vm.interested=false;
+                });
+        }
 
         function logout() {
             UserService.logout()
@@ -104,13 +133,6 @@
                 });
         }
 
-    }
-
-    function SearchSchoolForAthleteController(SchoolService, $routeParams) {
-        var vm = this;
-
-        var teamId = $routeParams.teamId;
-        vm.teamId = teamId;
     }
 
 })();

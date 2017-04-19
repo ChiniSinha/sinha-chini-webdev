@@ -16,6 +16,8 @@ module.exports = function () {
         "removeInterestedAthlete" : removeInterestedAthlete,
         "addCoach" : addCoach,
         "removeCoach" : removeCoach,
+        "findSchoolByAthleteId" : findSchoolByAthleteId,
+        "findAllSchoolByAthleteId" : findAllSchoolByAthleteId,
         "setModel":setModel
     };
 
@@ -48,23 +50,35 @@ module.exports = function () {
     }
 
     function addInterestedAthlete(schoolId, userId) {
-        return SchoolModel.findById(schoolId)
+        return SchoolModel
+            .findById(schoolId)
             .then(function (school) {
-                return model.UserModel.findById(userId)
+                return model.UserModel
+                    .findUserById(userId)
                     .then(function (user) {
                         school.interestedStudents.push(user._id);
-                        return school.save();
+                        user.interestedSchool.push(school._id);
+                        user.save();
+                        school.save();
+                        return school;
+                    },function (err) {
+                        return err;
                     });
             });
     }
 
-    function removeInterestedAthlete(schoolId, userId) {
-        return SchoolModel.findById(schoolId)
+    function removeInterestedAthlete(userId, schoolId) {
+        return SchoolModel
+            .findById(schoolId)
             .then(function (school) {
-                return model.UserModel.findById(userId)
+                return model.UserModel
+                    .findUserById(userId)
                     .then(function (user) {
                         school.interestedStudents.pull(user._id);
-                        return school.save();
+                        user.interestedSchool.pull(school._id);
+                        user.save();
+                        school.save();
+                        return school;
                     });
             })
     }
@@ -89,6 +103,14 @@ module.exports = function () {
                         return school.save();
                     });
             });
+    }
+
+    function findSchoolByAthleteId(schoolId, userId) {
+        return SchoolModel.find({'_id': schoolId, 'interestedStudents': userId});
+    }
+
+    function findAllSchoolByAthleteId(userId) {
+        return SchoolModel.find({'interestedStudents': userId});
     }
 
     function setModel(_model) {

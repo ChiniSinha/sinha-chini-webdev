@@ -10,6 +10,7 @@ module.exports = function (app, models) {
     app.delete("/api/project/team/:teamId", deleteTeam);
     app.put("/api/project/addAthlete/:userId/team/:teamId", addPotentialAthlete);
     app.put("/api/project/removeAthlete/:userId/team/:teamId", removePotentialAthlete);
+    app.get("/api/project/athlete/:athleteId/team", findTeamByAthleteId);
 
     function createTeam(req, res) {
         var userId = req.params.userId;
@@ -84,7 +85,7 @@ module.exports = function (app, models) {
         var teamId = req.params.teamId;
         var userId = req.params.userId;
         teamModel
-            .addPotentialAthlete(teamId, userId)
+            .addPotentialAthlete(userId, teamId)
             .then(function (team) {
                 res.send(team);
             }, function (err) {
@@ -96,12 +97,23 @@ module.exports = function (app, models) {
         var teamId = req.params.teamId;
         var userId = req.params.userId;
         teamModel
-            .removePotentialAthlete(teamId, userId)
+            .removePotentialAthlete(userId, teamId)
             .then(function (team) {
                 res.send(team);
             }, function (err) {
                 res.sendStatus(404);
             });
+    }
+
+    function findTeamByAthleteId(req, res) {
+        var athleteId = req.params.athleteId;
+        teamModel
+            .findTeamByAthleteId(athleteId)
+            .then(function (teams) {
+                res.send(teams);
+            }, function (err) {
+                res.sendStatus(404);
+            })
     }
 
 }

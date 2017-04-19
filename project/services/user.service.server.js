@@ -31,6 +31,10 @@ module.exports = function (app, models) {
     app.get('/api/project/user/team/:teamId', findAthletesByTeamId);
     app.get('/api/project/user/school/:schoolId', findAthletesBySchoolId);
     app.get('/api/project/coach/school/:schoolId', findAllCoachBySchoolId);
+    app.get('/api/project/coach/athlete/:athleteId', findAllCoachesByAthleteId);
+    app.get('/api/project/athlete/coach/:coachId', findAllAthletesByCoachId);
+    app.get('/api/project/coach/:coachId/athlete/:athleteId', findCoachByAthleteId);
+    app.get('/api/project/athlete/:athleteId/coach/:coachId', findAthleteByCoachId);
 
     app.get('/auth/facebook',passport.authenticate('facebook',{ scope : 'email'}));
     app.get('/auth/facebook/callback',passport.authenticate('facebook', {
@@ -283,39 +287,27 @@ module.exports = function (app, models) {
     }
 
     function unFollowAthlete(req, res) {
-        var userId = req.params['uid'];
-        var user = req.body;
-
-        model.UserModel.unFollowAthlete(userId, user)
-            .then(function (newUser) {
-                if(newUser){
-                    model.UserModel.removeFollowedByCoach(userId, user)
-                        .then(function (user) {
-
-                        });
-                }
-                res.send(newUser);
+        var coachId = req.params.coachId;
+        var athleteId = req.params.athleteId;
+        userModel
+            .unFollowAthlete(coachId, athleteId)
+            .then(function (coach) {
+                res.send(coach);
             }, function (err) {
-                res.sendStatus(500).send('Could not unfollow user');
-            })
+                res.sendStatus(404);
+            });
     }
 
     function followAthlete(req, res) {
-        var coachId = req.params.userId;
-        var athlete = req.body;
-
-        model.UserModel.followAthlete(coachId, athlete)
-            .then(function (newUser) {
-                if(newUser){
-                    model.UserModel.addFollowedByCoach(userId, user)
-                        .then(function (user) {
-                        });
-                }
-                res.send(newUser);
+        var coachId = req.params.coachId;
+        var athleteId = req.params.athleteId;
+        userModel
+            .followAthlete(coachId, athleteId)
+            .then(function (coach) {
+                res.send(coach);
             }, function (err) {
-                res.sendStatus(500).send('Could not follow user');
+                res.sendStatus(404);
             });
-
     }
 
     function uploadImage(req, res){
@@ -374,6 +366,52 @@ module.exports = function (app, models) {
             .findAllCoachBySchoolId(schoolId)
             .then(function (users) {
                 res.send(users);
+            }, function (err) {
+                res.sendStatus(404);
+            });
+    }
+
+    function findAllAthletesByCoachId(req, res) {
+        var coachId = req.params.coachId;
+        userModel
+            .findAllAthletesByCoachId(coachId)
+            .then(function (athletes) {
+                res.send(athletes);
+            }, function (err) {
+                res.sendStatus(404);
+            });
+    }
+
+    function findAllCoachesByAthleteId(req, res) {
+        var athleteId = req.params.athleteId;
+        userModel
+            .findAllCoachesByAthleteId(athleteId)
+            .then(function (coaches) {
+                res.send(coaches);
+            }, function (err) {
+                res.sendStatus(404);
+            });
+    }
+
+    function findCoachByAthleteId(req, res) {
+        var coachId = req.params.coachId;
+        var athleteId = req.params.athleteId;
+        userModel
+            .findCoachByAthleteId(coachId, athleteId)
+            .then(function (coach) {
+                res.send(coach);
+            }, function (err) {
+                res.sendStatus(404);
+            });
+    }
+
+    function findAthleteByCoachId(req, res) {
+        var athleteId = req.params.athleteId;
+        var coachId = req.params.coachId;
+        userModel
+            .findAthleteByCoachId(athleteId, coachId)
+            .then(function (athlete) {
+                res.send(athlete);
             }, function (err) {
                 res.sendStatus(404);
             });

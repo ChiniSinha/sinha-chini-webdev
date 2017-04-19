@@ -3,6 +3,8 @@
         .module("RecruiterWeb")
         .controller("AddTeamController", AddTeamController)
         .controller("EditTeamController", EditTeamController)
+        .controller("ViewTeamController", ViewTeamController)
+        .controller("AthleteViewTeamController", AthleteViewTeamController)
 
     function AddTeamController(TeamService, UserService, SchoolService, $location, $routeParams) {
         var vm = this;
@@ -80,12 +82,12 @@
         }
         init();
 
-        function updateTeam(newTeam) {
+        function updateTeam(team) {
             vm.error = null;
             TeamService
-                .updateTeam(teamId, newTeam)
-                .success(function (team) {
-                    if(team != null) {
+                .updateTeam(teamId, team)
+                .success(function (newteam) {
+                    if(newteam != null) {
                         vm.message = "User Successfully Updated!"
                     }
                 })
@@ -102,4 +104,109 @@
         }
 
     }
+
+    function ViewTeamController(UserService, TeamService, $location, $routeParams, $route) {
+        var vm = this;
+
+        vm.userId = $routeParams.userId;
+
+        vm.addPotentialAthlete = addPotentialAthlete;
+        vm.removePotentialAthlete = removePotentialAthlete;
+        vm.logout = logout;
+
+        function init() {
+            UserService
+                .findUserById(vm.userId)
+                .success(function (user) {
+                    TeamService
+                        .findTeamById(user.team)
+                        .success(function (team) {
+                            UserService
+                                .findAllAthletesByCoachId(user._id)
+                                .success(function (athletes) {
+                                    UserService.findAthletesByTeamId(team._id)
+                                        .success(function (teamAthletes) {
+                                            vm.teamAthletes = teamAthletes;
+                                            vm.followedAthletes = athletes;
+                                            vm.team = team;
+                                            vm.user = user;
+                                            if(teamAthletes.length == 0) {
+                                                vm.error = "No athletes in team yet";
+                                            }
+                                            if(vm.followedAthletes.length == 0) {
+                                                vm.followError = "No athletes in followed by you yet";
+                                            }
+                                        })
+                                })
+                        })
+                });
+        }
+        init();
+
+        function addPotentialAthlete(userId, teamId) {
+            TeamService
+                .addPotentialAthlete(userId, teamId)
+                .success(function (team) {
+                    vm.inTeam = true;
+                    vm.team = team;
+                    $route.reload();
+                });
+        }
+
+        function removePotentialAthlete(userId, teamId) {
+            TeamService
+                .removePotentialAthlete(userId, teamId)
+                .success(function (team) {
+                    vm.inTeam = false;
+                    vm.team = team;
+                    $route.reload();
+                })
+        }
+
+        function logout() {
+            UserService.logout()
+                .then(function (response) {
+                    $location.url('/home');
+                });
+        }
+    }
+
+    function AthleteViewTeamController(UserService, TeamService, $location, $routeParams) {
+        var vm = this;
+
+        vm.userId = $routeParams.userId;
+        vm.teamId = $routeParams.teamId;
+
+        vm.logout = logout;
+
+        function init() {
+            UserService
+                .findUserById(vm.userId)
+                .success(function (user) {
+                    TeamService
+                        .findTeamById(vm.teamId)
+                        .success(function (team) {
+                            UserService
+                                .findAthletesByTeamId(team._id)
+                                .success(function (athletes) {
+                                    vm.teamAthletes = athletes;
+                                    vm.team = team;
+                                    vm.user = user;
+                                    if(teamAthletes.length == 0) {
+                                        vm.error = "No athletes in team yet";
+                                    }
+                                })
+                        })
+                });
+        }
+        init();
+
+        function logout() {
+            UserService.logout()
+                .then(function (response) {
+                    $location.url('/home');
+                });
+        }
+    }
+
 })();

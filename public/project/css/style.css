@@ -29,8 +29,14 @@ body {
     background-color: saddlebrown;
     border-color: saddlebrown;
 }
+
 .btn-warning {
     color: black;
+    margin-bottom: 5px;
+}
+
+.btn-success {
+    margin-bottom: 5px;
 }
 
 .navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {
@@ -46,19 +52,19 @@ body {
 }
 
 .jumbotron h1 {
-    color: wheat;
+    color: floralwhite;
 }
 
 body h2 {
-    color: wheat;
+    color: floralwhite;
 }
 
 body h1 {
-    color: wheat;
+    color: floralwhite;
 }
 
 p {
-    color: wheat;
+    color: floralwhite;
     text-align: justify;
 }
 
@@ -75,7 +81,7 @@ input.form-control, textarea {
 }
 
 label {
-    color: wheat;
+    color: floralwhite;
 }
 
 .list-group-item label{
@@ -100,7 +106,7 @@ div .row ul {
 }
 
 .list-group-item {
-    background-color: wheat;
+    background-color: floralwhite;
     border: 1px solid #2b2b2b;
 }
 
@@ -111,7 +117,7 @@ div .row ul a {
 .cs-toolbar {
     position: absolute;
     right: 15px;
-    background-color: wheat;
+    background-color: floralwhite;
     border-bottom-left-radius: 5px;
     padding-left: 5px;
     padding-bottom: 5px;
@@ -122,7 +128,15 @@ div .row ul a {
 .col-xs-2 {
     margin-top: 20px;
 }
-
 .img-thumbnail {
     width: 100%;
+    margin-bottom: 4px;
+}
+
+.cs-responsive-image {
+    max-height: 400px;
+}
+
+.cs-edit {
+    margin-top: -10px;
 }

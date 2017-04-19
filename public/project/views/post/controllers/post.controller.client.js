@@ -10,7 +10,6 @@
 
         // Event Handlers
         vm.doYouTrustUrl = doYouTrustUrl;
-        vm.doYouTrustHtml = doYouTrustHtml;
         vm.logout = logout;
 
         vm.userId = $routeParams.userId;
@@ -39,10 +38,6 @@
                 id = urlParts[urlParts.length - 1];
                 return $sce.trustAsResourceUrl(baseUrl+id);
             }
-        }
-
-        function doYouTrustHtml(text){
-            return $sce.trustAsHtml(text);
         }
 
         function logout() {

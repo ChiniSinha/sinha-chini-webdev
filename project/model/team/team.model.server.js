@@ -16,6 +16,7 @@ module.exports = function () {
         "deleteTeam" : deleteTeam,
         "addPotentialAthlete" : addPotentialAthlete,
         "removePotentialAthlete" : removePotentialAthlete,
+        "findTeamByAthleteId" : findTeamByAthleteId,
         "setModel":setModel
     };
 
@@ -52,9 +53,7 @@ module.exports = function () {
     }
 
     function findTeamByCoachId(userId) {
-        return TeamModel.find({
-            'coach' : userId
-        });
+        return TeamModel.findOne({'_coach' : userId});
     }
 
     function findTeamBySchoolId(schoolId) {
@@ -69,26 +68,37 @@ module.exports = function () {
         return TeamModel.findByIdAndRemove(teamId);
     }
 
-    function addPotentialAthlete(teamId, userId) {
+    function addPotentialAthlete(userId, teamId) {
         return TeamModel.findById(teamId)
             .then(function (team) {
-                return model.UserModel.findById(userId)
+                return model.UserModel.findUserById(userId)
                     .then(function (user) {
                         team.potentialAthletes.push(user._id);
-                        return team.save();
+                        user.teams.push(team._id);
+                        user.save();
+                        team.save();
+                        return team;
                     });
             });
     }
 
-    function removePotentialAthlete(teamId, userId) {
+    function removePotentialAthlete(userId, teamId) {
         return TeamModel.findById(teamId)
             .then(function (team) {
-                return model.UserModel.findById(userId)
+                return model.UserModel
+                    .findUserById(userId)
                     .then(function (user) {
                         team.potentialAthletes.pull(user._id);
-                        return team.save();
+                        user.teams.pull(team._id);
+                        user.save();
+                        team.save();
+                        return team;
                     });
             });
+    }
+
+    function findTeamByAthleteId(athleteId) {
+        return TeamModel.find({'potentialAthletes' : athleteId});
     }
 
     function setModel(_model) {

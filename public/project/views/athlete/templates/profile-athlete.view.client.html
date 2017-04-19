@@ -6,17 +6,16 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#/home/{{model.coachId}}">
+            <a class="navbar-brand" href="#/home/{{model.userId}}">
                 <img src="http://sinha-chini-webdev.herokuapp.com/images/mvpr11.png" alt="Home">
             </a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
-                <li> <a href="#/coach/{{model.coachId}}"><span class="glyphicon glyphicon-user"></span>  Profile</a> </li>
-                <li> <a ng-hide="model.coach.team" href="#/coach/{{model.coachId}}/team/new"><span class="glyphicon glyphicon-plus"></span>  Add Team</a> </li>
-                <li> <a ng-show="model.coach.team" href="#/coach/{{model.coachId}}/team"><span class="glyphicon glyphicon-modal-window"></span>  Manage Team</a> </li>
-                <li> <a href="#/coach/{{model.coachId}}/school/{{model.user.school}}"><span class="glyphicon glyphicon-search"></span>  Search Students</a> </li>
-                <li> <a ng-click="model.logout()"><span class="glyphicon glyphicon-log-out"></span>  Logout</a></li>
+                <li> <a href="#/athlete/{{model.userId}}"><span class="glyphicon glyphicon-user"></span>  Profile</a> </li>
+                <li> <a href="#/athlete/{{model.userId}}/post/new"><span class="glyphicon glyphicon-plus"></span>  Add Post</a> </li>
+                <li> <a href="#/athlete/{{model.userId}}/school"><span class="glyphicon glyphicon-search"></span>  Search School</a> </li>
+                <li> <a ng-click="model.logout()" class="navbar-link"><span class="glyphicon glyphicon-log-out"></span>  Logout</a></li>
             </ul>
         </div>
     </div>
@@ -27,16 +26,7 @@
         <div class="col-xs-4 hidden-xs">
             <div class="container-fluid cs-form-1">
                 <img class="img-thumbnail img-responsive" src="{{model.athlete.photo}}">
-                <button ng-hide="model.follows" ng-click="model.followAthlete()"
-                        class="btn btn-warning btn-block">
-                    <span class="glyphicon glyphicon-check"></span> follow
-                </button>
-                <button ng-show="model.follows" ng-click="model.unFollowAthlete()"
-                        class="btn btn-success btn-block">
-                    <span class="glyphicon glyphicon-alert"></span> unfollow
-                </button>
             </div>
-
         </div>
         <div class="col-xs-8 hidden-xs">
             <div class="container-fluid cs-form-1">
@@ -74,14 +64,6 @@
         <div class="col-xs-12 visible-xs">
             <div class="container-fluid cs-form-1">
                 <img class="img-thumbnail img-responsive" src="{{model.athlete.photo}}">
-                <button ng-hide="model.follows" ng-click="model.followAthlete()"
-                        class="btn btn-warning btn-block">
-                    <span class="glyphicon glyphicon-check"></span> follow
-                </button>
-                <button ng-show="model.follows" ng-click="model.unFollowAthlete()"
-                        class="btn btn-success btn-block">
-                    <span class="glyphicon glyphicon-alert"></span> unfollow
-                </button>
             </div>
         </div>
         <div class="col-xs-12 visible-xs">

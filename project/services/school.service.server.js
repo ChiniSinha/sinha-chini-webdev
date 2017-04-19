@@ -11,6 +11,8 @@ module.exports = function (app, models) {
     app.put("/api/project/removeAthlete/:userId/school/:schoolId", removeInterestedAthlete);
     app.put("/api/project/addCoach/:userId/school/:schoolId", addCoach);
     app.put("/api/project/removeCoach/:userId/school/:schoolId", removeCoach);
+    app.get("/api/project/school/:schoolId/athlete/:userId", findSchoolByAthleteId);
+    app.get("/api/project/school/athlete/:userId", findAllSchoolByAthleteId);
 
 
     function createSchool(req, res) {
@@ -86,7 +88,7 @@ module.exports = function (app, models) {
         var schoolId = req.params.schoolId;
         var userId = req.params.userId;
         schoolModel
-            .removeInterestedAthlete(schoolId, userId)
+            .removeInterestedAthlete(userId, schoolId)
             .then(function (school) {
                 res.send(school);
             }, function (err) {
@@ -118,4 +120,26 @@ module.exports = function (app, models) {
             });
     }
 
+    function findSchoolByAthleteId(req, res) {
+        var schoolId = req.params.schoolId;
+        var userId = req.params.userId;
+        schoolModel
+            .findSchoolByAthleteId(schoolId, userId)
+            .then(function (school) {
+                res.send(school);
+            }, function (err) {
+                res.sendStatus(404);
+            });
+    }
+
+    function findAllSchoolByAthleteId(req, res) {
+        var userId = req.params.userId;
+        schoolModel
+            .findAllSchoolByAthleteId(userId)
+            .then(function (schools) {
+                res.send(schools);
+            }, function (err) {
+                res.sendStatus(404);
+            });
+    }
 }

@@ -6,12 +6,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#/home">
+            <a class="navbar-brand" href="#/home/{{model.userId}}">
                 <img src="http://sinha-chini-webdev.herokuapp.com/images/mvpr11.png" alt="Home">
             </a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
+                <li> <a href="#/coach/{{model.userId}}"><span class="glyphicon glyphicon-user"></span>  Profile</a> </li>
+                <li> <a ng-hide="model.user.team" href="#/coach/{{model.userId}}/team"><span class="glyphicon glyphicon-plus"></span>  Add Team</a> </li>
+                <li> <a href="#/coach/{{model.userId}}/school/{{model.user.school}}"><span class="glyphicon glyphicon-search"></span>  Search Students</a> </li>
                 <li> <a ng-click="model.logout()"><span class="glyphicon glyphicon-user"></span>  Logout</a></li>
             </ul>
         </div>
@@ -43,12 +46,11 @@
         <label for="description">Description</label>
         <textarea ng-model="model.team.description" class="form-control" id="description" placeholder="Description" rows="5"></textarea>
 
-        <a ng-click="model.updateTeam(team)" class="btn btn-primary btn-block">Update Team</a>
-
-        <a class="btn btn-warning btn-block"
-           href="#/coach/{{model.userId}}/team/{{model.teamId}}/school/{{model.school._id}}"> <span class="glyphicon glyphicon-search"></span>  Search Students </a>
+        <a ng-click="model.updateTeam(model.team)" class="btn btn-primary btn-block">Update Team</a>
+        <a href="#/coach/{{model.userId}}/team" class="btn btn-info btn-block">Cancel</a>
+        <a ng-click="model.updateTeam(model.team)" class="btn btn-danger btn-block">Delete</a>
     </div>
-    <div ng-show="model.team.potentialAthletes" class="cs-form-1">
+    <div ng-hide="model.team.potentialAthletes.length==0" class="cs-form-1">
         <h2>List of Potential Athletes</h2>
         <div class="alert alert-danger" ng-show="model.errorAthlete">
             {{model.errorAthlete}}

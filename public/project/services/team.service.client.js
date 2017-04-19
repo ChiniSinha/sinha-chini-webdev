@@ -10,6 +10,7 @@
             "findTeamById" : findTeamById,
             "findTeamByCoachId" : findTeamByCoachId,
             "findTeamBySchoolId" : findTeamBySchoolId,
+            "findTeamByAthleteId" : findTeamByAthleteId,
             "updateTeam" : updateTeam,
             "deleteTeam" : deleteTeam,
             "addPotentialAthlete" : addPotentialAthlete,
@@ -26,11 +27,15 @@
         }
 
         function findTeamByCoachId(userId) {
-            return $http.get("/api/project/user/" + userId + "team");
+            return $http.get("/api/project/user/" + userId + "/team");
         }
 
         function findTeamBySchoolId(schoolId) {
             return $http.get("/api/project/school/" + schoolId + "/team");
+        }
+
+        function findTeamByAthleteId(athleteId) {
+            return $http.get("/api/project/athlete/"+ athleteId + "/team");
         }
 
         function updateTeam(teamId, team) {

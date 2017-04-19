@@ -22,7 +22,11 @@
             "unFollowAthlete" : unFollowAthlete,
             "findAthletesByTeamId" : findAthletesByTeamId,
             "findAthletesBySchoolId" : findAthletesBySchoolId,
-            "findAllCoachBySchoolId" : findAllCoachBySchoolId
+            "findAllCoachBySchoolId" : findAllCoachBySchoolId,
+            "findAllCoachesByAthleteId" : findAllCoachesByAthleteId,
+            "findAllAthletesByCoachId" : findAllAthletesByCoachId,
+            "findCoachByAthleteId" :findCoachByAthleteId,
+            "findAthleteByCoachId" : findAthleteByCoachId
         };
         return api;
 
@@ -92,7 +96,23 @@
         }
 
         function findAllCoachBySchoolId(schoolId) {
-            return $http.get('/api/project/coach/school/' + schoolId);
+            return $http.get("/api/project/coach/school/" + schoolId);
+        }
+
+        function findAllCoachesByAthleteId(athleteId) {
+            return $http.get("/api/project/coach/athlete/" + athleteId);
+        }
+
+        function findAllAthletesByCoachId(coachId) {
+            return $http.get("/api/project/athlete/coach/" + coachId);
+        }
+
+        function findCoachByAthleteId(coachId, athleteId) {
+            return $http.get("/api/project/coach/" + coachId + "/athlete/" + athleteId);
+        }
+
+        function findAthleteByCoachId(athleteId, coachId) {
+            return $http.get("/api/project/athlete/" + athleteId + "/coach/" + coachId);
         }
     }
 })();

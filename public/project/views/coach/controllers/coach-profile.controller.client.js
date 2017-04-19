@@ -4,23 +4,36 @@
         .controller("CoachProfileController", CoachProfileController)
         .controller("CoachEditProfileController", CoachEditProfileController)
 
-    function CoachProfileController(UserService, $routeParams , $location) {
+    function CoachProfileController(UserService, TeamService, SchoolService, $routeParams , $location) {
         var vm = this;
 
         vm.userId = $routeParams.userId;
+        vm.schoolId = $routeParams.schoolId;
         vm.coachId = $routeParams.coachId;
 
         vm.logout = logout;
 
         function init() {
             UserService
-                .findUserById(userId)
+                .findUserById(vm.coachId)
                 .success(function (user) {
-                    vm.athlete = user;
-
-                    if (vm.user == null) {
-                        $location.url("/home");
-                    }
+                    TeamService
+                        .findTeamById(user.team)
+                        .success(function (team) {
+                            SchoolService
+                                .findSchoolById(vm.schoolId)
+                                .success(function (school) {
+                                    vm.school = school;
+                                    vm.team = team;
+                                    vm.coach = user;
+                                    if (vm.coach == null) {
+                                        $location.url("/home");
+                                    }
+                                    if(vm.team == null) {
+                                        vm.error = "Coach has no teams yet!";
+                                    }
+                                });
+                        });
                 })
         }
         init();
@@ -34,35 +47,40 @@
 
     }
 
-    function CoachEditProfileController(UserService, SchoolService, $routeParams , $location) {
+    function CoachEditProfileController(UserService, SchoolService, TeamService, $routeParams , $location) {
         var vm = this;
 
         vm.userId = $routeParams.userId;
+        vm.inTeam = false;
 
         vm.updateUser = updateUser;
         vm.logout = logout;
 
         function init() {
             UserService
-                .findUserById(userId)
+                .findUserById(vm.userId)
                 .success(function (user) {
                     SchoolService
                         .findSchoolById(user.school)
                         .success(function (school) {
-                            vm.user = user;
-                            vm.school = school;
-                            if (vm.user == null) {
-                                $location.url("/home");
-                            }
+                            UserService
+                                .findAllAthletesByCoachId(vm.userId)
+                                .success(function (athletes) {
+                                    vm.user = user;
+                                    vm.school = school;
+                                    vm.athletes = athletes;
+                                    if (vm.user == null) {
+                                        $location.url("/home");
+                                    }
+                                })
                         });
                 });
         }
         init();
         
         function updateUser(newUser) {
-            vm.error = null;
             UserService
-                .updateUser(userId, newUser)
+                .updateUser(vm.userId, newUser)
                     .success(function (user) {
                         if(user != null) {
                             vm.message = "User Successfully Updated!"

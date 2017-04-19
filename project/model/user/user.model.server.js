@@ -18,13 +18,15 @@ module.exports = function () {
         "findUserByGoogleId": findUserByGoogleId,
         "findUserByFacebookId" : findUserByFacebookId,
         "followAthlete": followAthlete,
-        'addFollowedByCoach': addFollowedByCoach,
         "unFollowAthlete": unFollowAthlete,
-        'removeFollowedByCoach': removeFollowedByCoach,
         "findAllUsers" : findAllUsers,
         "findAthletesByTeamId" : findAthletesByTeamId,
         "findAthletesBySchoolId" : findAthletesBySchoolId,
-        "findAllCoachBySchoolId" : findAllCoachBySchoolId
+        "findAllCoachBySchoolId" : findAllCoachBySchoolId,
+        "findAllCoachesByAthleteId" : findAllCoachesByAthleteId,
+        "findAllAthletesByCoachId" : findAllAthletesByCoachId,
+        "findCoachByAthleteId" : findCoachByAthleteId,
+        "findAthleteByCoachId" : findAthleteByCoachId
     };
 
     return api;
@@ -75,41 +77,41 @@ module.exports = function () {
     }
     
     function followAthlete(coachId, athleteId) {
-        return UserModel.findById(coachId)
-            .then(function (coach) {
-                return UserModel.findById(athleteId)
-                    .then(function (athlete) {
-                        coach.follows.push(athlete._id);
-                        return coach.save();
-                    })
-            })
-    }
-
-    function addFollowedByCoach(coachId, athleteId) {
-        return UserModel.findOne({'_id':athleteId})
+        return UserModel
+            .findById(athleteId)
             .then(function (athlete) {
-                athlete.followedBy.push(coachId);
-                return athlete.save();
-            })
+                return UserModel.findById(coachId)
+                    .then(function (coach) {
+                        athlete.followedBy.push(coach._id);
+                        coach.follows.push(athlete._id);
+                        athlete.save();
+                        coach.save();
+                        return athlete;
+                    }, function (err) {
+                        return err;
+                    });
+            }, function (err) {
+                return err;
+            });
     }
 
     function unFollowAthlete(coachId, athleteId) {
-        return UserModel.findById(coachId)
-            .then(function (coach) {
-                return UserModel.findById(athleteId)
-                    .then(function (athlete) {
-                        coach.follows.pull(athlete._id);
-                        return coach.save();
-                    })
-            })
-    }
-
-    function removeFollowedByCoach(coachId, athlete) {
-        return UserModel.findOne({'_id':athlete._id})
+        return UserModel
+            .findById(athleteId)
             .then(function (athlete) {
-                athlete.followedBy.pull(coachId);
-                return athlete.save();
-            })
+                return UserModel.findById(coachId)
+                    .then(function (coach) {
+                        athlete.followedBy.pull(coach._id);
+                        coach.follows.pull(athlete._id);
+                        athlete.save();
+                        coach.save();
+                        return athlete;
+                    }, function (err) {
+                        return err;
+                    });
+            }, function (err) {
+                return err;
+            });
     }
 
     function findAllUsers() {
@@ -126,6 +128,21 @@ module.exports = function () {
 
     function findAllCoachBySchoolId(schoolId) {
         return UserModel.find({'school' : schoolId});
+    }
+
+    function findAllCoachesByAthleteId(athleteId) {
+        return UserModel.find({'follows' : athleteId});
+    }
+
+    function findAllAthletesByCoachId(coachId) {
+        return UserModel.find({'followedBy' : coachId});
+    }
+
+    function findCoachByAthleteId(coachId, athleteId) {
+        return UserModel.find({'_id': coachId, 'follows': athleteId});
+    }
+    function findAthleteByCoachId(athleteId, coachId) {
+        return UserModel.find({'_id': athleteId, 'followedBy': coachId});
     }
 
 }
