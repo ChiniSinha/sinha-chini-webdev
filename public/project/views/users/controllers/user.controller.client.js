@@ -100,7 +100,7 @@
                                 .register(user)
                                 .success(function (newUser) {
                                     console.log("newUser: " + newUser._id);
-                                    $location.url("/coach/"+newUser._id);
+                                    $location.url("/athlete/"+newUser._id);
                                 });
                         } else {
                             vm.error = "Username is taken! Try with a different username.";
