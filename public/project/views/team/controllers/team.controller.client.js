@@ -192,7 +192,7 @@
                                     vm.teamAthletes = athletes;
                                     vm.team = team;
                                     vm.user = user;
-                                    if(teamAthletes.length == 0) {
+                                    if(vm.teamAthletes.length == 0) {
                                         vm.error = "No athletes in team yet";
                                     }
                                 })

@@ -54,10 +54,9 @@
         <div class="col-xs-4 hidden-xs" ng-hide="model.teams.length==0">
             <div class="container-fluid cs-form">
                 <h1>List of Teams</h1>
-                <div class="cs-form-1" ng-repeat="team in model.teams">
-                    <label>{{team.name}}</label>
-                    <p>{{team.description}}</p>
-                </div>
+                <a href="#/athlete/{{model.userId}}/team/{{team._id}}" class="navbar-link">
+                    <span class="fa fa-soccer-ball-o"></span><label>{{team.name}}</label>
+                </a>
             </div>
         </div>
         <div class="col-xs-4 hidden-xs" ng-show="model.teams.length==0">
@@ -84,8 +83,9 @@
             <div class="container-fluid cs-form-1">
                 <h1>List of Teams</h1>
                 <div class="cs-form-1" ng-repeat="team in model.teams">
-                    <label>{{team.name}}</label>
-                    <p>{{team.description}}</p>
+                    <a href="#/athlete/{{model.userId}}/team/{{team._id}}" class="navbar-link">
+                        <span class="fa fa-soccer-ball-o"></span><label>{{team.name}}</label>
+                    </a>
                 </div>
             </div>
         </div>

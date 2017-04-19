@@ -204,9 +204,6 @@
         vm.logout = logout;
 
         function init() {
-            if(vm.userId == vm.athleteId){
-                vm.self = true;
-            }
             UserService
                 .findUserById(vm.athleteId)
                 .success(function (athlete) {
