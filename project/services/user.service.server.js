@@ -3,6 +3,20 @@ module.exports = function (app, models) {
     var bcrypt = require("bcrypt-nodejs");
 
     var passport = require('passport');
+    var cookieParser = require('cookie-parser');
+    var session = require('express-session');
+
+    app.use(cookieParser());
+    app.use(session({
+        secret: 'this is project secret',
+        resave: true,
+        saveUninitialized: true,
+        cookie : { secure : false, maxAge : (4 * 60 * 60 * 1000) }
+    }));
+
+    app.use(passport.initialize());
+    app.use(passport.session());
+
     var multer = require('multer');
     var upload = multer({ dest: __dirname+'/../../public/uploads' });
     var LocalStrategy = require('passport-local').Strategy;
@@ -10,9 +24,6 @@ module.exports = function (app, models) {
     var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
     var userModel = models.UserModel;
-
-    passport.serializeUser(serializeUser);
-    passport.deserializeUser(deserializeUser);
 
     app.post("/api/project/user", createUser);
     app.get("/api/project/user", findUser);
@@ -35,6 +46,8 @@ module.exports = function (app, models) {
     app.get('/api/project/athlete/coach/:coachId', findAllAthletesByCoachId);
     app.get('/api/project/coach/:coachId/athlete/:athleteId', findCoachByAthleteId);
     app.get('/api/project/athlete/:athleteId/coach/:coachId', findAthleteByCoachId);
+    app.get('/api/project/coach/:coachId/team/:teamId/filter', filterAthletesInTeam);
+    app.get('/api/project/currentUser', getCurrentUser);
 
     app.get('/auth/facebook',passport.authenticate('facebook',{ scope : 'email'}));
     app.get('/auth/facebook/callback',passport.authenticate('facebook', {
@@ -100,8 +113,6 @@ module.exports = function (app, models) {
 
     passport.use(new GoogleStrategy(googleConfig, googleStrategy));
 
-
-
     function googleStrategy(token, refreshToken, profile, done) {
         userModel
             .findUserByGoogleId(profile.id)
@@ -151,6 +162,9 @@ module.exports = function (app, models) {
                 }
             );
     }
+
+    passport.serializeUser(serializeUser);
+    passport.deserializeUser(deserializeUser);
 
     function createUser(req, res) {
         var user = req.body;
@@ -257,6 +271,10 @@ module.exports = function (app, models) {
     function logout(req, res) {
         req.logout();
         res.sendStatus(200);
+    }
+
+    function getCurrentUser(req, res) {
+        res.send(req.user);
     }
 
     function register(req, res) {
@@ -415,6 +433,18 @@ module.exports = function (app, models) {
             }, function (err) {
                 res.sendStatus(404);
             });
+    }
+
+    function filterAthletesInTeam(req, res) {
+        var coachId = req.params.coachId;
+        var teamId = req.params.teamId;
+        userModel
+            .filterAthletesInTeam(coachId, teamId)
+            .then(function (athletes) {
+                res.send(athletes);
+            }, function (err) {
+                res.sendStatus(404);
+            })
     }
 
     function serializeUser(user, done) {

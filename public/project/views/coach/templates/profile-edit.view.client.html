@@ -169,6 +169,16 @@
                 <button type="button" class="btn btn-warning btn-block"
                         ng-click="model.updateUser(model.user)">Update Details</button>
             </div>
+            <div class="col-xs-12 cs-form-1" ng-hide="model.athletes.length==0">
+                <h1>Follows</h1>
+                <div class="cs-form-1" ng-repeat="athlete in model.athletes">
+                    <h2>
+                        {{athlete.firstName}} {{athlete.lastName}}
+                    </h2>
+                    <img class="img-responsive img-thumbnail" src="{{athlete.photo}}">
+                    <a href="#/coach/{{model.userId}}/athlete/{{athlete._id}}" class="btn btn-warning btn-block">View Profile</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

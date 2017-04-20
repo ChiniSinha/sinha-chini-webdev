@@ -12,7 +12,7 @@
 
         function init() {
             UserService
-                .findUserById(vm.userId)
+                .getCurrentUser()
                 .success(function (user) {
                     if(user.role == 'COACH') {
                         vm.coach=user;
@@ -22,6 +22,9 @@
                         vm.admin = user;
                     }
                 })
+                .error(function (err) {
+                    $location.url('/home')
+                });
         }
         init();
 

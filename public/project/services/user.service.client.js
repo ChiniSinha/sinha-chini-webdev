@@ -17,6 +17,7 @@
             "logout" : logout,
             "register" : register,
             "isAdmin" : isAdmin,
+            "getCurrentUser" : getCurrentUser,
             "findAllUsers" : findAllUsers,
             "followAthlete" : followAthlete,
             "unFollowAthlete" : unFollowAthlete,
@@ -26,7 +27,8 @@
             "findAllCoachesByAthleteId" : findAllCoachesByAthleteId,
             "findAllAthletesByCoachId" : findAllAthletesByCoachId,
             "findCoachByAthleteId" :findCoachByAthleteId,
-            "findAthleteByCoachId" : findAthleteByCoachId
+            "findAthleteByCoachId" : findAthleteByCoachId,
+            "filterAthletesInTeam" : filterAthletesInTeam
         };
         return api;
 
@@ -113,6 +115,14 @@
 
         function findAthleteByCoachId(athleteId, coachId) {
             return $http.get("/api/project/athlete/" + athleteId + "/coach/" + coachId);
+        }
+
+        function filterAthletesInTeam(coachId, teamId) {
+            return $http.get("/api/project/coach/" + coachId + "/team/" + teamId + "/filter");
+        }
+        
+        function getCurrentUser() {
+            return $http.get('/api/project/currentUser');
         }
     }
 })();

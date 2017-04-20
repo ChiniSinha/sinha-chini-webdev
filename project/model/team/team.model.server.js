@@ -65,7 +65,10 @@ module.exports = function () {
     }
 
     function deleteTeam(teamId) {
-        return TeamModel.findByIdAndRemove(teamId);
+        return TeamModel.findByIdAndRemove(teamId)
+            .then(function () {
+                
+            });
     }
 
     function addPotentialAthlete(userId, teamId) {
@@ -73,7 +76,7 @@ module.exports = function () {
             .then(function (team) {
                 return model.UserModel.findUserById(userId)
                     .then(function (user) {
-                        team.potentialAthletes.push(user._id);
+                        team.potentialAthletes.addToSet(user._id);
                         user.teams.push(team._id);
                         user.save();
                         team.save();

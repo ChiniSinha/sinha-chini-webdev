@@ -48,22 +48,5 @@
 
         <a ng-click="model.updateTeam(model.team)" class="btn btn-primary btn-block">Update Team</a>
         <a href="#/coach/{{model.userId}}/team" class="btn btn-info btn-block">Cancel</a>
-        <a ng-click="model.updateTeam(model.team)" class="btn btn-danger btn-block">Delete</a>
-    </div>
-    <div ng-hide="model.team.potentialAthletes.length==0" class="cs-form-1">
-        <h2>List of Potential Athletes</h2>
-        <div class="alert alert-danger" ng-show="model.errorAthlete">
-            {{model.errorAthlete}}
-        </div>
-
-        <div class="row">
-            <div ng-repeat="athlete in model.athletes" class="col-xs-4">
-                <div class="cs-form-1">
-                    <h5>{{athlete.firstName}} {{athlete.lastName}}</h5>
-                    <img src="{{athlete.photo}}" class="img-responsive img-thumbnail">
-                    <a href="#/coach/{{model.userId}}/athlete/{{athlete._id}}" class="btn btn-warning btn-block">Profile</a>
-                </div>
-            </div>
-        </div>
     </div>
 </div>

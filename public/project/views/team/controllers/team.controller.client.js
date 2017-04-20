@@ -42,7 +42,7 @@
 
         function logout() {
             UserService.logout()
-                .then(function (response) {
+                .success(function (response) {
                     $location.url('/home');
                 });
         }
@@ -58,6 +58,7 @@
         vm.teamId = teamId;
 
         vm.updateTeam = updateTeam;
+        vm.deleteTeam = deleteTeam;
         vm.logout = logout;
 
         function init() {
@@ -96,9 +97,17 @@
                 })
         }
 
+        function deleteTeam(teamId) {
+            TeamService
+                .deleteTeam(teamId)
+                .success(function () {
+                    $location.url('/coach/' + vm.userId);
+                })
+        }
+
         function logout() {
             UserService.logout()
-                .then(function (response) {
+                .success(function (response) {
                     $location.url('/home');
                 });
         }
@@ -109,8 +118,8 @@
         var vm = this;
 
         vm.userId = $routeParams.userId;
+        vm.errorDup = $routeParams.error;
 
-        vm.addPotentialAthlete = addPotentialAthlete;
         vm.removePotentialAthlete = removePotentialAthlete;
         vm.logout = logout;
 
@@ -121,43 +130,25 @@
                     TeamService
                         .findTeamById(user.team)
                         .success(function (team) {
-                            UserService
-                                .findAllAthletesByCoachId(user._id)
-                                .success(function (athletes) {
-                                    UserService.findAthletesByTeamId(team._id)
-                                        .success(function (teamAthletes) {
-                                            vm.teamAthletes = teamAthletes;
-                                            vm.followedAthletes = athletes;
-                                            vm.team = team;
-                                            vm.user = user;
-                                            if(teamAthletes.length == 0) {
-                                                vm.error = "No athletes in team yet";
-                                            }
-                                            if(vm.followedAthletes.length == 0) {
-                                                vm.followError = "No athletes in followed by you yet";
-                                            }
-                                        })
-                                })
+                            UserService.findAthletesByTeamId(team._id)
+                                .success(function (teamAthletes) {
+                                    vm.teamAthletes = teamAthletes;
+                                    vm.team = team;
+                                    vm.user = user;
+                                    if(teamAthletes.length == 0) {
+                                        vm.error = "No athletes in team yet";
+                                    }
+                                });
+
                         })
                 });
         }
         init();
 
-        function addPotentialAthlete(userId, teamId) {
-            TeamService
-                .addPotentialAthlete(userId, teamId)
-                .success(function (team) {
-                    vm.inTeam = true;
-                    vm.team = team;
-                    $route.reload();
-                });
-        }
-
         function removePotentialAthlete(userId, teamId) {
             TeamService
                 .removePotentialAthlete(userId, teamId)
                 .success(function (team) {
-                    vm.inTeam = false;
                     vm.team = team;
                     $route.reload();
                 })
@@ -203,7 +194,7 @@
 
         function logout() {
             UserService.logout()
-                .then(function (response) {
+                .success(function (response) {
                     $location.url('/home');
                 });
         }

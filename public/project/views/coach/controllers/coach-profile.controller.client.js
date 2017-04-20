@@ -15,25 +15,29 @@
 
         function init() {
             UserService
-                .findUserById(vm.coachId)
+                .getCurrentUser()
                 .success(function (user) {
-                    TeamService
-                        .findTeamById(user.team)
-                        .success(function (team) {
-                            SchoolService
-                                .findSchoolById(vm.schoolId)
-                                .success(function (school) {
-                                    vm.school = school;
-                                    vm.team = team;
-                                    vm.coach = user;
-                                    if (vm.coach == null) {
-                                        $location.url("/home");
-                                    }
-                                    if(vm.team == null) {
-                                        vm.error = "Coach has no teams yet!";
-                                    }
-                                });
-                        });
+                    if(user) {
+                        TeamService
+                            .findTeamById(user.team)
+                            .success(function (team) {
+                                SchoolService
+                                    .findSchoolById(vm.schoolId)
+                                    .success(function (school) {
+                                        vm.school = school;
+                                        vm.team = team;
+                                        vm.coach = user;
+                                        if (vm.coach == null) {
+                                            $location.url("/home");
+                                        }
+                                        if (vm.team == null) {
+                                            vm.error = "Coach has no teams yet!";
+                                        }
+                                    })
+                            })
+                    } else {
+                        $location.url('/home');
+                    }
                 })
         }
         init();
@@ -47,7 +51,7 @@
 
     }
 
-    function CoachEditProfileController(UserService, SchoolService, TeamService, $routeParams , $location) {
+    function CoachEditProfileController(UserService, SchoolService, $routeParams , $location) {
         var vm = this;
 
         vm.userId = $routeParams.userId;
@@ -58,23 +62,30 @@
 
         function init() {
             UserService
-                .findUserById(vm.userId)
+                .getCurrentUser()
                 .success(function (user) {
-                    SchoolService
-                        .findSchoolById(user.school)
-                        .success(function (school) {
-                            UserService
-                                .findAllAthletesByCoachId(vm.userId)
-                                .success(function (athletes) {
-                                    vm.user = user;
-                                    vm.school = school;
-                                    vm.athletes = athletes;
-                                    if (vm.user == null) {
-                                        $location.url("/home");
-                                    }
-                                })
-                        });
-                });
+                    if(user) {
+                        SchoolService
+                            .findSchoolById(user.school)
+                            .success(function (school) {
+                                UserService
+                                    .findAllAthletesByCoachId(vm.userId)
+                                    .success(function (athletes) {
+                                        vm.user = user;
+                                        vm.school = school;
+                                        vm.athletes = athletes;
+                                        if (vm.user == null) {
+                                            $location.url("/home");
+                                        }
+                                    })
+                            })
+                    } else {
+                        $location.url('/home');
+                    }
+                })
+                .error(function (err) {
+                    $location.url('/home');
+                })
         }
         init();
         

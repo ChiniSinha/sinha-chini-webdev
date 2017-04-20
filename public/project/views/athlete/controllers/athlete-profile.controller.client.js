@@ -5,6 +5,7 @@
         .controller("AthleteEditProfileController", AthleteEditProfileController)
         .controller("ViewAthleteController", ViewAthleteController)
         .controller("AthleteViewAthleteController", AthleteViewAthleteController)
+        .controller("ViewFollowedAthleteController", ViewFollowedAthleteController)
 
     function ViewInterestedAthleteController(UserService, $location, $routeParams) {
         var vm = this;
@@ -22,7 +23,7 @@
                 .findAthletesBySchoolId(schoolId)
                 .success(function (athletes) {
                     UserService
-                        .findUserById(userId)
+                        .getCurrentUser()
                         .success(function (coach) {
                             vm.user = coach;
                             vm.athletes = athletes;
@@ -57,7 +58,7 @@
 
         function init() {
             UserService
-                .findUserById(userId)
+                .getCurrentUser()
                 .success(function (user) {
                     SchoolService
                         .findAllSchoolByAthleteId(userId)
@@ -128,7 +129,7 @@
                 .findUserById(vm.athleteId)
                 .success(function (user) {
                     UserService
-                        .findUserById(vm.coachId)
+                        .getCurrentUser()
                         .success(function (currentCoach) {
                             PostService
                                 .findPostByUserId(user._id)
@@ -246,6 +247,62 @@
             }
         }
 
+    }
+
+    function ViewFollowedAthleteController(UserService, TeamService, $location, $routeParams) {
+        var vm = this;
+
+        vm.userId = $routeParams.userId;
+        vm.inFollowed = true;
+
+        vm.addPotentialAthlete = addPotentialAthlete;
+        vm.logout = logout;
+
+        function init() {
+            UserService
+                .getCurrentUser()
+                .success(function (coach) {
+                    UserService
+                        .filterAthletesInTeam(coach._id, coach.team)
+                        .success(function (athletes) {
+                            vm.user = coach;
+                            vm.schoolId = coach.school;
+                            vm.teamId = coach.team;
+                            vm.athletes = athletes;
+                            if(vm.athletes.length == 0) {
+                                vm.error = 'No Athletes .';
+                            }
+                        })
+                })
+                .error(function (err) {
+                    vm.error = 'No Athletes followed yet.';
+                })
+        }
+        init();
+
+        function addPotentialAthlete(userId, teamId) {
+            TeamService
+                .addPotentialAthlete(userId, teamId)
+                .success(function (team) {
+                    if (team._id) {
+                        $location.url('/coach/' + vm.userId + '/team');
+                    } else {
+                        var error = "User already present in the team";
+                        $location.url('/coach/' + vm.userId + '/team/' + error + '/error');
+                    }
+                })
+                .error(function (response) {
+                    var error = "User already present in the team";
+                    $location.url('/coach/' + vm.userId + '/team/' + error + '/error');
+                });
+        }
+
+        function logout() {
+            UserService.logout()
+                .then(function (response) {
+                    $location.url('/home');
+                });
+        }
     }
 
 })();

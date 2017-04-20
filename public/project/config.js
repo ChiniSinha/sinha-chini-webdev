@@ -52,19 +52,30 @@
             })
             .when("/coach/:userId", {
                 templateUrl: "views/coach/templates/profile-edit.view.client.html",
-                controller: "CoachEditProfileController",
-                controllerAs: "model",
                 resolve: {
                     currentUser: checkLoggedIn
-                }
+                },
+                controller: "CoachEditProfileController",
+                controllerAs: "model",
             })
             // Teams
             .when("/athlete/:userId/team/:teamId", {
                 templateUrl: "views/team/templates/team-athlete.view.client.html",
                 controller: "AthleteViewTeamController",
-                controllerAs: "model"
+                controllerAs: "model",
+                resolve: {
+                    currentUser: checkLoggedIn
+                }
             })
             .when("/coach/:userId/team", {
+                templateUrl: "views/team/templates/team.view.client.html",
+                controller: "ViewTeamController",
+                controllerAs: "model",
+                resolve: {
+                    currentUser: checkLoggedIn
+                }
+            })
+            .when("/coach/:userId/team/:error/error", {
                 templateUrl: "views/team/templates/team.view.client.html",
                 controller: "ViewTeamController",
                 controllerAs: "model",
@@ -88,6 +99,7 @@
                     currentUser: checkLoggedIn
                 }
             })
+            // Athletes
             .when("/coach/:userId/school/:schoolId", {
                 templateUrl: "views/athlete/templates/interested-athlete.view.client.html",
                 controller: "ViewInterestedAthleteController",
@@ -96,7 +108,14 @@
                     currentUser: checkLoggedIn
                 }
             })
-            // Athletes
+            .when("/coach/:userId/followedAthletes", {
+                templateUrl: "views/athlete/templates/interested-athlete.view.client.html",
+                controller: "ViewFollowedAthleteController",
+                controllerAs: "model",
+                resolve: {
+                    currentUser: checkLoggedIn
+                }
+            })
             .when("/coach/:userId/athlete/:athleteId", {
                 templateUrl: "views/athlete/templates/profile.view.client.html",
                 controller: "ViewAthleteController",
@@ -170,7 +189,10 @@
             .when("/athlete/:userId/post/:postId/youTubeSearch", {
                 templateUrl: "views/post/templates/post-youtube-search.view.client.html",
                 controller: "YoutubeVideoSearchController",
-                controllerAs: "model"
+                controllerAs: "model",
+                resolve: {
+                    currentUser: checkLoggedIn
+                }
             })
             // Admin
             .when("/admin/:userId", {

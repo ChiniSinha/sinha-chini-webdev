@@ -42,8 +42,8 @@
             return $http.put("/api/project/team/" + teamId, team);
         }
 
-        function deleteTeam(teamId, team) {
-            return $http.delete("/api/project/team/" + teamId, team);
+        function deleteTeam(teamId) {
+            return $http.delete("/api/project/team/" + teamId);
         }
 
         function addPotentialAthlete(userId, teamId) {

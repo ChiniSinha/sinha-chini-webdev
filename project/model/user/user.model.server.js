@@ -26,7 +26,8 @@ module.exports = function () {
         "findAllCoachesByAthleteId" : findAllCoachesByAthleteId,
         "findAllAthletesByCoachId" : findAllAthletesByCoachId,
         "findCoachByAthleteId" : findCoachByAthleteId,
-        "findAthleteByCoachId" : findAthleteByCoachId
+        "findAthleteByCoachId" : findAthleteByCoachId,
+        "filterAthletesInTeam" : filterAthletesInTeam
     };
 
     return api;
@@ -143,6 +144,18 @@ module.exports = function () {
     }
     function findAthleteByCoachId(athleteId, coachId) {
         return UserModel.find({'_id': athleteId, 'followedBy': coachId});
+    }
+    
+    function filterAthletesInTeam(coachId, teamId) {
+        return UserModel.findById(coachId)
+            .then(function (user) {
+                return model.TeamModel.findTeamById(teamId)
+                    .then(function (team) {
+                        var users = user.follows.filter(function(obj) {
+                            return team.potentialAthletes.indexOf(obj) == -1; });
+                        return UserModel.find({'_id' : {'$in' : users}});
+                    });
+            });
     }
 
 }

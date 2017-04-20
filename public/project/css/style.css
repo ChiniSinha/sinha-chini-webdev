@@ -140,3 +140,7 @@ div .row ul a {
 .cs-edit {
     margin-top: -10px;
 }
+
+.modal-content {
+    background-color: rgba(255, 180, 158, 0.8);
+}

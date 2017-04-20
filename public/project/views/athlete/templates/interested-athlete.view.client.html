@@ -14,6 +14,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li> <a href="#/coach/{{model.userId}}"><span class="glyphicon glyphicon-user"></span>  Profile</a> </li>
                 <li> <a ng-hide="model.user.team" href="#/coach/{{model.userId}}/team/new"><span class="glyphicon glyphicon-plus"></span>  Add Team</a> </li>
+                <li> <a ng-show="model.user.team" href="#/coach/{{model.userId}}/team"><span class="glyphicon glyphicon-modal-window"></span>  Manage Team</a> </li>
                 <li> <a href="#/coach/{{model.userId}}/school/{{model.schoolId}}"><span class="glyphicon glyphicon-search"></span>  Search Students</a> </li>
                 <li> <a ng-click="model.logout()"><span class="glyphicon glyphicon-user"></span>  Logout</a></li>
             </ul>
@@ -22,10 +23,10 @@
 </nav>
 
 <div class="container-fluid">
-    <div ng-show="model.error" class="alert alert-danger" role="alert">
-        {{model.error}}
-    </div>
     <div class="row">
+        <div ng-show="model.error" class="alert alert-danger" role="alert">
+            {{model.error}}
+        </div>
         <div class="col-xs-12 visible-xs" ng-hide="model.athletes.length==0">
             <div class="container-fluid cs-form-1">
                 <h1> List of Athletes</h1>
@@ -34,6 +35,7 @@
                 <h2>{{athlete.firstName}} {{athlete.lastName}}</h2>
                 <img class="img-responsive img-thumbnail" src="{{athlete.photo}}" alt="No Image">
                 <a href="#/coach/{{model.userId}}/athlete/{{athlete._id}}" class="btn btn-warning btn-block">View Profile</a>
+                <a ng-show="model.inFollowed" ng-click="model.addPotentialAthlete(athlete._id, model.user.team)" class="btn btn-success btn-block">Add to my Team</a>
             </div>
         </div>
         <div class="col-xs-12 hidden-xs" ng-hide="model.athletes.length==0">
@@ -42,11 +44,14 @@
             </div>
         </div>
         <div class="col-xs-6 hidden-xs" ng-repeat="athlete in model.athletes">
-                <div class="container-fluid cs-form-1">
-                    <h2>{{athlete.firstName}} {{athlete.lastName}}</h2>
-                    <label>Year of Graduation: {{athlete.gradYear}}</label>
-                    <img class="img-thumbnail cs-responsive-image" src="{{athlete.photo}}" alt="No Image">
+            <div class="container-fluid cs-form-1">
+                <h2>{{athlete.firstName}} {{athlete.lastName}}</h2>
+                <label>Year of Graduation: {{athlete.gradYear}}</label>
+                <img class="img-thumbnail cs-responsive-image" src="{{athlete.photo}}" alt="No Image">
                 <a href="#/coach/{{model.userId}}/athlete/{{athlete._id}}" class="btn btn-warning btn-block">View Profile</a>
+                <a ng-show="model.inFollowed" ng-click="model.addPotentialAthlete(athlete._id)"
+                   class="btn btn-success btn-block">Add to my Team
+                </a>
             </div>
         </div>
     </div>
