@@ -49,7 +49,7 @@
                 <label>Year of Graduation: {{athlete.gradYear}}</label>
                 <img class="img-thumbnail cs-responsive-image" src="{{athlete.photo}}" alt="No Image">
                 <a href="#/coach/{{model.userId}}/athlete/{{athlete._id}}" class="btn btn-warning btn-block">View Profile</a>
-                <a ng-show="model.inFollowed" ng-click="model.addPotentialAthlete(athlete._id)"
+                <a ng-show="model.inFollowed" ng-click="model.addPotentialAthlete(athlete._id, model.user.team)"
                    class="btn btn-success btn-block">Add to my Team
                 </a>
             </div>
