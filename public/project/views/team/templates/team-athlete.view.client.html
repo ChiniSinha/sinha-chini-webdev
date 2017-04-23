@@ -39,7 +39,8 @@
                     <h2>{{athlete.firstName}} {{athlete.lastName}}</h2>
                     <label>Year of Graduation: {{athlete.gradYear}}</label>
                     <img class="img-responsive img-thumbnail" src="{{athlete.photo}}" alt="No Image">
-                    <a href="#/athlete/{{model.user._id}}/team/{{model.team._id}}/athlete/{{athlete._id}}" class="btn btn-warning btn-block">View Profile</a>
+                    <a ng-hide="model.userId == athlete._id" href="#/athlete/{{model.user._id}}/team/{{model.team._id}}/athlete/{{athlete._id}}" class="btn btn-warning btn-block">View Profile</a>
+                    <a ng-show="model.userId == athlete._id" href="#/athlete/{{model.user._id}}" class="btn btn-warning btn-block">View Profile</a>
                 </div>
             </div>
         </div>
