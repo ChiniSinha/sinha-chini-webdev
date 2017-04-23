@@ -183,8 +183,12 @@
                 });
         }
 
-        function deleteUser() {
-
+        function deleteUser(userId) {
+            UserService
+                .deleteUser(userId)
+                .success(function () {
+                    $location.url('/admin/' + vm.adminId + '/searchUser');
+                })
         }
 
     }

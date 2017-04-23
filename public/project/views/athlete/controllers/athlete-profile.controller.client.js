@@ -230,6 +230,7 @@
                             .findUserById(vm.athleteId)
                             .success(function (user) {
                                 vm.user = user;
+                                vm.admin = admin;
                             })
                             .error(function () {
                                 vm.error = true;
@@ -244,7 +245,7 @@
         function updateUser(newUser) {
             vm.error = null;
             UserService
-                .updateUser(userId, newUser)
+                .updateUser(vm.athleteId, newUser)
                 .success(function (user) {
                     if(user != null) {
                         vm.message = "User Successfully Updated!"
@@ -256,7 +257,11 @@
         }
 
         function deleteUser(userId) {
-
+            UserService
+                .deleteUser(userId)
+                .success(function () {
+                    $location.url('/admin/' + vm.adminId + '/searchUser');
+                })
         }
 
         function logout() {

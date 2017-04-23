@@ -69,7 +69,6 @@
 
         vm.userId = $routeParams.userId;
 
-        vm.searchUserByFirstName = searchUserByFirstName;
         vm.logout = logout;
         vm.redirectToUser = redirectToUser;
         vm.deleteUser = deleteUser;
@@ -78,7 +77,17 @@
             UserService
                 .getCurrentUser()
                 .success(function (user) {
-                    if(!user) {
+                    if(user) {
+                        UserService
+                            .findAllUsers()
+                            .success(function (users) {
+                                if(users.length > 0) {
+                                    vm.users = users;
+                                } else {
+                                    vm.error="No users found!";
+                                }
+                            })
+                    } else {
                         $location.url('/home');
                     }
                 })
