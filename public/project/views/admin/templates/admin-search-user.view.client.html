@@ -33,14 +33,16 @@
 
         <div class="row">
             <div class="col-xs-12">
-                <div class="cs-form-1" ng-repeat="user in model.users">
-                    <a ng-click="model.redirectToUser(user._id)" class="navbar-link">
-                        <span class="fa fa-user"></span>
-                    </a>
-                    <label>{{user.firstName}} {{user.lastName}} - {{user.role}}</label>
-                    <a ng-click="model.deleteUser(user._id)" class="navbar-link">
-                        <span class="glyphicon glyphicon-remove pull-right"></span>
-                    </a>
+                <div ng-repeat="user in model.users">
+                    <div class="cs-form-1" ng-hide="user.role == 'ADMIN'">
+                        <a ng-click="model.redirectToUser(user._id)" class="navbar-link">
+                            <span class="fa fa-user"></span>
+                            <label>{{user.firstName}} {{user.lastName}} - {{user.role}}</label>
+                        </a>
+                        <a ng-click="model.deleteUser(user._id)" class="navbar-link">
+                            <span class="glyphicon glyphicon-remove pull-right"></span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
