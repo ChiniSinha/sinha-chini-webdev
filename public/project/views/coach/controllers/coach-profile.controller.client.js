@@ -145,11 +145,16 @@
                                 SchoolService
                                     .findSchoolById(coach.school)
                                     .success(function (school) {
-                                        vm.user = coach;
-                                        vm.school = school;
-                                        if (vm.user == null) {
-                                            $location.url("/home");
-                                        }
+                                        SchoolService
+                                            .findAllSchoolForAdmin()
+                                            .success(function (schools) {
+                                                vm.user = coach;
+                                                vm.school = school;
+                                                vm.schools = schools;
+                                                if (vm.user == null) {
+                                                    $location.url("/home");
+                                                }
+                                            })
 
                                     })
                             })

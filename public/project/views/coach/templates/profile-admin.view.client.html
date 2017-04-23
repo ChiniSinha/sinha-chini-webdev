@@ -67,9 +67,11 @@
 
                     <div class="form-group">
                         <label for="school1">School</label>
-                        <input ng-model="model.school.name" type="text" disabled
-                               class="form-control" id="school1" placeholder="">
+                        <select class="form-control" name="schoolSelect" id="school1" ng-model="model.user.school">
+                            <option ng-repeat="school in model.schools" value="{{school._id}}"> {{school.name}}</option>
+                        </select>
                     </div>
+
                     <div class="form-group">
                         <label for="email1">Email Address</label>
                         <input ng-model="model.user.email" type="email"
@@ -147,10 +149,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="school">School</label>
-                    <input ng-model="model.school.name" type="text" disabled
-                           class="form-control" id="school" placeholder="">
+                    <label for="school1">School</label>
+                    <select class="form-control" name="schoolSelect" id="school1" ng-model="model.user.school">
+                        <option ng-repeat="school in model.schools" value="{{school._id}}"> {{school.name}}</option>
+                    </select>
                 </div>
+
                 <div class="form-group">
                     <label for="email">Email Address</label>
                     <input ng-model="model.user.email" type="email"
