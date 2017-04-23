@@ -122,8 +122,10 @@
                 .success(function (user) {
                     if(user.role == 'COACH') {
                         $location.url('/admin/' + vm.userId + '/coach/' + selectedUserId);
-                    } else {
+                    } else if(user.role == 'ATHLETE') {
                         $location.url('/admin/' + vm.userId + '/athlete/' + selectedUserId);
+                    } else {
+                        $location.url('/admin/' + vm.userId);
                     }
                 })
         }
