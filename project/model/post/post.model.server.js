@@ -12,6 +12,7 @@ module.exports = function () {
         "findPostByUserId" : findPostByUserId,
         "updatePost" : updatePost,
         "deletePost" : deletePost,
+        "deletePostForAthlete" : deletePostForAthlete,
         "setModel":setModel
     };
 
@@ -49,8 +50,19 @@ module.exports = function () {
         return PostModel.findByIdAndUpdate(postId, post, {new : true});
     }
 
+    function deletePostForAthlete(athleteId) {
+        return PostModel.remove({'_user' : athleteId});
+    }
     function deletePost(postId) {
-        return PostModel.findByIdAndRemove(postId);
+        return PostModel.findById(postId)
+            .then(function (post) {
+                return model.UserModel.findUserById(post._user)
+                    .then(function (user) {
+                        user.posts.pull(postId);
+                        user.save();
+                        return PostModel.findByIdAndRemove(postId);
+                    })
+            })
     }
 
     function setModel(_model) {

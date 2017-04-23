@@ -20,7 +20,6 @@ module.exports = function (app, models) {
             .then(function (team) {
                 res.send(team);
             }, function (err) {
-                console.log(err);
                 res.sendStatus(500);
             });
     }

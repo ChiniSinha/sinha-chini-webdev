@@ -17,6 +17,8 @@ module.exports = function () {
         "addPotentialAthlete" : addPotentialAthlete,
         "removePotentialAthlete" : removePotentialAthlete,
         "findTeamByAthleteId" : findTeamByAthleteId,
+        "deleteTeamForCoach" : deleteTeamForCoach,
+        "deleteTeamsForSchool" : deleteTeamsForSchool,
         "setModel":setModel
     };
 
@@ -65,10 +67,51 @@ module.exports = function () {
     }
 
     function deleteTeam(teamId) {
-        return TeamModel.findByIdAndRemove(teamId)
-            .then(function () {
-                
+        return TeamModel.findById(teamId)
+            .then(function(team) {
+                return model.UserModel.findUserById(team._coach)
+                    .then(function (coach) {
+                        return model.SchoolModel.findSchoolById(coach.school)
+                            .then(function (school) {
+                                school.teams.pull(coach.team);
+                                school.save();
+                                coach.team = undefined;
+                                coach.save();
+                                return model.UserModel.findAthletesByTeamId(team._id)
+                                    .then(function (athletes) {
+                                        return deleteTeamForAthletes(athletes, team._id);
+                                    })
+                            })
+                    })
+            }, function (err) {
+                return err;
+            })
+    }
+
+    function deleteTeamForAthletes(athletes, teamId) {
+        if(athletes.length == 0){
+            return TeamModel.remove({_id: teamId})
+                .then(function (response) {
+                    if(response.result.n == 1 && response.result.ok == 1){
+                        return response;
+                    }
+                }, function (err) {
+                    return err;
+                });
+        }
+
+        return model.UserModel.removeTeamForAthlete(athletes.shift(), teamId)
+            .then(function (response) {
+                if(response.result.n == 1 && response.result.ok == 1){
+                    return deleteTeamForAthletes(athletes, teamId);
+                }
+            }, function (err) {
+                return err;
             });
+    }
+
+    function deleteTeamForCoach(coachId) {
+        return TeamModel.remove({'_coach' : coachId});
     }
 
     function addPotentialAthlete(userId, teamId) {
@@ -104,6 +147,10 @@ module.exports = function () {
         return TeamModel.find({'potentialAthletes' : athleteId});
     }
 
+    function deleteTeamsForSchool(schoolId) {
+        return TeamModel.findById()
+    }
+    
     function setModel(_model) {
         model = _model;
     }

@@ -3,7 +3,8 @@
         .module("RecruiterWeb")
         .controller("PostListController", PostListController)
         .controller("PostNewController", PostNewController)
-        .controller('PostEditController', PostEditController)
+        .controller("PostEditController", PostEditController)
+        .controller("AdminPostEditController", AdminPostEditController)
 
     function PostListController(PostService, UserService, $routeParams, $sce, $location) {
         var vm = this;
@@ -15,12 +16,20 @@
         vm.userId = $routeParams.userId;
 
         function init() {
-            PostService
-                .findPostByUserId(vm.userId)
-                .success(function (posts) {
-                    vm.posts = posts;
-                    if (vm.posts.length == 0) {
-                        vm.error = "No Posts found!";
+            UserService
+                .getCurrentUser()
+                .success(function (user) {
+                    if (user) {
+                        PostService
+                            .findPostByUserId(vm.userId)
+                            .success(function (posts) {
+                                vm.posts = posts;
+                                if (vm.posts.length == 0) {
+                                    vm.error = "No Posts found!";
+                                }
+                            });
+                    } else {
+                        $location.url('/home');
                     }
                 })
         }
@@ -59,6 +68,13 @@
         vm.userId = $routeParams.userId;
 
         function init() {
+            UserService
+                .getCurrentUser()
+                .success(function (user) {
+                    if(!user) {
+                        $location.url('/home');
+                    }
+                })
         }
         init();
 
@@ -90,7 +106,7 @@
         }
     }
 
-    function PostEditController(PostService, $location, $routeParams) {
+    function PostEditController(PostService, UserService, $location, $routeParams) {
         var vm = this;
 
         // Event Handlers
@@ -102,11 +118,19 @@
         vm.postId = $routeParams.postId;
 
         function init() {
-            PostService
-                .findPostById(vm.postId)
-                .success(function (post) {
-                    vm.post = post;
-                });
+            UserService
+                .getCurrentUser()
+                .success(function (user) {
+                    if(user) {
+                        PostService
+                            .findPostById(vm.postId)
+                            .success(function (post) {
+                                vm.post = post;
+                            });
+                    } else {
+                        $location.url('/home');
+                    }
+                })
         }
 
         init();
@@ -140,5 +164,66 @@
 
     }
 
+    function AdminPostEditController(PostService, UserService, $routeParams, $sce, $location, $route) {
+        var vm = this;
+
+        // Event Handlers
+        vm.doYouTrustUrl = doYouTrustUrl;
+        vm.deletePost = deletePost;
+        vm.logout = logout;
+
+        vm.adminId = $routeParams.adminId;
+        vm.athleteId = $routeParams.athleteId;
+
+        function init() {
+            UserService
+                .getCurrentUser()
+                .success(function (admin) {
+                    if (admin) {
+                        PostService
+                            .findPostByUserId(vm.athleteId)
+                            .success(function (posts) {
+                                vm.posts = posts;
+                                if (vm.posts.length == 0) {
+                                    vm.error = "No Posts By User found!";
+                                }
+                            });
+                    } else {
+                        $location.url('/home');
+                    }
+                })
+        }
+        init();
+
+        function doYouTrustUrl(url) {
+            var baseUrl = "https://www.youtube.com/embed/";
+            var urlParts = url.split('/');
+            if(urlParts[urlParts.length - 1].includes('=')){
+                var subPart = urlParts[urlParts.length - 1];
+                var urlSplit = subPart.split('=');
+                var id = urlSplit[urlSplit.length - 1];
+                return $sce.trustAsResourceUrl(baseUrl+id);
+            }else {
+                id = urlParts[urlParts.length - 1];
+                return $sce.trustAsResourceUrl(baseUrl+id);
+            }
+        }
+
+        function deletePost(postId) {
+            PostService
+                .deletePost(postId)
+                .success(function () {
+                    $route.reload();
+                })
+        }
+
+        function logout() {
+            UserService.logout()
+                .then(function (response) {
+                    $location.url('/home');
+                });
+        }
+
+    }
 
 })();

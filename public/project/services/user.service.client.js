@@ -28,7 +28,8 @@
             "findAllAthletesByCoachId" : findAllAthletesByCoachId,
             "findCoachByAthleteId" :findCoachByAthleteId,
             "findAthleteByCoachId" : findAthleteByCoachId,
-            "filterAthletesInTeam" : filterAthletesInTeam
+            "filterAthletesInTeam" : filterAthletesInTeam,
+            "searchUserByFirstName" : searchUserByFirstName
         };
         return api;
 
@@ -123,6 +124,10 @@
         
         function getCurrentUser() {
             return $http.get('/api/project/currentUser');
+        }
+
+        function searchUserByFirstName(name) {
+            return $http.get('/api/project/searchUser/' + name);
         }
     }
 })();

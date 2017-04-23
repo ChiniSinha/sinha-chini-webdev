@@ -13,6 +13,7 @@ module.exports = function (app, models) {
     app.put("/api/project/removeCoach/:userId/school/:schoolId", removeCoach);
     app.get("/api/project/school/:schoolId/athlete/:userId", findSchoolByAthleteId);
     app.get("/api/project/school/athlete/:userId", findAllSchoolByAthleteId);
+    app.get("/api/project/allSchool", findAllSchoolForAdmin);
 
 
     function createSchool(req, res) {
@@ -141,5 +142,15 @@ module.exports = function (app, models) {
             }, function (err) {
                 res.sendStatus(404);
             });
+    }
+    
+    function findAllSchoolForAdmin(req, res) {
+        schoolModel
+            .findAllSchoolForAdmin()
+            .then(function (schools) {
+                res.send(schools);
+            }, function (err) {
+                res.sendStatus(404);
+            })
     }
 }

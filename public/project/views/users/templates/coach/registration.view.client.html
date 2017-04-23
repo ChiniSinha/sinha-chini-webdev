@@ -22,66 +22,127 @@
 
 <div class="container-fluid">
     <div class="cs-form">
-        <h1>Coach Registration</h1>
+        <h1><i class="glyphicon glyphicon-user" aria-hidden="true"></i>  Coach Registration</h1>
 
         <div ng-show="model.error" class="alert alert-danger" role="alert">
             {{model.error}}
         </div>
 
-        <label for="school">School of Coach</label>
-        <input ng-model="model.schoolName" type="text" disabled class="form-control" id="school">
+        <div class="alert alert-danger"
+             ng-show="!form.$valid && !form.$submitted &&
+             form.username.$touched && form.firstName.$touched &&
+             form.lastName.$touched && form.email.$touched &&
+             form.phone.$touched && form.password.$touched &&
+             form.phone.$touched"
+             role="alert">
+            <i class="glyphicon glyphicon-alert" aria-hidden="true"></i>
+            Correct all the details before registration!
+        </div>
 
-        <label for="username">Username</label>
-        <input ng-model="user.username"
-               id="username"
-               type="text"
-               class="form-control"
-               placeholder="Username"/>
+        <form action="#/coachRegister"
+              name="form"
+              novalidate
+              method="POST">
 
-        <label for="firstName">First Name</label>
-        <input ng-model="user.firstName"
-               id="firstName"
-               type="text"
-               class="form-control"
-               placeholder="First Name"/>
+            <label for="school">School of Coach</label>
+            <input ng-model="model.schoolName" type="text" disabled class="form-control" id="school">
 
-        <label for="lastName">Last Name</label>
-        <input ng-model="user.lastName"
-               id="lastName"
-               type="text"
-               class="form-control"
-               placeholder="Last Name"/>
+            <label for="username">Username</label>
+            <input ng-model="user.username"
+                   type="text"
+                   id="username"
+                   class="form-control"
+                   name="username"
+                   placeholder="Username" required/>
 
-        <label for="email">Email</label>
-        <input ng-model="user.email"
-               id="email"
-               type="email"
-               class="form-control"
-               placeholder="Email"/>
+            <div ng-show="form.$submitted || form.username.$touched">
+                <div ng-show="form.username.$error.required">
+                    <p>Username is required.</p>
+                </div>
+            </div>
 
-        <label for="phone">Phone Number</label>
-        <input ng-model="user.phone"
-                type="tel"
-                id="phone"
-                class="form-control"
-                placeholder="Phone Number"/>
+            <label for="firstName">First Name</label>
+            <input ng-model="user.firstName"
+                   type="text"
+                   id="firstName"
+                   class="form-control"
+                   name="firstName"
+                   placeholder="First Name" required/>
 
-        <label for="password">Password</label>
-        <input ng-model="user.password"
-               id="password"
-               type="password"
-               class="form-control"
-               placeholder="Password"/>
+            <div ng-show="form.$submitted || form.firstName.$touched">
+                <div ng-show="form.firstName.$error.required">
+                    <p>First Name is required.</p>
+                </div>
+            </div>
 
-        <label for="confirm">Comfirm Password</label>
-        <input ng-model="user.confirmPassword"
-               id="confirm"
-               type="password"
-               class="form-control"
-               placeholder="Confirm Password"/>
+            <label for="lastName">Last Name</label>
+            <input ng-model="user.lastName"
+                   type="text"
+                   id="lastName"
+                   class="form-control"
+                   name="lastName"
+                   placeholder="Last Name" required/>
+            <div ng-show="form.$submitted || form.lastName.$touched">
+                <div ng-show="form.lastName.$error.required">
+                    <p>Last Name is required.</p>
+                </div>
+            </div>
 
-        <a ng-click="model.register(user)" class="btn btn-primary btn-block">Register</a>
-        <a class="btn btn-danger  btn-block"
-           href="#/home">Cancel</a>
+            <label for="email">Email</label>
+            <input ng-model="user.email"
+                   type="email"
+                   id="email"
+                   class="form-control"
+                   name="email"
+                   placeholder="Email" required/>
+            <div ng-show="form.$submitted || form.email.$touched">
+                <div ng-show="form.email.$error.email || form.email.$error.required">
+                    <p>Valid email address is required.</p>
+                </div>
+            </div>
+
+            <label for="phone">Phone Number</label>
+            <input ng-model="user.phone"
+                   type="text"
+                   id="phone"
+                   pattern="[0-9]{10}"
+                   class="form-control"
+                   name="phone"
+                   placeholder="Phone Number"/>
+            <div ng-show="form.$submitted || form.phone.$touched">
+                <div ng-show="form.phone.$error.pattern">
+                    <p>Phone number format: 10 digit number (8571234567) </p>
+                </div>
+            </div>
+
+            <label for="password">Password</label>
+            <input ng-model="user.password"
+                   type="password"
+                   id="password"
+                   class="form-control"
+                   name="password"
+                   placeholder="Password" required/>
+            <div ng-show="form.$submitted || form.password.$touched">
+                <div ng-show="form.password.$error.required">
+                    <p>Password is required.</p>
+                </div>
+            </div>
+
+            <label for="confirm">Confirm Password</label>
+            <input ng-model="user.confirmPassword"
+                   type="password"
+                   id="confirm"
+                   name="confirm" class="form-control"
+                   placeholder="Confirm Password" required/>
+            <div ng-show="form.$submitted || form.confirm.$touched">
+                <div ng-show="form.confirm.$error.required">
+                    <p>Confirm Password.</p>
+                </div>
+            </div>
+
+            <a ng-click="form.$valid && model.register(user)" class="btn btn-primary btn-block">Register</a>
+            <a class="btn btn-danger  btn-block"
+               href="#/home">Cancel</a>
+        </form>
     </div>
 </div>

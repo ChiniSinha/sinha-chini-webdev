@@ -4,19 +4,26 @@
         .module('RecruiterWeb')
         .controller('YoutubeVideoSearchController',YoutubeVideoSearchController);
 
-    function YoutubeVideoSearchController(YoutubeService, PostService, $routeParams, $location, $sce) {
+    function YoutubeVideoSearchController(YoutubeService, PostService, UserService, $routeParams, $location, $sce) {
 
         var vm = this;
 
         vm.searchVideos = searchVideos;
         vm.selectVideo = selectVideo;
         vm.getIframeSrc = getIframeSrc;
+        vm.logout = logout;
 
         vm.userId = $routeParams.userId;
         vm.postId = $routeParams.postId;
 
         function init() {
-
+            UserService
+                .getCurrentUser()
+                .success(function (user) {
+                    if(!user) {
+                        $location.url('/home');
+                    }
+                })
         }
         init();
 
@@ -47,6 +54,13 @@
         function getIframeSrc(videoId) {
             var url = 'https://www.youtube.com/embed/' + videoId
             return $sce.trustAsResourceUrl(url);
+        }
+
+        function logout() {
+            UserService.logout()
+                .then(function (response) {
+                    $location.url('/home');
+                });
         }
     }
 })();

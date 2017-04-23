@@ -23,30 +23,64 @@
 <div class="container-fluid">
     <div class="cs-form">
 
+        <form method="POST" name="form" novalidate>
+            <h1><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i>  Login</h1>
 
-        <h1>Login</h1>
+            <div class="alert alert-danger"
+                 ng-show="!form.$valid && !form.$submitted && form.username.$touched && form.password.$touched"
+                 role="alert">
+                <i class="glyphicon glyphicon-alert" aria-hidden="true"></i>
+                    Username and password are required!
+            </div>
 
-        <div class="alert alert-danger" ng-show="model.error">
-            {{model.error}}
-        </div>
+            <div class="cs-form-1">
+                <label class="radio-inline" ng-click="model.toggleLogin('ATHLETE')"><input type="radio" name="optradio" checked>Athlete</label>
+                <label class="radio-inline" ng-click="model.toggleLogin('COACH')"><input type="radio" name="optradio">Coach</label>
+                <label class="radio-inline" ng-click="model.toggleLogin('ADMIN')"><input type="radio" name="optradio">Admin</label>
+            </div>
+            <div class="cs-form-1">
 
-        <label for="username">Username</label>
-        <input ng-model="user.username" class="form-control" type="text" id="username" placeholder="Username"/>
-        <label for="password">Password</label>
-        <input ng-model="user.password" class="form-control" type="password" id="password" placeholder="Password"/>
+                <div ng-show="model.error" class="alert alert-danger" role="alert"> {{model.error}}</div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" ng-model="user.username"
+                           class="form-control" id="username"
+                           name="username" placeholder="Username" required/>
 
-        <a ng-click="model.login(user)" class="btn btn-primary btn-block">Login</a>
+                    <div ng-show="form.$submitted || form.username.$touched">
+                        <div ng-show="form.username.$error.required">
+                            <p>Username is required.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" ng-model="user.password"
+                           class="form-control" id="password"
+                           required name="password" placeholder="Password"/>
+                    <div ng-show="form.$submitted || form.password.$touched">
+                        <div ng-show="form.password.$error.required">
+                            <p>Password is required</p>
+                        </div>
+                    </div>
+                </div>
 
-        <a href="#/athleteRegister" class="btn btn-success btn-block">
-            Register
-        </a>
+                <a ng-click="form.$valid && model.login(user)" class="btn btn-primary btn-block">Login</a>
 
-        <a href="/auth/facebook" class="btn btn-info btn-block">
-            <span class="fa fa-facebook-official"></span> Login with Facebook
-        </a>
-        <a href="/auth/google" class="btn btn-danger btn-block">
-            <span class="fa fa-google-plus-official"></span> Login with Google
-        </a>
+                <a ng-show="model.athlete" ng-hide="model.admin || model.coach" href="#/athleteRegister" class="btn btn-success btn-block">
+                    Register
+                </a>
+                <a ng-show="model.coach" ng-hide="model.admin || model.athlete" href="#/coachRegister" class="btn btn-success btn-block">
+                    Register
+                </a>
 
+                <a ng-show="model.athlete" href="/auth/facebook" class="btn btn-info btn-block">
+                    <span class="fa fa-facebook-official"></span> Login with Facebook
+                </a>
+                <a ng-show="model.athlete" href="/auth/google" class="btn btn-danger btn-block">
+                    <span class="fa fa-google-plus-official"></span> Login with Google
+                </a>
+            </div>
+        </form>
     </div>
 </div>

@@ -6,6 +6,7 @@
         .controller("ViewAthleteController", ViewAthleteController)
         .controller("AthleteViewAthleteController", AthleteViewAthleteController)
         .controller("ViewFollowedAthleteController", ViewFollowedAthleteController)
+        .controller("AdminViewAthleteController", AdminViewAthleteController)
 
     function ViewInterestedAthleteController(UserService, $location, $routeParams) {
         var vm = this;
@@ -20,20 +21,24 @@
 
         function init() {
             UserService
-                .findAthletesBySchoolId(schoolId)
-                .success(function (athletes) {
-                    UserService
-                        .getCurrentUser()
-                        .success(function (coach) {
-                            vm.user = coach;
-                            vm.athletes = athletes;
-                            if(vm.athletes.length == 0) {
+                .getCurrentUser()
+                .success(function (coach) {
+                    if(coach) {
+                        UserService
+                            .findAthletesBySchoolId(schoolId)
+                            .success(function (athletes) {
+                                vm.user = coach;
+                                vm.athletes = athletes;
+                                if(vm.athletes.length == 0) {
+                                    vm.error = 'School has no interested Athletes yet.';
+                                }
+                            })
+                            .error(function (err) {
                                 vm.error = 'School has no interested Athletes yet.';
-                            }
-                        })
-                })
-                .error(function (err) {
-                    vm.error = 'School has no interested Athletes yet.';
+                            })
+                    } else {
+                        $location.url('/home');
+                    }
                 })
         }
         init();
@@ -60,28 +65,32 @@
             UserService
                 .getCurrentUser()
                 .success(function (user) {
-                    SchoolService
-                        .findAllSchoolByAthleteId(userId)
-                        .success(function (schools) {
-                            UserService
-                                .findAllCoachesByAthleteId(userId)
-                                .success(function (coaches) {
-                                    TeamService
-                                        .findTeamByAthleteId(userId)
-                                        .success(function (teams) {
-                                            vm.athleteTeams = teams;
-                                        });
-                                    vm.coaches = coaches;
-                                    vm.interestedSchools = schools;
-                                    vm.user = user;
-                                    if (vm.user == null) {
-                                        $location.url("/home");
-                                    }
-                                });
-                        })
-                        .error(function () {
-                            vm.error = true;
-                        })
+                    if(user) {
+                        SchoolService
+                            .findAllSchoolByAthleteId(userId)
+                            .success(function (schools) {
+                                UserService
+                                    .findAllCoachesByAthleteId(userId)
+                                    .success(function (coaches) {
+                                        TeamService
+                                            .findTeamByAthleteId(userId)
+                                            .success(function (teams) {
+                                                vm.athleteTeams = teams;
+                                            });
+                                        vm.coaches = coaches;
+                                        vm.interestedSchools = schools;
+                                        vm.user = user;
+                                        if (vm.user == null) {
+                                            $location.url("/home");
+                                        }
+                                    });
+                            })
+                            .error(function () {
+                                vm.error = true;
+                            })
+                    } else {
+                        $location.url('/home');
+                    }
                 });
         }
         init();
@@ -101,7 +110,11 @@
         }
 
         function deleteUser(userId) {
-
+            UserService
+                .deleteUser(userId)
+                .success(function () {
+                    $location.url('/home');
+                })
         }
 
         function logout() {
@@ -126,30 +139,34 @@
 
         function init() {
             UserService
-                .findUserById(vm.athleteId)
-                .success(function (user) {
-                    UserService
-                        .getCurrentUser()
-                        .success(function (currentCoach) {
-                            PostService
-                                .findPostByUserId(user._id)
-                                .success(function (posts) {
-                                    UserService
-                                        .findCoachByAthleteId(vm.coachId, vm.athleteId)
-                                        .success(function (coach) {
-                                            vm.posts = posts;
-                                            vm.athlete = user;
-                                            vm.coach = currentCoach;
-                                            if (posts.length == 0) {
-                                                vm.error = "Athlete has not posted anything yet!"
-                                            }
-                                            if (coach.length > 0) {
-                                                vm.follows = true;
-                                            }
-                                        })
-                                })
-                        })
-                });
+                .getCurrentUser()
+                .success(function (currentCoach) {
+                    if (currentCoach) {
+                        UserService
+                            .findUserById(vm.athleteId)
+                            .success(function (user) {
+                                PostService
+                                    .findPostByUserId(user._id)
+                                    .success(function (posts) {
+                                        UserService
+                                            .findCoachByAthleteId(vm.coachId, vm.athleteId)
+                                            .success(function (coach) {
+                                                vm.posts = posts;
+                                                vm.athlete = user;
+                                                vm.coach = currentCoach;
+                                                if (posts.length == 0) {
+                                                    vm.error = "Athlete has not posted anything yet!"
+                                                }
+                                                if (coach.length > 0) {
+                                                    vm.follows = true;
+                                                }
+                                            })
+                                    })
+                            });
+                    } else {
+                        $location.url('/home');
+                    }
+                })
         }
         init();
 
@@ -194,37 +211,53 @@
     }
 
 
-    function AthleteViewAthleteController(UserService, PostService, TeamService, $routeParams, $location, $sce) {
+    function AdminViewAthleteController(UserService, PostService, TeamService, $routeParams, $location, $sce) {
         var vm = this;
 
-        vm.userId = $routeParams.userId;
+        vm.adminId = $routeParams.adminId;
         vm.athleteId = $routeParams.athleteId;
-        vm.teamId = $routeParams.teamId;
 
-        vm.doYouTrustUrl = doYouTrustUrl;
+        vm.updateUser = updateUser;
         vm.logout = logout;
+        vm.deleteUser = deleteUser;
 
         function init() {
             UserService
-                .findUserById(vm.athleteId)
-                .success(function (athlete) {
-                    PostService
-                        .findPostByUserId(athlete._id)
-                        .success(function (posts) {
-                            TeamService
-                                .findTeamById(vm.teamId)
-                                .success(function (team) {
-                                    vm.posts = posts;
-                                    vm.athlete = athlete;
-                                    vm.team = team;
-                                    if (posts.length == 0) {
-                                        vm.error = "Athlete has not posted anything yet!"
-                                    }
-                                })
-                        })
+                .getCurrentUser()
+                .success(function (admin) {
+                    if(admin) {
+                        UserService
+                            .findUserById(vm.athleteId)
+                            .success(function (user) {
+                                vm.user = user;
+                            })
+                            .error(function () {
+                                vm.error = true;
+                            });
+                    } else {
+                        $location.url('/home');
+                    }
                 });
         }
         init();
+
+        function updateUser(newUser) {
+            vm.error = null;
+            UserService
+                .updateUser(userId, newUser)
+                .success(function (user) {
+                    if(user != null) {
+                        vm.message = "User Successfully Updated!"
+                    }
+                })
+                .error(function (err) {
+                    vm.error = "Unable to update user";
+                })
+        }
+
+        function deleteUser(userId) {
+
+        }
 
         function logout() {
             UserService.logout()
@@ -232,21 +265,6 @@
                     $location.url('/home');
                 });
         }
-
-        function doYouTrustUrl(url) {
-            var baseUrl = "https://www.youtube.com/embed/";
-            var urlParts = url.split('/');
-            if(urlParts[urlParts.length - 1].includes('=')){
-                var subPart = urlParts[urlParts.length - 1];
-                var urlSplit = subPart.split('=');
-                var id = urlSplit[urlSplit.length - 1];
-                return $sce.trustAsResourceUrl(baseUrl+id);
-            }else {
-                id = urlParts[urlParts.length - 1];
-                return $sce.trustAsResourceUrl(baseUrl+id);
-            }
-        }
-
     }
 
     function ViewFollowedAthleteController(UserService, TeamService, $location, $routeParams) {
@@ -262,21 +280,25 @@
             UserService
                 .getCurrentUser()
                 .success(function (coach) {
-                    UserService
-                        .filterAthletesInTeam(coach._id, coach.team)
-                        .success(function (athletes) {
-                            vm.user = coach;
-                            vm.schoolId = coach.school;
-                            vm.teamId = coach.team;
-                            vm.athletes = athletes;
-                            if(vm.athletes.length == 0) {
-                                vm.error = 'No Athletes .';
-                            }
-                        })
-                })
-                .error(function (err) {
-                    vm.error = 'No Athletes followed yet.';
-                })
+                    if(coach) {
+                        UserService
+                            .filterAthletesInTeam(coach._id, coach.team)
+                            .success(function (athletes) {
+                                vm.user = coach;
+                                vm.schoolId = coach.school;
+                                vm.teamId = coach.team;
+                                vm.athletes = athletes;
+                                if(vm.athletes.length == 0) {
+                                    vm.error = 'No Athletes .';
+                                }
+                            })
+                            .error(function (err) {
+                                vm.error = 'No Athletes followed yet.';
+                            });
+                    } else {
+                        $location.url('/home');
+                    }
+                });
         }
         init();
 
@@ -303,6 +325,69 @@
                     $location.url('/home');
                 });
         }
+    }
+
+    function AthleteViewAthleteController(UserService, PostService, TeamService, $routeParams, $location, $sce) {
+        var vm = this;
+
+        vm.userId = $routeParams.userId;
+        vm.athleteId = $routeParams.athleteId;
+        vm.teamId = $routeParams.teamId;
+
+        vm.doYouTrustUrl = doYouTrustUrl;
+        vm.logout = logout;
+
+        function init() {
+            UserService
+                .getCurrentUser()
+                .success(function (coach) {
+                    if(coach) {
+                        UserService
+                            .findUserById(vm.athleteId)
+                            .success(function (athlete) {
+                                PostService
+                                    .findPostByUserId(athlete._id)
+                                    .success(function (posts) {
+                                        TeamService
+                                            .findTeamById(vm.teamId)
+                                            .success(function (team) {
+                                                vm.posts = posts;
+                                                vm.athlete = athlete;
+                                                vm.team = team;
+                                                if (posts.length == 0) {
+                                                    vm.error = "Athlete has not posted anything yet!"
+                                                }
+                                            })
+                                    })
+                            });
+                    } else {
+                        $location.url('/home');
+                    }
+                });
+        }
+        init();
+
+        function logout() {
+            UserService.logout()
+                .then(function (response) {
+                    $location.url('/home');
+                });
+        }
+
+        function doYouTrustUrl(url) {
+            var baseUrl = "https://www.youtube.com/embed/";
+            var urlParts = url.split('/');
+            if(urlParts[urlParts.length - 1].includes('=')){
+                var subPart = urlParts[urlParts.length - 1];
+                var urlSplit = subPart.split('=');
+                var id = urlSplit[urlSplit.length - 1];
+                return $sce.trustAsResourceUrl(baseUrl+id);
+            }else {
+                id = urlParts[urlParts.length - 1];
+                return $sce.trustAsResourceUrl(baseUrl+id);
+            }
+        }
+
     }
 
 })();

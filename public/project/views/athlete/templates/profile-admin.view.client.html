@@ -6,17 +6,16 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#/home/{{model.userId}}">
+            <a class="navbar-brand" href="#/home/{{model.adminId}}">
                 <img src="http://sinha-chini-webdev.herokuapp.com/images/mvpr11.png" alt="Home">
             </a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
-                <li> <a href="#/coach/{{model.userId}}"><span class="glyphicon glyphicon-user"></span>  Profile</a> </li>
-                <li> <a ng-hide="model.user.team" href="#/coach/{{model.userId}}/team/new"><span class="glyphicon glyphicon-plus"></span>  Add Team</a> </li>
-                <li> <a ng-show="model.user.team" href="#/coach/{{model.userId}}/team"><span class="glyphicon glyphicon-modal-window"></span>  Manage Team</a> </li>
-                <li> <a href="#/coach/{{model.userId}}/school/{{model.user.school}}"><span class="glyphicon glyphicon-search"></span>  Search Students</a> </li>
-                <li> <a ng-click="model.logout()"><span class="glyphicon glyphicon-log-out"></span>  Logout</a></li>
+                <li> <a href="#/admin/{{model.adminId}}"><span class="glyphicon glyphicon-modal-window"></span>  Manage Profile/Schools</a> </li>
+                <li> <a href="#/admin/{{model.adminId}}/school"><span class="glyphicon glyphicon-plus"></span>  Add School</a> </li>
+                <li> <a href="#/admin/{{model.adminId}}/searchUser"><span class="glyphicon glyphicon-search"></span>  Search Users</a> </li>
+                <li> <a ng-click="model.logout()"><span class="glyphicon glyphicon-user"></span>  Logout</a></li>
             </ul>
         </div>
     </div>
@@ -25,33 +24,21 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-4 hidden-xs">
-            <div class="container-fluid cs-form">
+            <div class="container-fluid cs-form-1">
                 <img class="img-thumbnail img-responsive" src="{{model.user.photo}}">
                 <form action="/api/project/user/upload" method="post" enctype="multipart/form-data">
 
-                    <input class="form-control cs-upload" id="upload" type="file" name="myFile">
+                    <input class="form-control" id="upload" type="file" name="myFile">
                     <input  name="userId" value="{{model.userId}}" type="hidden"/>
                     <button type="submit" class="btn btn-warning btn-block">Upload Profile Picture</button>
                 </form>
-                <div ng-show="model.user.team">
-                    <a href="#/coach/{{model.userId}}/team" class="btn btn-block btn-warning">Manage Team</a>
-                </div>
-            </div>
-            <div ng-hide="model.athletes.length==0">
-                <div class="container-fluid cs-form-1">
-                    <h1>Follows</h1>
-                    <div class="cs-form-1" ng-repeat="athlete in model.athletes">
-                        <h2>
-                            {{athlete.firstName}} {{athlete.lastName}}
-                        </h2>
-                        <img class="img-responsive img-thumbnail" src="{{athlete.photo}}">
-                        <a href="#/coach/{{model.userId}}/athlete/{{athlete._id}}" class="btn btn-warning btn-block">View Profile</a>
-                    </div>
+                <div ng-show="model.user.posts">
+                    <a href="#/admin/{{model.adminId}}/athlete/{{model.athleteId}}/post" class="btn btn-block btn-warning">Manage {{model.user.username}}'s Posts</a>
                 </div>
             </div>
         </div>
         <div class="col-xs-8 hidden-xs">
-            <div class="container-fluid cs-form">
+            <div class="container-fluid cs-form-1">
                 <h1>{{model.user.firstName}} {{model.user.lastName}}</h1>
 
                 <div class="alert alert-danger" ng-show="model.error">
@@ -63,11 +50,18 @@
                 </div>
 
                 <form>
-
                     <div class="form-group">
-                        <label for="school1">School</label>
-                        <input ng-model="model.school.name" type="text" disabled
-                               class="form-control" id="school1" placeholder="">
+                        <label for="username1">Username</label>
+                        <input ng-model="model.user.username" type="text"
+                               class="form-control" id="username1" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label for="role1">Role</label>
+                        <select class="form-control" name="roleSelect" id="role1" ng-model="model.user.role">
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="ATHLETE">ATHLETE</option>
+                            <option value="COACH">COACH</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="email1">Email Address</label>
@@ -90,30 +84,33 @@
                                class="form-control" id="contact1" placeholder="8571234567">
                     </div>
                     <div class="form-group">
+                        <label for="grad1">Year of Graduation</label>
+                        <input ng-model="model.user.gradYear" type="number"
+                               class="form-control" id="grad1" placeholder="2017">
+                    </div>
+                    <div class="form-group">
                         <label for="about1">About</label>
                         <textarea ng-model="model.user.about" class="form-control" id="about1" placeholder="Write about yourself" rows="5"></textarea>
                     </div>
                 </form>
                 <button type="button" class="btn btn-warning btn-block"
-                        ng-click="model.updateUser(model.user)">Update Details</button>
-                <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#myModal">
-                    Unsubscribe
-                </button>
+                        ng-click="model.updateUser(model.user)">Update {{model.user.username}}'s Details</button>
+                <button type="button" class="btn btn-danger btn-block"
+                        ng-click="model.deleteUser(model.user._id)">Delete {{model.user.username}}</button>
             </div>
-        </div>
         </div>
         <div class="col-xs-12 visible-xs">
             <div class="container-fluid cs-form-1">
-            <img class="img-thumbnail img-responsive" src="{{model.user.photo}}">
-            <form action="/api/project/user/upload" method="post" enctype="multipart/form-data">
+                <img class="img-thumbnail img-responsive" src="{{model.user.photo}}">
+                <form action="/api/project/user/upload" method="post" enctype="multipart/form-data">
 
-                <input class="form-control cs-upload" id="upload1" type="file" name="myFile">
-                <input  name="userId" value="{{model.userId}}" type="hidden"/>
-                <button type="submit" class="btn btn-warning btn-block">Upload Profile Picture</button>
-            </form>
-            <div ng-show="model.user.team">
-                <a href="#/coach/{{model.userId}}/team" class="btn btn-block btn-warning">Manage Team</a>
-            </div>
+                    <input class="form-control" id="upload1" type="file" name="myFile">
+                    <input  name="userId" value="{{model.userId}}" type="hidden"/>
+                    <button type="submit" class="btn btn-warning btn-block">Upload Profile Picture</button>
+                </form>
+                <div ng-show="model.user.posts">
+                    <a href="#/admin/{{model.adminId}}/athlete/{{model.athleteId}}/post" class="btn btn-block btn-warning">Manage {{model.user.username}}'s Posts</a>
+                </div>
             </div>
         </div>
         <div class="col-xs-12 visible-xs">
@@ -129,11 +126,18 @@
                 </div>
 
                 <form>
-
                     <div class="form-group">
-                        <label for="school">School</label>
-                        <input ng-model="model.school.name" type="text" disabled
-                               class="form-control" id="school" placeholder="">
+                        <label for="username">Username</label>
+                        <input ng-model="model.user.username" type="text"
+                               class="form-control" id="username" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Role</label>
+                        <select class="form-control" name="roleSelect" id="role" ng-model="model.user.role">
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="ATHLETE">ATHLETE</option>
+                            <option value="COACH">COACH</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="email">Email Address</label>
@@ -156,45 +160,19 @@
                                class="form-control" id="contact" placeholder="8571234567">
                     </div>
                     <div class="form-group">
+                        <label for="grad">Year of Graduation</label>
+                        <input ng-model="model.user.gradYear" type="number"
+                               class="form-control" id="grad" placeholder="2017">
+                    </div>
+                    <div class="form-group">
                         <label for="about">About</label>
                         <textarea ng-model="model.user.about" class="form-control" id="about" placeholder="Write about yourself" rows="5"></textarea>
                     </div>
                 </form>
                 <button type="button" class="btn btn-warning btn-block"
-                        ng-click="model.updateUser(model.user)">Update Details</button>
-                <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#myModal">
-                    Unsubscribe
-                </button>
-            </div>
-            <div class="col-xs-12 cs-form-1" ng-hide="model.athletes.length==0">
-                <h1>Follows</h1>
-                <div class="cs-form-1" ng-repeat="athlete in model.athletes">
-                    <h2>
-                        {{athlete.firstName}} {{athlete.lastName}}
-                    </h2>
-                    <img class="img-responsive img-thumbnail" src="{{athlete.photo}}">
-                    <a href="#/coach/{{model.userId}}/athlete/{{athlete._id}}" class="btn btn-warning btn-block">View Profile</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="DeleteModal">Unsubscribe</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h4>Are you sure you want to Unsubsribe?</h4>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal" data-backdrop="false" ng-click="model.deleteUser(model.user._id)">Unsubscribe</button>
+                        ng-click="model.updateUser(model.user)">Update {{model.user.username}}'s Details</button>
+                <button type="button" class="btn btn-danger btn-block"
+                        ng-click="model.deleteUser(model.user._id)">Delete {{model.user.username}}</button>
             </div>
         </div>
     </div>

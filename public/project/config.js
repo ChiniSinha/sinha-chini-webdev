@@ -142,7 +142,7 @@
             })
             .when("/athlete/:userId/school", {
                 templateUrl: "views/school/templates/search-school.view.client.html",
-                controller: "SearchSchoolController",
+                controller: "SearchSchoolForAthleteController",
                 controllerAs: "model",
                 resolve: {
                     currentUser: checkLoggedIn
@@ -206,6 +206,54 @@
             .when("/admin/:userId/school", {
                 templateUrl: "views/school/templates/admin-add-school.view.client.html",
                 controller: "AddSchoolController",
+                controllerAs: "model",
+                resolve: {
+                    adminUser: checkAdmin
+                }
+            })
+            .when("/admin/:userId/searchUser", {
+                templateUrl : "views/admin/templates/admin-search-user.view.client.html",
+                controller: "SearchUserController",
+                controllerAs: "model",
+                resolve: {
+                    adminUser: checkAdmin
+                }
+            })
+            .when("/admin/:adminId/athlete/:athleteId", {
+                templateUrl : "views/athlete/templates/profile-admin.view.client.html",
+                controller : "AdminViewAthleteController",
+                controllerAs: "model",
+                resolve: {
+                    adminUser: checkAdmin
+                }
+            })
+            .when("/admin/:adminId/athlete/:athleteId/post", {
+                templateUrl : "views/post/templates/post-admin.view.client.html",
+                controller : "AdminPostEditController",
+                controllerAs: "model",
+                resolve: {
+                    adminUser: checkAdmin
+                }
+            })
+            .when("/admin/:adminId/coach/:coachId", {
+                templateUrl : "views/coach/templates/profile-admin.view.client.html",
+                controller : "CoachAdminProfileController",
+                controllerAs: "model",
+                resolve: {
+                    adminUser: checkAdmin
+                }
+            })
+            .when("/admin/:adminId/coach/:coachId/team/:teamId", {
+                templateUrl: "views/team/templates/team-admin.view.client.html",
+                controller : "AdminTeamViewController",
+                controllerAs: "model",
+                resolve: {
+                    adminUser: checkAdmin
+                }
+            })
+            .when("/admin/:userId/school/:schoolId", {
+                templateUrl: "views/school/templates/admin-edit-school.view.html",
+                controller: "EditSchoolController",
                 controllerAs: "model",
                 resolve: {
                     adminUser: checkAdmin

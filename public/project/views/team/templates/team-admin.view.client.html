@@ -1,0 +1,50 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#/home/{{model.adminId}}">
+                <img src="http://sinha-chini-webdev.herokuapp.com/images/mvpr11.png" alt="Home">
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li> <a href="#/admin/{{model.adminId}}"><span class="glyphicon glyphicon-modal-window"></span>  Manage Profile/Schools</a> </li>
+                <li> <a href="#/admin/{{model.adminId}}/school"><span class="glyphicon glyphicon-plus"></span>  Add School</a> </li>
+                <li> <a href="#/admin/{{model.adminId}}/searchUser"><span class="glyphicon glyphicon-search"></span>  Search Users</a> </li>
+                <li> <a ng-click="model.logout()"><span class="glyphicon glyphicon-user"></span>  Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="cs-form">
+        <h1>Team</h1>
+
+        <div class="alert alert-danger" ng-show="model.error">
+            {{model.error}}
+        </div>
+
+        <div class="alert alert-success" ng-show="model.message">
+            {{model.message}}
+        </div>
+
+        <label for="name">Team Name</label>
+        <input ng-model="model.team.name"
+               id="name"
+               type="text"
+               class="form-control"
+               placeholder="Team Name"/>
+
+        <label for="description">Description</label>
+        <textarea ng-model="model.team.description" class="form-control" id="description" placeholder="Description" rows="5"></textarea>
+
+        <a ng-click="model.updateTeam(model.team)" class="btn btn-primary btn-block">Update Team</a>
+        <a ng-click="model.deleteTeam(model.team._id)" class="btn btn-danger btn-block">Delete Team</a>
+        <a href="#/admin/{{model.adminId}}/coach/{{model.coachId}}" class="btn btn-info btn-block">Cancel</a>
+    </div>
+</div>

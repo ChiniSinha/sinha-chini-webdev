@@ -16,7 +16,8 @@
             "addCoach" : addCoach,
             "removeCoach" : removeCoach,
             "findSchoolByAthleteId" : findSchoolByAthleteId,
-            "findAllSchoolByAthleteId" : findAllSchoolByAthleteId
+            "findAllSchoolByAthleteId" : findAllSchoolByAthleteId,
+            "findAllSchoolForAdmin" : findAllSchoolForAdmin
         };
         return api;
 
@@ -62,6 +63,10 @@
 
         function findAllSchoolByAthleteId(userId) {
             return $http.get("/api/project/school/athlete/" + userId);
+        }
+
+        function findAllSchoolForAdmin() {
+            return $http.get("/api/project/allSchool");
         }
 
     }

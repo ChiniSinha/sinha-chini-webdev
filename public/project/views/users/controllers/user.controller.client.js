@@ -7,6 +7,12 @@
 
     function LoginController($location, UserService) {
         var vm = this;
+
+        vm.athlete = true;
+        vm.coach = false;
+        vm.admin = false;
+
+        vm.toggleLogin = toggleLogin;
         vm.login = login;
 
         function login(user) {
@@ -25,17 +31,33 @@
                     vm.error = "Username/password does not match";
                 })
         }
+
+        function toggleLogin(role) {
+            if(role == 'ATHLETE') {
+                vm.athlete = true;
+                vm.coach = false;
+                vm.admin = true;
+            } else if(role == 'ADMIN') {
+                vm.athlete = false;
+                vm.coach = false;
+                vm.admin = true;
+            } else {
+                vm.athlete = false;
+                vm.admin = false;
+                vm.coach = true;
+            }
+        }
     }
 
     function CoachRegisterController($location, UserService, SchoolService, $routeParams) {
         var vm = this;
 
-        var schoolId = $routeParams.schoolId;
+        vm.schoolId = $routeParams.schoolId;
         vm.register = register;
 
         function init() {
             SchoolService
-                .findSchoolById(schoolId)
+                .findSchoolById(vm.schoolId)
                 .success(function (school) {
                     vm.schoolName = school.name;
                 })
@@ -45,7 +67,7 @@
         function register(user) {
 
             user.role = 'COACH';
-            user.school = schoolId;
+            user.school = vm.schoolId;
             if( user == undefined || user.username == null || user.password == null || user.firstName == null ||
                 user.lastName == null || user.email == null || user.phone == null) {
                 vm.error = "Values are missing!";
@@ -59,7 +81,6 @@
                             UserService
                                 .register(user)
                                 .success(function (newUser) {
-                                    console.log("newUser: " + newUser._id);
                                     $location.url("/coach/"+newUser._id);
                                 });
                         } else {

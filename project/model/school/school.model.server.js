@@ -18,6 +18,7 @@ module.exports = function () {
         "removeCoach" : removeCoach,
         "findSchoolByAthleteId" : findSchoolByAthleteId,
         "findAllSchoolByAthleteId" : findAllSchoolByAthleteId,
+        "findAllSchoolForAdmin" : findAllSchoolForAdmin,
         "setModel":setModel
     };
 
@@ -46,7 +47,57 @@ module.exports = function () {
     }
 
     function deleteSchool(schoolId) {
-        return SchoolModel.findByIdAndRemove(schoolId);
+        return SchoolModel.findById(schoolId)
+            .then(function (school) {
+                return model.UserModel.findAthletesBySchoolId(school._id)
+                    .then(function (athletes) {
+                        return deleteSchoolForAthletes(athletes, school._id);
+                    })
+            })
+    }
+
+    function deleteSchoolForAthletes(athletes, schoolId) {
+        if(athletes.length == 0) {
+            return SchoolModel.findById(schoolId)
+                .then(function (school) {
+                    return model.UserModel.findAllCoachBySchoolId(school._id)
+                        .then(function (coaches) {
+                            return deleteCoachesForSchool(coaches, school._id);
+                        })
+                })
+        }
+        return removeSchoolForAthlete(athletes.shift(), schoolId)
+            .then(function (response) {
+                return deleteSchoolForAthletes(athletes, schoolId);
+            }, function (err) {
+                return err;
+            });
+    }
+
+    function deleteCoachesForSchool(coaches, schoolId) {
+        if(coaches.length == 0) {
+            return SchoolModel.findByIdAndRemove(schoolId)
+                .then(function (response) {
+                    return response;
+                }, function (err) {
+                    return err;
+                });
+        }
+        return model.UserModel.deleteUser(coaches.shift())
+            .then(function (response) {
+                return deleteCoachesForSchool(coaches, schoolId);
+            }, function (err) {
+                return err;
+            });
+    }
+
+    function removeSchoolForAthlete(athleteId, schoolId) {
+        return model.UserModel.findUserById(athleteId)
+            .then(function (athlete) {
+                athlete.interestedSchool.pull(schoolId);
+                athlete.save();
+                return athlete;
+            })
     }
 
     function addInterestedAthlete(schoolId, userId) {
@@ -111,6 +162,10 @@ module.exports = function () {
 
     function findAllSchoolByAthleteId(userId) {
         return SchoolModel.find({'interestedStudents': userId});
+    }
+
+    function findAllSchoolForAdmin() {
+        return SchoolModel.find();
     }
 
     function setModel(_model) {

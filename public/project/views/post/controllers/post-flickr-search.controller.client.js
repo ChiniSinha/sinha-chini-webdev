@@ -4,18 +4,25 @@
         .module('RecruiterWeb')
         .controller('FlickrImageSearchController',FlickrImageSearchController);
 
-    function FlickrImageSearchController(FlickrService, PostService, $routeParams, $location) {
+    function FlickrImageSearchController(FlickrService, PostService, UserService, $routeParams, $location) {
 
         var vm = this;
 
         vm.searchPhotos = searchPhoto;
         vm.selectPhoto = selectPhoto;
+        vm.logout = logout;
 
         vm.userId = $routeParams.userId;
         vm.postId = $routeParams.postId;
 
         function init() {
-
+            UserService
+                .getCurrentUser()
+                .success(function(user) {
+                    if(!user) {
+                        $location.url('/home');
+                    }
+                })
         }
         init();
 
@@ -43,6 +50,13 @@
                 .updatePost(vm.postId, post)
                 .then(function (){
                     $location.url("/athlete/"+vm.userId+"/post/"+vm.postId);
+                });
+        }
+
+        function logout() {
+            UserService.logout()
+                .then(function (response) {
+                    $location.url('/home');
                 });
         }
     }

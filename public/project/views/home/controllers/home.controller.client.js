@@ -14,12 +14,16 @@
             UserService
                 .getCurrentUser()
                 .success(function (user) {
-                    if(user.role == 'COACH') {
-                        vm.coach=user;
-                    } else if(user.role == 'ATHLETE') {
-                        vm.athlete = user;
-                    } else if(user.role == 'ADMIN') {
-                        vm.admin = user;
+                    if(user) {
+                        if(user.role == 'COACH') {
+                            vm.coach=user;
+                        } else if(user.role == 'ATHLETE') {
+                            vm.athlete = user;
+                        } else if(user.role == 'ADMIN') {
+                            vm.admin = user;
+                        }
+                    } else {
+                        $location.url('/home');
                     }
                 })
                 .error(function (err) {

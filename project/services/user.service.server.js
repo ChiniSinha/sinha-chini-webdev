@@ -48,6 +48,7 @@ module.exports = function (app, models) {
     app.get('/api/project/athlete/:athleteId/coach/:coachId', findAthleteByCoachId);
     app.get('/api/project/coach/:coachId/team/:teamId/filter', filterAthletesInTeam);
     app.get('/api/project/currentUser', getCurrentUser);
+    app.get('/api/project/searchUser/:name', searchUserByFirstName);
 
     app.get('/auth/facebook',passport.authenticate('facebook',{ scope : 'email'}));
     app.get('/auth/facebook/callback',passport.authenticate('facebook', {
@@ -285,7 +286,6 @@ module.exports = function (app, models) {
             .then(function (user) {
                 if(user) {
                     req.login(user, function (err) {
-                        console.log("server user_id: " + user._id);
                         res.send(user);
                     });
                 }
@@ -445,6 +445,17 @@ module.exports = function (app, models) {
             }, function (err) {
                 res.sendStatus(404);
             })
+    }
+
+    function searchUserByFirstName(req, res) {
+        var name = req.params.name;
+        userModel
+            .searchUserByFirstName(name)
+            .then(function (users) {
+                res.send(users);
+            }, function (err) {
+                res.sendStatus(404);
+            });
     }
 
     function serializeUser(user, done) {
