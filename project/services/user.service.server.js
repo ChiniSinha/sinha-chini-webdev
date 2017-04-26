@@ -6,6 +6,27 @@ module.exports = function (app, models) {
     var cookieParser = require('cookie-parser');
     var session = require('express-session');
 
+    var multer = require('multer');
+    var multerS3 = require('multer-s3');
+
+    var AWS = require('aws-sdk');
+    var s3Bucket = new AWS.S3( { params: {Bucket: 'cs-web-dev'} } );
+
+    var upload = multer({
+        storage: multerS3({
+            s3: s3Bucket,
+            bucket: 'cs-web-dev',
+            acl: 'public-read',
+        })
+    });
+
+
+    AWS.config.update({
+        secretAccessKey: process.env.AWS_ACCESS_KEY_ID,
+        accessKeyId: process.env.AWS_SECRET_ACCESS_KEY,
+        region: 'us-east-1'
+    });
+
     app.use(cookieParser());
     app.use(session({
         secret: 'this is project secret',
@@ -17,8 +38,6 @@ module.exports = function (app, models) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    var multer = require('multer');
-    var upload = multer({ dest: __dirname+'/../../public/uploads' });
     var LocalStrategy = require('passport-local').Strategy;
     var FacebookStrategy = require('passport-facebook').Strategy;
     var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -334,17 +353,18 @@ module.exports = function (app, models) {
 
         if(req.file) {
             var myFile = req.file;
+            var type = myFile;
             var originalname = myFile.originalname; // File name on user's computer
             var filename = myFile.filename; // new file name in upload folder
             var path = myFile.path;         // full path of uploaded file
             var destination = myFile.destination;  // folder where file is saved to
             var size = myFile.size;
             var mimetype = myFile.mimetype;
+            var location = myFile.location;
         }
 
-        var url = "/uploads/" + filename;
         userModel
-            .updateUser(userId, {'photo': url})
+            .updateUser(userId, {'photo': location})
             .then(function (user) {
                 if(user.role == 'COACH') {
                     res.redirect("/project/#/coach/"+userId);
@@ -354,6 +374,15 @@ module.exports = function (app, models) {
             }, function (err) {
                 res.sendStatus(404);
             });
+    }
+
+    function encodeImageFileAsURL(file) {
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            console.log('RESULT', reader.result)
+        }
+        var output = reader.readAsDataURL(file);
+        return output;
     }
 
     function findAthletesByTeamId(req, res) {
