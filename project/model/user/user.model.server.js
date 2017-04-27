@@ -67,6 +67,8 @@ module.exports = function () {
                     return deleteAthlete(userId);
                 } else if(user.role == 'COACH'){
                     return deleteCoach(userId);
+                } else {
+                    return deleteAdmin(userId);
                 }
             })
     }
@@ -196,6 +198,10 @@ module.exports = function () {
                 school.save();
                 return school;
             })
+    }
+
+    function deleteAdmin(userId) {
+        return UserModel.findByIdAndRemove(userId);
     }
 
     function setModel(_model) {

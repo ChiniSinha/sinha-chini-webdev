@@ -267,6 +267,14 @@
                     adminUser: checkAdmin
                 }
             })
+            .when("/admin/:adminId/admin/:userId", {
+                templateUrl: "views/admin/templates/admin-edit.view.client.html",
+                controller: "AdminEditAdminController",
+                controllerAs: "model",
+                resolve: {
+                    adminUser: checkAdmin
+                }
+            })
             .otherwise({
             redirectTo: '/home'
         })

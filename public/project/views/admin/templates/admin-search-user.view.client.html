@@ -31,21 +31,193 @@
         <div ng-show="model.error" class="alert alert-danger" role="alert">
             {{model.error}}
         </div>
+        <form>
+        <div class="form-group">
+                <label for="role">Select Role</label>
+                <select class="form-control" name="roleSelect" id="role" ng-model="model.role">
+                    <option value="ALL">ALL</option>
+                    <option value="ADMIN">ADMIN</option>
+                    <option value="ATHLETE">ATHLETE</option>
+                    <option value="COACH">COACH</option>
+                </select>
+            </div>
+        </form>
 
-        <div class="row">
-            <div class="col-xs-12">
-                <div ng-repeat="user in model.users">
-                    <div class="cs-form-1" ng-hide="user.role == 'ADMIN'">
+        <div class="row" ng-show="model.role == 'ALL'">
+                <div class="col-xs-6 visible-xs" ng-repeat="user in model.users">
+                    <div class="cs-form-1">
+                        <div>
+                            <a ng-click="model.redirectToUser(user._id)" class="navbar-link">
+                                <span class="glyphicon glyphicon-cog"></span>
+                                <label>{{user.firstName}} {{user.lastName}}</label>
+                            </a>
+                            <a ng-click="model.deleteUser(user._id)" class="navbar-link">
+                                <span class="glyphicon glyphicon-remove pull-right"></span>
+                            </a>
+                        </div>
+                        <div>
+                            <img src="{{user.photo}}" class="img-responsive img-thumbnail cs-thumbnail">
+                        </div>
+                        <div>
+                            <label class="cs-margin">{{user.role}}</label>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="row" ng-show="model.role == 'ALL'">
+            <div class="col-xs-3 hidden-xs" ng-repeat="user in model.users">
+                <div class="cs-form-1">
+                    <div>
                         <a ng-click="model.redirectToUser(user._id)" class="navbar-link">
-                            <span class="fa fa-user"></span>
-                            <label>{{user.firstName}} {{user.lastName}} - {{user.role}}</label>
+                            <span class="glyphicon glyphicon-cog"></span>
+                            <label>{{user.firstName}} {{user.lastName}}</label>
                         </a>
                         <a ng-click="model.deleteUser(user._id)" class="navbar-link">
                             <span class="glyphicon glyphicon-remove pull-right"></span>
                         </a>
                     </div>
+                    <div>
+                        <img src="{{user.photo}}" class="img-responsive img-thumbnail cs-thumbnail">
+                    </div>
+                    <div>
+                        <label class="cs-margin">{{user.role}}</label>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="row" ng-show="model.role == 'ATHLETE'">
+            <div class="col-xs-3 hidden-xs" ng-repeat="user in model.athletes">
+                <div class="cs-form-1" ng-show="user.role == 'ATHLETE'">
+                    <div>
+                        <a ng-click="model.redirectToUser(user._id)" class="navbar-link">
+                            <span class="glyphicon glyphicon-cog"></span>
+                            <label>{{user.firstName}} {{user.lastName}}</label>
+                        </a>
+                        <a ng-click="model.deleteUser(user._id)" class="navbar-link">
+                            <span class="glyphicon glyphicon-remove pull-right"></span>
+                        </a>
+                    </div>
+                    <div>
+                        <img src="{{user.photo}}" class="img-responsive img-thumbnail cs-thumbnail">
+                    </div>
+                    <div>
+                        <label class="cs-margin">{{user.role}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="model.role == 'ATHLETE'">
+            <div class="col-xs-6 visible-xs" ng-repeat="user in model.athletes">
+                <div class="cs-form-1" ng-show="user.role == 'ATHLETE'">
+                    <div>
+                        <a ng-click="model.redirectToUser(user._id)" class="navbar-link">
+                            <span class="glyphicon glyphicon-cog"></span>
+                            <label>{{user.firstName}} {{user.lastName}}</label>
+                        </a>
+                        <a ng-click="model.deleteUser(user._id)" class="navbar-link">
+                            <span class="glyphicon glyphicon-remove pull-right"></span>
+                        </a>
+                    </div>
+                    <div>
+                        <img src="{{user.photo}}" class="img-responsive img-thumbnail cs-thumbnail">
+                    </div>
+                    <div>
+                        <label class="cs-margin">{{user.role}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="model.role == 'COACH'">
+            <div class="col-xs-3 hidden-xs" ng-repeat="user in model.coaches">
+                <div class="cs-form-1" ng-show="user.role == 'COACH'">
+                    <div>
+                        <a ng-click="model.redirectToUser(user._id)" class="navbar-link">
+                            <span class="glyphicon glyphicon-cog"></span>
+                            <label>{{user.firstName}} {{user.lastName}}</label>
+                        </a>
+                        <a ng-click="model.deleteUser(user._id)" class="navbar-link">
+                            <span class="glyphicon glyphicon-remove pull-right"></span>
+                        </a>
+                    </div>
+                    <div>
+                        <img src="{{user.photo}}" class="img-responsive img-thumbnail cs-thumbnail">
+                    </div>
+                    <div>
+                        <label class="cs-margin">{{user.role}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="model.role == 'COACH'">
+            <div class="col-xs-6 visible-xs" ng-repeat="user in model.coaches">
+                <div class="cs-form-1" ng-show="user.role == 'COACH'">
+                    <div>
+                        <a ng-click="model.redirectToUser(user._id)" class="navbar-link">
+                            <span class="glyphicon glyphicon-cog"></span>
+                            <label>{{user.firstName}} {{user.lastName}}</label>
+                        </a>
+                        <a ng-click="model.deleteUser(user._id)" class="navbar-link">
+                            <span class="glyphicon glyphicon-remove pull-right"></span>
+                        </a>
+                    </div>
+                    <div>
+                        <img src="{{user.photo}}" class="img-responsive img-thumbnail cs-thumbnail">
+                    </div>
+                    <div>
+                        <label class="cs-margin">{{user.role}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="model.role == 'ADMIN'">
+            <div class="col-xs-3 hidden-xs" ng-repeat="user in model.admins">
+                <div class="cs-form-1" ng-show="user.role == 'ADMIN'">
+                    <div>
+                        <a ng-click="model.redirectToUser(user._id)" class="navbar-link">
+                            <span class="glyphicon glyphicon-cog"></span>
+                            <label>{{user.firstName}} {{user.lastName}}</label>
+                        </a>
+                        <a ng-click="model.deleteUser(user._id)" class="navbar-link">
+                            <span class="glyphicon glyphicon-remove pull-right"></span>
+                        </a>
+                    </div>
+                    <div>
+                        <img src="{{user.photo}}" class="img-responsive img-thumbnail cs-thumbnail">
+                    </div>
+                    <div>
+                        <label class="cs-margin">{{user.role}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="model.role == 'ADMIN'">
+            <div class="col-xs-6 visible-xs" ng-repeat="user in model.admins">
+                <div class="cs-form-1" ng-show="user.role == 'ADMIN'">
+                    <div>
+                        <a ng-click="model.redirectToUser(user._id)" class="navbar-link">
+                            <span class="glyphicon glyphicon-cog"></span>
+                            <label>{{user.firstName}} {{user.lastName}}</label>
+                        </a>
+                        <a ng-click="model.deleteUser(user._id)" class="navbar-link">
+                            <span class="glyphicon glyphicon-remove pull-right"></span>
+                        </a>
+                    </div>
+                    <div>
+                        <img src="{{user.photo}}" class="img-responsive img-thumbnail cs-thumbnail">
+                    </div>
+                    <div>
+                        <label class="cs-margin">{{user.role}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </div>

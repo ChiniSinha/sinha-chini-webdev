@@ -137,8 +137,18 @@ div .row ul a {
     max-height: 400px;
 }
 
+.cs-thumbnail {
+    width: 100px;
+    height: 80px;
+    margin-left: 20px;
+}
+
 .cs-edit {
     margin-top: -10px;
+}
+
+.cs-margin {
+    margin-left: 20px;
 }
 
 .modal-content {

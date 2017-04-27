@@ -158,6 +158,8 @@
                                         $location.url('/admin/' + vm.adminId + '/athlete/' + newUser._id);
                                     } else if(newUser.role == 'COACH') {
                                         $location.url('/admin/' + vm.adminId + '/coach/' + newUser._id);
+                                    } else {
+                                        $location.url('/admin/' + vm.adminId + '/admin' + newUser._id);
                                     }
                                 });
                         } else {
