@@ -44,7 +44,7 @@
         </form>
 
         <div class="row" ng-show="model.role == 'ALL'">
-                <div class="col-xs-6 visible-xs" ng-repeat="user in model.users">
+                <div class="col-xs-12 visible-xs" ng-repeat="user in model.users">
                     <div class="cs-form-1">
                         <div>
                             <a ng-click="model.redirectToUser(user._id)" class="navbar-link">
@@ -109,7 +109,7 @@
         </div>
 
         <div class="row" ng-show="model.role == 'ATHLETE'">
-            <div class="col-xs-6 visible-xs" ng-repeat="user in model.athletes">
+            <div class="col-xs-12 visible-xs" ng-repeat="user in model.athletes">
                 <div class="cs-form-1" ng-show="user.role == 'ATHLETE'">
                     <div>
                         <a ng-click="model.redirectToUser(user._id)" class="navbar-link">
@@ -153,7 +153,7 @@
         </div>
 
         <div class="row" ng-show="model.role == 'COACH'">
-            <div class="col-xs-6 visible-xs" ng-repeat="user in model.coaches">
+            <div class="col-xs-12 visible-xs" ng-repeat="user in model.coaches">
                 <div class="cs-form-1" ng-show="user.role == 'COACH'">
                     <div>
                         <a ng-click="model.redirectToUser(user._id)" class="navbar-link">
@@ -197,7 +197,7 @@
         </div>
 
         <div class="row" ng-show="model.role == 'ADMIN'">
-            <div class="col-xs-6 visible-xs" ng-repeat="user in model.admins">
+            <div class="col-xs-12 visible-xs" ng-repeat="user in model.admins">
                 <div class="cs-form-1" ng-show="user.role == 'ADMIN'">
                     <div>
                         <a ng-click="model.redirectToUser(user._id)" class="navbar-link">
