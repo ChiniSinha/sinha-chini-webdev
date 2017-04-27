@@ -22,22 +22,24 @@
                         UserService
                             .findUserById(vm.coachId)
                             .success(function (coach) {
-                                TeamService
-                                    .findTeamById(coach.team)
-                                    .success(function (team) {
-                                        SchoolService
-                                            .findSchoolById(vm.schoolId)
-                                            .success(function (school) {
-                                                vm.school = school;
-                                                vm.team = team;
-                                                vm.coach = coach;
-                                                if (vm.coach == null) {
-                                                    $location.url("/home");
-                                                }
-                                                if (vm.team == null) {
-                                                    vm.error = "Coach has no teams yet!";
-                                                }
-                                            })
+                                if(coach.team){
+                                    TeamService
+                                        .findTeamById(coach.team)
+                                        .success(function (team) {
+                                            vm.team = team;
+                                            if (vm.team == null) {
+                                                vm.error = "Coach has no teams yet!";
+                                            }
+                                        });
+                                }
+                                SchoolService
+                                    .findSchoolById(vm.schoolId)
+                                    .success(function (school) {
+                                        vm.school = school;
+                                        vm.coach = coach;
+                                        if (vm.coach == null) {
+                                            $location.url("/home");
+                                        }
                                     })
                             })
                     } else {
@@ -94,7 +96,7 @@
                 })
         }
         init();
-        
+
         function deleteUser(userId) {
             UserService
                 .deleteUser(userId)
@@ -105,14 +107,14 @@
         function updateUser(newUser) {
             UserService
                 .updateUser(vm.userId, newUser)
-                    .success(function (user) {
-                        if(user != null) {
-                            vm.message = "User Successfully Updated!"
-                        }
-                    })
-                    .error(function (err) {
-                        vm.error = "Unable to update user";
-                    })
+                .success(function (user) {
+                    if(user != null) {
+                        vm.message = "User Successfully Updated!"
+                    }
+                })
+                .error(function (err) {
+                    vm.error = "Unable to update user";
+                })
         }
 
         function logout() {
