@@ -3,7 +3,25 @@ module.exports = function (app, models) {
     var postModel = models.PostModel;
 
     var multer = require('multer');
-    var upload = multer({ dest: __dirname+'/../../public/uploads' });
+    var multerS3 = require('multer-s3');
+
+    var AWS = require('aws-sdk');
+    var s3Bucket = new AWS.S3( { params: {Bucket: 'cs-web-dev'} } );
+
+    var upload = multer({
+        storage: multerS3({
+            s3: s3Bucket,
+            bucket: 'cs-web-dev',
+            acl: 'public-read',
+        })
+    });
+
+    var awsConfig = {
+        secretAccessKey: process.env.AWS_ACCESS_KEY_ID,
+        accessKeyId: process.env.AWS_SECRET_ACCESS_KEY,
+        region: 'us-east-1'
+    };
+    AWS.config.update(awsConfig);
 
     app.post("/api/project/user/:userId/post", createPost);
     app.get("/api/project/user/:userId/post", findPostByUserId);
@@ -86,11 +104,11 @@ module.exports = function (app, models) {
             var destination = myFile.destination;  // folder where file is saved to
             var size = myFile.size;
             var mimetype = myFile.mimetype;
+            var location = myFile.location;
         }
 
-        var url = "/uploads/" + filename;
         postModel
-            .updatePost(postId, {'type': 'IMAGE', 'url': url, 'width': width })
+            .updatePost(postId, {'type': 'IMAGE', 'url': location, 'width': width })
             .then(function (post) {
                 res.redirect("/project/#/athlete/"+userId+"/post/" + postId);
             }, function (err) {
