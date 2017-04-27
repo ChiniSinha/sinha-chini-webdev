@@ -386,7 +386,7 @@ module.exports = function (app, models) {
                     if(user.role == 'COACH') {
                         res.redirect("/project/#/admin/"+adminId+"/coach/"+user._id);
                     } else {
-                        res.redirect("/project/#/admin"+adminId+"/athlete/"+user._id);
+                        res.redirect("/project/#/admin/"+adminId+"/athlete/"+user._id);
                     }
                 } else {
                     if (user.role == 'COACH') {
@@ -398,15 +398,6 @@ module.exports = function (app, models) {
             }, function (err) {
                 res.sendStatus(404);
             });
-    }
-
-    function encodeImageFileAsURL(file) {
-        var reader = new FileReader();
-        reader.onloadend = function() {
-            console.log('RESULT', reader.result)
-        }
-        var output = reader.readAsDataURL(file);
-        return output;
     }
 
     function findAthletesByTeamId(req, res) {

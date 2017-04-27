@@ -29,7 +29,7 @@
                 <img class="img-thumbnail img-responsive" src="{{model.user.photo}}">
                 <form action="/api/project/user/upload" method="post" enctype="multipart/form-data">
 
-                    <input class="form-control" id="upload" type="file" name="myFile">
+                    <input class="form-control cs-upload" id="upload" type="file" name="myFile">
                     <input  name="userId" value="{{model.athleteId}}" type="hidden"/>
                     <input  name="adminId" value="{{model.adminId}}" type="hidden"/>
                     <button type="submit" class="btn btn-warning btn-block">Upload Profile Picture</button>
@@ -113,7 +113,7 @@
                 <img class="img-thumbnail img-responsive" src="{{model.user.photo}}">
                 <form action="/api/project/user/upload" method="post" enctype="multipart/form-data">
 
-                    <input class="form-control" id="upload1" type="file" name="myFile">
+                    <input class="form-control cs-upload" id="upload1" type="file" name="myFile">
                     <input  name="userId" value="{{model.athleteId}}" type="hidden"/>
                     <input  name="adminId" value="{{model.adminId}}" type="hidden"/>
                     <button type="submit" class="btn btn-warning btn-block">Upload Profile Picture</button>
