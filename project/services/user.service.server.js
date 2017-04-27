@@ -367,6 +367,9 @@ module.exports = function (app, models) {
         var userId = req.body.userId;
         var adminId = req.body.adminId;
 
+        var postId = req.body.postId;
+        var width = req.body.width;
+
         if(req.file) {
             var myFile = req.file;
             var type = myFile;
@@ -379,25 +382,36 @@ module.exports = function (app, models) {
             var location = myFile.location;
         }
 
-        userModel
-            .updateUser(userId, {'photo': location})
-            .then(function (user) {
-                if(adminId){
-                    if(user.role == 'COACH') {
-                        res.redirect("/project/#/admin/"+adminId+"/coach/"+user._id);
+        if(postId) {
+            models.PostModel
+                .updatePost(postId, {'type': 'IMAGE', 'url': location, 'width': width })
+                .then(function (post) {
+                    res.redirect("/project/#/athlete/"+userId+"/post/" + postId);
+                }, function (err) {
+                    res.sendStatus(404);
+                });
+        } else {
+            userModel
+                .updateUser(userId, {'photo': location})
+                .then(function (user) {
+                    if(adminId){
+                        if(user.role == 'COACH') {
+                            res.redirect("/project/#/admin/"+adminId+"/coach/"+user._id);
+                        } else {
+                            res.redirect("/project/#/admin/"+adminId+"/athlete/"+user._id);
+                        }
                     } else {
-                        res.redirect("/project/#/admin/"+adminId+"/athlete/"+user._id);
+                        if (user.role == 'COACH') {
+                            res.redirect("/project/#/coach/" + userId);
+                        } else if (user.role == 'ATHLETE') {
+                            res.redirect("/project/#/athlete/" + userId);
+                        }
                     }
-                } else {
-                    if (user.role == 'COACH') {
-                        res.redirect("/project/#/coach/" + userId);
-                    } else if (user.role == 'ATHLETE') {
-                        res.redirect("/project/#/athlete/" + userId);
-                    }
-                }
-            }, function (err) {
-                res.sendStatus(404);
-            });
+                }, function (err) {
+                    res.sendStatus(404);
+                });
+        }
+
     }
 
     function findAthletesByTeamId(req, res) {
