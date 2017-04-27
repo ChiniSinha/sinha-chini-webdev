@@ -365,6 +365,7 @@ module.exports = function (app, models) {
     function uploadImage(req, res){
 
         var userId = req.body.userId;
+        var adminId = req.body.adminId;
 
         if(req.file) {
             var myFile = req.file;
@@ -381,10 +382,18 @@ module.exports = function (app, models) {
         userModel
             .updateUser(userId, {'photo': location})
             .then(function (user) {
-                if(user.role == 'COACH') {
-                    res.redirect("/project/#/coach/"+userId);
+                if(adminId){
+                    if(user.role == 'COACH') {
+                        res.redirect("/project/#/admin/"+adminId+"/coach/"+user._id);
+                    } else {
+                        res.redirect("/project/#/admin"+adminId+"/athlete/"+user._id);
+                    }
                 } else {
-                    res.redirect("/project/#/athlete/" + userId);
+                    if (user.role == 'COACH') {
+                        res.redirect("/project/#/coach/" + userId);
+                    } else if (user.role == 'ATHLETE') {
+                        res.redirect("/project/#/athlete/" + userId);
+                    }
                 }
             }, function (err) {
                 res.sendStatus(404);

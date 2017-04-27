@@ -30,7 +30,8 @@
                 <form action="/api/project/user/upload" method="post" enctype="multipart/form-data">
 
                     <input class="form-control" id="upload" type="file" name="myFile">
-                    <input  name="userId" value="{{model.userId}}" type="hidden"/>
+                    <input  name="userId" value="{{model.athleteId}}" type="hidden"/>
+                    <input  name="adminId" value="{{model.adminId}}" type="hidden"/>
                     <button type="submit" class="btn btn-warning btn-block">Upload Profile Picture</button>
                 </form>
                 <div ng-show="model.user.posts">
@@ -113,7 +114,8 @@
                 <form action="/api/project/user/upload" method="post" enctype="multipart/form-data">
 
                     <input class="form-control" id="upload1" type="file" name="myFile">
-                    <input  name="userId" value="{{model.userId}}" type="hidden"/>
+                    <input  name="userId" value="{{model.athleteId}}" type="hidden"/>
+                    <input  name="adminId" value="{{model.adminId}}" type="hidden"/>
                     <button type="submit" class="btn btn-warning btn-block">Upload Profile Picture</button>
                 </form>
                 <div ng-show="model.user.posts">
