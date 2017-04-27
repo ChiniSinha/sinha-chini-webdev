@@ -211,7 +211,7 @@
     }
 
 
-    function AdminViewAthleteController(UserService, PostService, TeamService, $routeParams, $location, $sce) {
+    function AdminViewAthleteController(UserService, SchoolService, $routeParams, $location) {
         var vm = this;
 
         vm.adminId = $routeParams.adminId;
@@ -229,8 +229,13 @@
                         UserService
                             .findUserById(vm.athleteId)
                             .success(function (user) {
-                                vm.user = user;
-                                vm.admin = admin;
+                                SchoolService
+                                    .findAllSchoolForAdmin()
+                                    .success(function (schools) {
+                                        vm.user = user;
+                                        vm.admin = admin;
+                                        vm.schools = schools;
+                                    })
                             })
                             .error(function () {
                                 vm.error = true;

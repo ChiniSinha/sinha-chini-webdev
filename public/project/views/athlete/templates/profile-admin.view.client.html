@@ -64,6 +64,12 @@
                             <option value="COACH">COACH</option>
                         </select>
                     </div>
+                    <div class="form-group" ng-show="model.user.role == 'COACH'">
+                        <label for="school1">School</label>
+                        <select class="form-control" name="schoolSelect" id="school1" ng-model="model.user.school">
+                            <option ng-repeat="school in model.schools" value="{{school._id}}"> {{school.name}}</option>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label for="email1">Email Address</label>
                         <input ng-model="model.user.email" type="email"
@@ -84,7 +90,7 @@
                         <input ng-model="model.user.phone" type="text"
                                class="form-control" id="contact1" placeholder="8571234567">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" ng-show="model.user.role == 'ATHLETE'">
                         <label for="grad1">Year of Graduation</label>
                         <input ng-model="model.user.gradYear" type="number"
                                class="form-control" id="grad1" placeholder="2017">
@@ -141,6 +147,12 @@
                             <option value="COACH">COACH</option>
                         </select>
                     </div>
+                    <div class="form-group" ng-show="model.user.role == 'COACH'">
+                        <label for="school">School</label>
+                        <select class="form-control" name="schoolSelect" id="school" ng-model="model.user.school">
+                            <option ng-repeat="school in model.schools" value="{{school._id}}"> {{school.name}}</option>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label for="email">Email Address</label>
                         <input ng-model="model.user.email" type="email"
@@ -161,7 +173,7 @@
                         <input ng-model="model.user.phone" type="text"
                                class="form-control" id="contact" placeholder="8571234567">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" ng-show="model.user.role == 'ATHLETE'">
                         <label for="grad">Year of Graduation</label>
                         <input ng-model="model.user.gradYear" type="number"
                                class="form-control" id="grad" placeholder="2017">
