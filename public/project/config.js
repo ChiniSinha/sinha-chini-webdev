@@ -259,6 +259,14 @@
                     adminUser: checkAdmin
                 }
             })
+            .when("/admin/:adminId/newUser", {
+                templateUrl: "views/users/templates/admin-add-user.view.client.html",
+                controller: "AdminRegisterController",
+                controllerAs: "model",
+                resolve: {
+                    adminUser: checkAdmin
+                }
+            })
             .otherwise({
             redirectTo: '/home'
         })

@@ -1,0 +1,108 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#/home/{{model.adminId}}">
+                <img src="http://sinha-chini-webdev.herokuapp.com/images/mvpr11.png" alt="Home">
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li> <a href="#/admin/{{model.adminId}}"><span class="glyphicon glyphicon-modal-window"></span>  Manage Profile/Schools</a> </li>
+                <li> <a href="#/admin/{{model.adminId}}/newUser"><span class="glyphicon glyphicon-pencil"></span>  Add User</a> </li>
+                <li> <a href="#/admin/{{model.adminId}}/school"><span class="glyphicon glyphicon-plus"></span>  Add School</a> </li>
+                <li> <a href="#/admin/{{model.adminId}}/searchUser"><span class="glyphicon glyphicon-search"></span>  Search Users</a> </li>
+                <li> <a ng-click="model.logout()"><span class="glyphicon glyphicon-user"></span>  Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="container-fluid cs-form-1">
+                <div class="alert alert-danger" ng-show="model.error">
+                    {{model.error}}
+                </div>
+
+                <div class="alert alert-success" ng-show="model.message">
+                    {{model.message}}
+                </div>
+
+                <form>
+
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input ng-model="user.username" type="text"
+                               class="form-control" id="username" placeholder="Username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role">Role</label>
+                        <select class="form-control" name="roleSelect" id="role" ng-model="user.role">
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="ATHLETE">ATHLETE</option>
+                            <option value="COACH">COACH</option>
+                        </select>
+                    </div>
+
+                    <div ng-show="user.role=='COACH'" class="form-group">
+                        <label for="school">School</label>
+                        <select class="form-control" name="schoolSelect" id="school" ng-model="user.school">
+                            <option ng-repeat="school in model.schools" value="{{school._id}}"> {{school.name}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input ng-model="user.email" type="email"
+                               class="form-control" id="email" placeholder="alice@wonderland.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input ng-model="user.firstName" type="text"
+                               class="form-control" id="first-name" placeholder="Alice">
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Last Name</label>
+                        <input ng-model="user.lastName" type="text"
+                               class="form-control" id="last-name" placeholder="Wonderland">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact">Contact Number</label>
+                        <input ng-model="user.phone" type="text"
+                               class="form-control" id="contact" placeholder="8571234567">
+                    </div>
+                    <div ng-show="user.role=='ATHLETE'" class="form-group">
+                        <label for="grad1">Year of Graduation</label>
+                        <input ng-model="user.gradYear" type="number"
+                               class="form-control" id="grad1" placeholder="2017">
+                    </div>
+                    <label for="password">Password</label>
+                    <input ng-model="user.password"
+                           type="password"
+                           id="password"
+                           class="form-control"
+                           name="password"
+                           placeholder="Password"/>
+
+                    <label for="confirm">Confirm Password</label>
+                    <input ng-model="user.confirmPassword"
+                           type="password"
+                           id="confirm"
+                           name="confirm" class="form-control"
+                           placeholder="Confirm Password"/>
+                </form>
+                <button type="button" class="btn btn-warning btn-block"
+                        ng-click="model.register(user)">Add User</button>
+                <a type="button" class="btn btn-danger btn-block"
+                   href="#/admin/{{model.adminId}}">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -16,6 +16,7 @@
             "loggedIn" : loggedIn,
             "logout" : logout,
             "register" : register,
+            "adminCreateUser" : adminCreateUser,
             "isAdmin" : isAdmin,
             "getCurrentUser" : getCurrentUser,
             "findAllUsers" : findAllUsers,
@@ -73,7 +74,10 @@
         function register(user) {
             return $http.post("/api/project/register", user);
         }
-        
+        function adminCreateUser(user) {
+            return $http.post("/api/project/adminAddUser", user);
+        }
+
         function isAdmin() {
             return $http.post("/api/project/isAdmin");
         }

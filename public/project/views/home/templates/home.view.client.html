@@ -81,9 +81,10 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar3">
             <ul class="nav navbar-nav navbar-right">
-                <li> <a href="#/admin/{{model.userId}}"><span class="glyphicon glyphicon-modal-window"></span> Manage Profile/Schools </a> </li>
+                <li> <a href="#/admin/{{model.userId}}"><span class="glyphicon glyphicon-modal-window"></span>  Manage Profile/Schools</a> </li>
+                <li> <a href="#/admin/{{model.userId}}/newUser"><span class="glyphicon glyphicon-pencil"></span>  Add User</a> </li>
                 <li> <a href="#/admin/{{model.userId}}/school"><span class="glyphicon glyphicon-plus"></span>  Add School</a> </li>
-                <li> <a href=""><span class="glyphicon glyphicon-search"></span>  Search Users</a> </li>
+                <li> <a href="#/admin/{{model.userId}}/searchUser"><span class="glyphicon glyphicon-search"></span>  Search Users</a> </li>
                 <li> <a ng-click="model.logout()"><span class="glyphicon glyphicon-user"></span>  Logout</a></li>
             </ul>
         </div>

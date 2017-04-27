@@ -4,15 +4,13 @@
         .controller("LoginController", LoginController)
         .controller("CoachRegisterController", CoachRegisterController)
         .controller("AthleteRegisterController", AthleteRegisterController)
+        .controller("AdminRegisterController", AdminRegisterController)
 
     function LoginController($location, UserService) {
         var vm = this;
 
-        vm.athlete = true;
-        vm.coach = false;
-        vm.admin = false;
+        vm.role = 'ATHLETE';
 
-        vm.toggleLogin = toggleLogin;
         vm.login = login;
 
         function login(user) {
@@ -32,21 +30,6 @@
                 })
         }
 
-        function toggleLogin(role) {
-            if(role == 'ATHLETE') {
-                vm.athlete = true;
-                vm.coach = false;
-                vm.admin = true;
-            } else if(role == 'ADMIN') {
-                vm.athlete = false;
-                vm.coach = false;
-                vm.admin = true;
-            } else {
-                vm.athlete = false;
-                vm.admin = false;
-                vm.coach = true;
-            }
-        }
     }
 
     function CoachRegisterController($location, UserService, SchoolService, $routeParams) {
@@ -122,6 +105,60 @@
                                 .success(function (newUser) {
                                     console.log("newUser: " + newUser._id);
                                     $location.url("/athlete/"+newUser._id);
+                                });
+                        } else {
+                            vm.error = "Username is taken! Try with a different username.";
+                        }
+                    })
+                    .error(function () {
+
+                    });
+            }
+        }
+    }
+
+    function AdminRegisterController($location, UserService, SchoolService, $routeParams) {
+        var vm = this;
+
+        vm.adminId = $routeParams.adminId;
+        vm.register = register;
+
+        function init() {
+            UserService
+                .getCurrentUser()
+                .success(function (admin) {
+                    if(admin) {
+                        SchoolService
+                            .findAllSchoolForAdmin()
+                            .success(function (schools) {
+                                vm.schools = schools;
+                            })
+                    } else {
+                        $location.url('/home');
+                    }
+                })
+        }
+        init();
+
+        function register(user) {
+            if(user.username == null || user.password == null || user.firstName == null ||
+                user.lastName == null || user.email == null || user.phone == null) {
+                vm.error = "Values are missing!";
+            } else if (user.password != user.confirmPassword) {
+                vm.error = "Password do not match!"
+            } else {
+                UserService
+                    .findUserByUsername(user.username)
+                    .success(function (response) {
+                        if(!response._id) {
+                            UserService
+                                .adminCreateUser(user)
+                                .success(function (newUser) {
+                                    if(newUser.role == 'ATHLETE') {
+                                        $location.url('/admin/' + vm.adminId + '/athlete/' + newUser._id);
+                                    } else if(newUser.role == 'COACH') {
+                                        $location.url('/admin/' + vm.adminId + '/coach/' + newUser._id);
+                                    }
                                 });
                         } else {
                             vm.error = "Username is taken! Try with a different username.";

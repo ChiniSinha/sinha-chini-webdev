@@ -27,17 +27,28 @@
             <h1><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i>  Login</h1>
 
             <div class="alert alert-danger"
-                 ng-show="!form.$valid && !form.$submitted && form.username.$touched && form.password.$touched"
+                 ng-show="!form.$valid && !form.$submitted && form.username.$touched && form.password.$touched && form.roleSelect.$touched"
                  role="alert">
                 <i class="glyphicon glyphicon-alert" aria-hidden="true"></i>
-                    Username and password are required!
+                    Role, Username and password are required!
             </div>
 
             <div class="cs-form-1">
-                <label class="radio-inline" ng-click="model.toggleLogin('ATHLETE')"><input type="radio" name="optradio" checked>Athlete</label>
-                <label class="radio-inline" ng-click="model.toggleLogin('COACH')"><input type="radio" name="optradio">Coach</label>
-                <label class="radio-inline" ng-click="model.toggleLogin('ADMIN')"><input type="radio" name="optradio">Admin</label>
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <select class="form-control" name="roleSelect" id="role" ng-model="model.role" required>
+                        <option value="ADMIN">ADMIN</option>
+                        <option value="ATHLETE">ATHLETE</option>
+                        <option value="COACH">COACH</option>
+                    </select>
+                </div>
+                <div ng-show="form.$submitted || form.roleSelect.$touched">
+                    <div ng-show="form.roleSelect.$error.required">
+                        <p>Role is required.</p>
+                    </div>
+                </div>
             </div>
+
             <div class="cs-form-1">
 
                 <div ng-show="model.error" class="alert alert-danger" role="alert"> {{model.error}}</div>
@@ -67,17 +78,17 @@
 
                 <a ng-click="form.$valid && model.login(user)" class="btn btn-primary btn-block">Login</a>
 
-                <a ng-show="model.athlete" ng-hide="model.admin || model.coach" href="#/athleteRegister" class="btn btn-success btn-block">
+                <a ng-show="model.role=='ATHLETE'" ng-hide="model.role =='ADMIN' || model.role=='COACH'" href="#/athleteRegister" class="btn btn-success btn-block">
                     Register
                 </a>
-                <a ng-show="model.coach" ng-hide="model.admin || model.athlete" href="#/coachRegister" class="btn btn-success btn-block">
+                <a ng-show="model.role=='COACH'" ng-hide="model.role =='ADMIN' || model.role =='ATHLETE'" href="#/coachRegister" class="btn btn-success btn-block">
                     Register
                 </a>
 
-                <a ng-show="model.athlete" href="/auth/facebook" class="btn btn-info btn-block">
+                <a ng-show="model.role=='ATHLETE'" href="/auth/facebook" class="btn btn-info btn-block">
                     <span class="fa fa-facebook-official"></span> Login with Facebook
                 </a>
-                <a ng-show="model.athlete" href="/auth/google" class="btn btn-danger btn-block">
+                <a ng-show="model.role=='ATHLETE'" href="/auth/google" class="btn btn-danger btn-block">
                     <span class="fa fa-google-plus-official"></span> Login with Google
                 </a>
             </div>

@@ -20,12 +20,12 @@ module.exports = function (app, models) {
         })
     });
 
-
-    AWS.config.update({
+    var awsConfig = {
         secretAccessKey: process.env.AWS_ACCESS_KEY_ID,
         accessKeyId: process.env.AWS_SECRET_ACCESS_KEY,
         region: 'us-east-1'
-    });
+    };
+    AWS.config.update(awsConfig);
 
     app.use(cookieParser());
     app.use(session({
@@ -53,6 +53,7 @@ module.exports = function (app, models) {
     app.post('/api/project/loggedin', loggedIn);
     app.post('/api/project/logout', logout);
     app.post('/api/project/register', register);
+    app.post('/api/project/adminAddUser', adminCreateUser);
     app.post('/api/project/isAdmin', isAdmin);
     app.get('/api/project/allUser', findAllUsers);
     app.put('/api/project/user/:coachId/follow/:athleteId', followAthlete);
@@ -307,6 +308,20 @@ module.exports = function (app, models) {
                     req.login(user, function (err) {
                         res.send(user);
                     });
+                }
+            });
+    }
+
+    function adminCreateUser(req, res) {
+        var user = req.body;
+        user.password = bcrypt.hashSync(user.password);
+        userModel
+            .createUser(user)
+            .then(function (user) {
+                if(user) {
+                    res.send(user);
+                } else {
+                    res.sendStatus(402);
                 }
             });
     }

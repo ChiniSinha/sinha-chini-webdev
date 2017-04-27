@@ -13,6 +13,7 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
                 <li> <a href="#/admin/{{model.adminId}}"><span class="glyphicon glyphicon-modal-window"></span>  Manage Profile/Schools</a> </li>
+                <li> <a href="#/admin/{{model.adminId}}/newUser"><span class="glyphicon glyphicon-pencil"></span>  Add User</a> </li>
                 <li> <a href="#/admin/{{model.adminId}}/school"><span class="glyphicon glyphicon-plus"></span>  Add School</a> </li>
                 <li> <a href="#/admin/{{model.adminId}}/searchUser"><span class="glyphicon glyphicon-search"></span>  Search Users</a> </li>
                 <li> <a ng-click="model.logout()"><span class="glyphicon glyphicon-user"></span>  Logout</a></li>
@@ -66,8 +67,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="school1">School</label>
-                        <select class="form-control" name="schoolSelect" id="school1" ng-model="model.user.school">
+                        <label for="school">School</label>
+                        <select class="form-control" name="schoolSelect" id="school" ng-model="model.user.school">
                             <option ng-repeat="school in model.schools" value="{{school._id}}"> {{school.name}}</option>
                         </select>
                     </div>
