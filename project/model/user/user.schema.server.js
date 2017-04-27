@@ -10,7 +10,7 @@ module.exports = function () {
         about: String,
         gradYear: Number,
         phone: String,
-        photo: String,
+        photo: {type: String, default: 'http://sinha-chini-webdev.herokuapp.com/images/default-image.jpg'},
         email: String,
         google: {
             id: String
